@@ -34,6 +34,21 @@ class ArenaTests(unittest.TestCase):
         self.assertEqual(self.db.execute("SELECT count(*) FROM events WHERE kind='paper_entry'").fetchone()[0],1)
         self.assertEqual(self.state()['cash'],first['cash'])
 
+    def test_published_rule_deduplicates_signal_and_has_no_timer_exit(self):
+        signals={'hb_bollinger':{'BTCUSDT':(1,self.now)}}
+        arena.step(self.db,self.quotes,self.history,self.instruments,self.now,signals)
+        self.assertIsNotNone(self.state('hb_bollinger')['position'])
+        self.now+=240000
+        for q in self.quotes.values():q['ts']=self.now
+        arena.step(self.db,self.quotes,self.history,self.instruments,self.now,signals)
+        self.assertIsNotNone(self.state('hb_bollinger')['position'])
+        self.quotes['BTCUSDT'].update(bid=103,ask=103.01)
+        arena.step(self.db,self.quotes,self.history,self.instruments,self.now+1,signals)
+        self.assertIsNone(self.state('hb_bollinger')['position'])
+        arena.step(self.db,self.quotes,self.history,self.instruments,self.now+20000,signals)
+        self.assertEqual(self.state('hb_bollinger')['trades'],1)
+        self.assertIsNone(self.state('hb_bollinger')['position'])
+
     def test_retired_rule_exits_existing_position_without_reentry(self):
         self.step()
         with patch.object(arena,'RETIRED',{'pressure60'}):

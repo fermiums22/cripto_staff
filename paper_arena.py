@@ -6,6 +6,7 @@ import time
 from collections import deque
 
 import agent
+import sourced_rules
 
 STRATEGIES = {
     'pressure60': ('Дисбаланс лучшей цены · 60 с', 60),
@@ -17,6 +18,8 @@ STRATEGIES = {
     'leadlag_cost_v2': ('BTC v2 · фильтр издержек · 180 с', 180),
     'breakout_cost_v2': ('Сильный пробой v2 · 180 с', 180),
     'rebound_cost_v2': ('Глубокий отскок v2 · 180 с', 180),
+    'hb_bollinger': (sourced_rules.NAMES['hb_bollinger'], None),
+    'hb_macdbb': (sourced_rules.NAMES['hb_macdbb'], None),
 }
 TP = .004
 SL = .002
@@ -105,21 +108,22 @@ def cost_signal(strategy, symbol, history, quotes, cadence_ms=5000):
     return 0
 
 
-def step(db, quotes, history, instruments, now):
+def step(db, quotes, history, instruments, now, external_signals=None):
     fresh={s:q for s,q in quotes.items() if 0<=now-q['ts']<=10000}
     with db:
         db.execute('BEGIN IMMEDIATE')
         row=db.execute("SELECT value FROM state WHERE key='control'").fetchone()
         paused=json.loads(row[0]).get('paused',False) if row else False
         for key,(name,hold) in STRATEGIES.items():
+            tp,sl=(.01,.02) if key in sourced_rules.NAMES else (TP,SL)
             state=json.loads(db.execute('SELECT payload FROM arena_accounts WHERE id=?',(key,)).fetchone()[0])
             pos=state['position'];closed=False
             if pos:
                 q=fresh.get(pos['symbol'])
                 if q and q['ts']>pos['opened_ms']:
-                    reason=('stop' if q['bid']<=pos['entry']*(1-SL) else
-                            'take' if q['bid']>=pos['entry']*(1+TP) else
-                            'timeout' if now-pos['opened_ms']>=hold*1000 else None)
+                    reason=('stop' if q['bid']<=pos['entry']*(1-sl) else
+                            'take' if q['bid']>=pos['entry']*(1+tp) else
+                            'timeout' if hold is not None and now-pos['opened_ms']>=hold*1000 else None)
                     if reason:
                         price=q['bid']*(1-agent.SLIP)
                         proceeds=pos['qty']*price*(1-agent.FEE)
@@ -146,7 +150,10 @@ def step(db, quotes, history, instruments, now):
                     spread=q['ask']/q['bid']-1
                     if instruments[symbol]['status']!='Trading' or spread>.0008:
                         continue
-                    score=signal(key,symbol,history,fresh)
+                    if key in sourced_rules.NAMES:
+                        score,signal_ts=(external_signals or {}).get(key,{}).get(symbol,(0,0))
+                        if not (0<=now-signal_ts<180000 and signal_ts>state.get('last_signal_ts',0)):score=0
+                    else:score=signal(key,symbol,history,fresh)
                     if score>0:candidates.append((score,symbol))
                 if candidates:
                     _,symbol=max(candidates);q=fresh[symbol]
@@ -160,6 +167,7 @@ def step(db, quotes, history, instruments, now):
                                  strategy=key,strategy_name=name,entry_bid=q['bid'],entry_ask=q['ask'],
                                  fee_per_side=agent.FEE,slippage_per_side=agent.SLIP)
                         state['position']=pos;state['reason']='paper_entry'
+                        if key in sourced_rules.NAMES:state['last_signal_ts']=external_signals[key][symbol][1]
                         agent.event(db,now,'paper_entry',pos)
             pos=state['position']
             # A missing quote must not fabricate a price/equity observation.
@@ -177,19 +185,33 @@ def step(db, quotes, history, instruments, now):
 def run():
     history={s:deque(maxlen=90) for s in agent.SYMBOLS}
     with agent.connect() as db:
-        setup(db);instruments={};refreshed=0
+        setup(db);instruments={};refreshed=0;signal_refreshed=0;external_signals={}
         while True:
             began=time.monotonic()
             try:
                 if time.time()-refreshed>3600:
                     instruments={s:agent.api('instruments-info',category='spot',symbol=s)['result']['list'][0] for s in agent.SYMBOLS}
                     refreshed=time.time()
+                if time.time()-signal_refreshed>30:
+                    try:
+                        updated={k:{} for k in sourced_rules.NAMES}
+                        for s in agent.SYMBOLS:
+                            raw=agent.api('kline',category='spot',symbol=s,interval='3',limit=300)
+                            rows=sorted([r for r in raw['result']['list'] if int(r[0])+180000<=int(raw['time'])],key=lambda r:int(r[0]))
+                            if len(rows)<200 or any(int(b[0])-int(a[0])!=180000 for a,b in zip(rows,rows[1:])):continue
+                            values=sourced_rules.entry_scores([float(r[4]) for r in rows])
+                            for k in updated:updated[k][s]=(values[k][-1],int(rows[-1][0])+180000)
+                        external_signals=updated
+                    except Exception:
+                        logging.exception('Published-rule candles unavailable')
+                        external_signals={}
+                    signal_refreshed=time.time()
                 quotes={s:fetch_quote(s) for s in agent.SYMBOLS}
                 now=int(time.time()*1000)
                 for s,q in quotes.items():
                     if 0<=now-q['ts']<=10000 and (not history[s] or q['ts']>history[s][-1][0]):
                         history[s].append((q['ts'],(q['bid']+q['ask'])/2))
-                step(db,quotes,history,instruments,now)
+                step(db,quotes,history,instruments,now,external_signals)
             except Exception as exc:
                 logging.exception('Paper arena cycle failed')
                 with db:
