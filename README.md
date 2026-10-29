@@ -61,6 +61,12 @@ IDs should be added; do not authorize usernames or automatically trust the first
 sender. Empty allowlist denies all trading information and controls.
 
 Commands: `/status`, `/chart`, `/pause` (also `/stop`), `/resume`.
+Notifications: `/notify_on` and `/notify_off` (also keyboard buttons), independently
+for each allowlisted account. Default off. Enabling starts at the latest event;
+old trades are not replayed. Messages explicitly say PAPER and include net exit
+PnL and exit reason. Delivery attempts persist in SQLite; uncertain network
+deliveries are recorded as `unknown` and not blindly resent, so a message may be
+missed during an outage. The dashboard/events remain the accounting source.
 Pause blocks new virtual entries but continues exits and market collection.
 Commands cannot submit real orders, change leverage, or execute shell commands.
 Telegram remains online while entries are paused. Browser graphs are accessible
@@ -81,6 +87,35 @@ rules. Training uses the first 60%, validation the next 20%, final test the last
 20%, with purged labels at the train boundary. Model selection uses validation;
 the test is not used for tuning. Results go to `artifacts/comparison.json`.
 The running paper model is not automatically replaced by a candidate.
+
+## Autonomous research and news
+
+`cripto-research.timer` runs daily at 03:15 Europe/Minsk. `research_worker.py`
+resumes a separate 90-day, one-minute spot history for BTC/ETH/SOL/XRP/DOGE.
+It trains 30 GPU models: three TP/SL/holding configurations, own-symbol or
+cross-asset features, five symbols. Three probability thresholds produce 18
+candidate configurations. Labels use the same adverse-first TP/SL execution
+as the candidate simulator. UTC hour and weekday features are included.
+Selection uses the middle 20% validation period; only the selected configuration
+is evaluated on the final 20%, including a double-slippage stress run. Daily
+periods overlap, so repeated tests are not independent confirmations.
+Mean returns combine separate $15 symbol accounts, not a shared portfolio.
+
+Results: `artifacts/search_result.json`; progress: `artifacts/research_status.json`;
+saved selected weights and reports: `artifacts/search-runs/<UTC timestamp>/`.
+The live paper model remains unchanged. This is a finite, scheduled parameter
+search, not a claim of unrestricted autonomous strategy invention or profitability.
+Research limits: two CPU cores, 4 GiB RAM, two hours per run. GPU allocations are
+bounded by the selected model/data sizes, without a hardware VRAM quota.
+
+`cripto-context.timer` collects Bybit announcements, CoinDesk RSS and Federal
+Reserve releases every 15 minutes. It stores headline/link/publication time and
+immutable first-seen time in `data/context.sqlite3`. Simple topic classification
+is displayed in the dashboard. News is observation-only until a prospective
+study validates its incremental value; no historical news is retroactively made
+available to the model. No weather/astrological causal signal is assumed.
+
+See [Bybit bot research](docs/BYBIT-BOTS.md) for sources and mechanism comparisons.
 
 Install `deploy/cripto-paper.service` into CT 103's `/etc/systemd/system/` after a
 successful research run. Then `systemctl enable --now cripto-paper`.

@@ -128,3 +128,17 @@ available through Telegram. Paused entries remain paused across restarts.
 
 Hypothesis comparison: `strategy_lab.py`, GPU environment as above. It writes
 `artifacts/comparison.json` and never replaces `artifacts/models.json`.
+
+## Scheduled research and context
+
+`cripto-research.timer`: daily 00:15 UTC / 03:15 Minsk; first run started manually.
+`cripto-research.service`: `research_worker.py`, minute data in `data/research.sqlite3`,
+progress in `artifacts/research_status.json`, latest result in `search_result.json`.
+CPUQuota=200%, MemoryMax=4G, timeout two hours. No automatic model promotion.
+`cripto-context.timer`: every fifteen minutes, public news/announcements only.
+No proxy is used for these HTTP downloads; remote-access VPN remains untouched.
+
+Telegram notification preferences: SQLite `subscriptions`. Delivery attempts:
+`deliveries` with sent/unknown/sending state. Only allowlisted recipients receive
+notifications, and each opts in independently. Do not reset cursors to replay old
+trades or generate fake live events for testing.
