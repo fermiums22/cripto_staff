@@ -52,6 +52,14 @@ def scan():
     report['watchlist']=list(dict.fromkeys(['BTCUSDT','ETHUSDT',*[v['symbol'] for v in attention[:5]]]))[:5]
     write(agent.ARTIFACTS/'market_scan.json',report)
     write(agent.DATA/'portfolio_instruments.json',instruments)
+    # Start a real point-in-time archive now; never label it reconstructed history.
+    directory=agent.DATA/'universe_snapshots';directory.mkdir(exist_ok=True,parents=True)
+    daily=directory/(time.strftime('%Y-%m-%d',time.gmtime())+'.json.gz')
+    if not daily.exists():
+        payload=gzip.compress(json.dumps(dict(scan=report,instruments=instruments)).encode())
+        try:
+            with daily.open('xb') as f:f.write(payload)
+        except FileExistsError:pass
     return report,instruments
 
 

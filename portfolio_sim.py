@@ -19,9 +19,9 @@ def fill(price,side,friction,instrument):
 
 
 def simulate(market,predictions,start,end,mode='multi',leverage=1,fee=.001,
-             threshold=.006,friction=.0006,allocation=.9,max_positions=3):
+             threshold=.006,friction=.0006,allocation=.9,max_positions=3,hold_bars=16):
     symbols=sorted(market);clock=market[symbols[0]]['trade'];cash=15.;positions={};records=[]
-    curve=[[clock[start][0],15.]];allocations=[];peak=15.;dd=0.;peak_ms=clock[start][0]
+    curve=[[clock[start][0],15.]];allocations=[];peak=15.;dd=0.;peak_ms=clock[start][0];drawdown_event=None
     rejected=dict(minimum_order=0,correlated=0,liquidity=0,risk_limit=0)
     rates={s:{int(r['fundingRateTimestamp']):float(r['fundingRate']) for r in d['funding']} for s,d in market.items()}
     returns={s:np.diff(np.log(np.array([r[4] for r in d['trade']]))) for s,d in market.items()}
@@ -53,6 +53,13 @@ def simulate(market,predictions,start,end,mode='multi',leverage=1,fee=.001,
         maintenance=max(0,p['qty']*price*float(risk['maintenanceMargin'])-float(risk.get('mmDeduction') or 0))
         equity=p['margin']+p['qty']*p['side']*(price-p['entry'])
         if equity<=maintenance+p['qty']*price*fee:close(s,price,i,'liquidation_proxy')
+    def observe_drawdown(equity,i,kind):
+        nonlocal dd,drawdown_event
+        decline=100*(1-equity/peak)
+        if decline>dd:
+            dd=decline
+            drawdown_event=dict(bar_ms=clock[i][0],kind=kind,peak=peak,peak_ms=peak_ms,
+                equity=equity,cash=cash,positions=[dict(symbol=s,**p) for s,p in positions.items()])
     for i in range(start+1,end):
         # Apply all settlements inside a bar before discretionary actions; rates
         # at non-open timestamps are applied at this bar's open conservatively.
@@ -65,8 +72,8 @@ def simulate(market,predictions,start,end,mode='multi',leverage=1,fee=.001,
             liquidate(s,mark[1],i)
         for s in list(positions):
             p=positions[s];signal=float(predictions[s][i-1]);age=i-p['opened']
-            if age>=16 or (age>=4 and p['side']*signal<-threshold):
-                close(s,market[s]['trade'][i][1],i,'timeout' if age>=16 else 'opposite_signal')
+            if age>=hold_bars or (age>=4 and p['side']*signal<-threshold):
+                close(s,market[s]['trade'][i][1],i,'timeout' if age>=hold_bars else 'opposite_signal')
         # Distribute the remaining shared wallet; never grant a new symbol $15.
         if i%4==0 and cash>0:
             candidates=[]
@@ -118,12 +125,12 @@ def simulate(market,predictions,start,end,mode='multi',leverage=1,fee=.001,
                 positions[s]=dict(qty=q,side=side,entry=price,margin=margin,initial_margin=margin,
                     entry_fee=entry_fee,opened=i,funding=0.,funding_cash=0.,reason=reason)
         max_open=max(max_open,len(positions))
-        dd=max(dd,100*(1-value(i,True)/peak))
+        observe_drawdown(value(i,True),i,'adverse_mark_envelope')
         for s in list(positions):
             p=positions[s];liquidate(s,market[s]['mark'][i][3 if p['side']==1 else 2],i)
         equity=value(i)
         if equity>peak:peak=equity;peak_ms=clock[i][0]
-        dd=max(dd,100*(1-equity/peak));curve.append([clock[i][0]+900000,equity])
+        observe_drawdown(equity,i,'mark_close');curve.append([clock[i][0]+900000,equity])
         for target in high_water:
             if equity>=int(target) and high_water[target] is None:high_water[target]=clock[i][0]+900000
         if i%4==0:
@@ -133,11 +140,11 @@ def simulate(market,predictions,start,end,mode='multi',leverage=1,fee=.001,
         if cash<=1e-8 and not positions:break
     terminal_positions=allocations[-1] if allocations else dict(positions=[],cash=cash)
     for s in list(positions):close(s,market[s]['trade'][end-1][4],end-1,'boundary')
-    curve.append([clock[end-1][0]+900000,cash]);dd=max(dd,100*(1-cash/peak))
+    curve.append([clock[end-1][0]+900000,cash]);observe_drawdown(cash,end-1,'terminal')
     assert abs(cash-15-sum(v['net'] for v in records))<1e-7
     wins=[v['net'] for v in records if v['net']>0];losses=[-v['net'] for v in records if v['net']<=0]
     return dict(capital=cash,return_pct=(cash/15-1)*100,max_capital=peak,max_capital_ms=peak_ms,
-        max_drawdown_pct=dd,trades=len(records),wins=len(wins),losses=len(losses),
+        max_drawdown_pct=dd,drawdown_event=drawdown_event,trades=len(records),wins=len(wins),losses=len(losses),
         fees=sum(v['fees'] for v in records),funding=sum(v['funding'] for v in records),
         liquidations=liquidations,ruined=cash<=1e-8,untradeable=cash<1,maximum_positions=max_open,
         milestones=high_water,rejected=rejected,curve=curve[::4]+curve[-1:],

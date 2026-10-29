@@ -124,3 +124,42 @@ Sources: [instruments and pagination](https://bybit-exchange.github.io/docs/v5/m
 [book snapshot/delta protocol](https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook),
 [public trades](https://bybit-exchange.github.io/docs/v5/websocket/public/trade),
 [liquidation stream](https://bybit-exchange.github.io/docs/v5/websocket/public/all-liquidation).
+
+## Frozen-result audit (2026-10-29)
+
+`portfolio_audit.py` loads the original run's history hashes and XGBoost weights;
+it does not refit or select models. Base/stress balances, fees, trade count and
+drawdown must exactly reproduce the saved report before attribution is published.
+`portfolio_sim.py` now records the positions/cash/peak at maximum drawdown without
+changing baseline calculations. Audit JSON and stress CSV are kept with the run;
+the dashboard has a separate audit panel.
+
+For run `20261029T144303Z`, selected `xgb_multi_1x`:
+
+- Net +2.501760865 USDT. QUSDT contributed +7.920407399 (49 trades),
+  1000PEPEUSDT +1.451977900; INITUSDT lost 5.505309692 over four trades.
+- Reference-price gross +5.7607; modeled fill friction/tick rounding 1.30235;
+  commissions 1.94131233; funding is accounted separately. Thus commissions are
+  not the only cost, and aggregate returns conceal substantial coin concentration.
+- Removing the three best recorded profits arithmetically gives net -2.468774422.
+  That subtraction is not a realizable replay. A separate actual frozen-policy
+  replay prohibiting Q entries and redistributing capital returns -38.548684%.
+- The adverse mark-envelope drawdown is 35.899632%, on the bar starting
+  2026-10-18 10:45 UTC, with a QUSDT long open. Peak equity 16.007539079;
+  adverse equity 10.260891383. Drawdown on the stored downsampled close curve is
+  32.403873%, not a replacement for the intrabar risk measure.
+- Stress preserves all 81 entry identities and all exit times, changes sizes in
+  64 trades. Repricing fixed base quantities/times adds 1.93457373 in direct costs;
+  full replay resizing reduces capital another 0.252135701. The fee rate is
+  unchanged: the stress increases per-fill friction from .06% to .16%.
+- Holding-limit diagnostics: 2h -14.957156%, original 4h +16.678406%,
+  8h -4.999293%, 16h -65.275444%. Opposite-signal exits still apply.
+  These are post-hoc sensitivities on an already seen test, not independent
+  selection results and not new promoted strategies.
+
+No Ranker/RL allocator was added during attribution. The positive result remains
+dependent on the current-survivor cohort and a concentrated set of outcomes.
+The scanner now archives its first observed UTC snapshot each day under
+`data/universe_snapshots/`, including instrument definitions and observation time.
+This archive starts now; it does not reconstruct delisted instruments from the
+previous three months and must never be presented as if it did.

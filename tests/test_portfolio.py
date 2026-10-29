@@ -31,6 +31,8 @@ class PortfolioTests(unittest.TestCase):
         r=simulate(m,p,100,200,mode='multi')
         self.assertLessEqual(r['maximum_positions'],2)  # $15 cannot fund three $5 minima plus fees.
         self.assertAlmostEqual(r['capital'],15+sum(t['net'] for t in r['records']))
+        event=r['drawdown_event']
+        self.assertAlmostEqual(r['max_drawdown_pct'],100*(1-event['equity']/event['peak']))
         for a in r['allocations']:
             self.assertGreaterEqual(a['cash'],-1e-8)
             self.assertLessEqual(sum(p['margin'] for p in a['positions']),15)
