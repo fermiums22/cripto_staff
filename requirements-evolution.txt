@@ -1,0 +1,6 @@
+# Install torch==2.7.1 from https://download.pytorch.org/whl/cpu first.
+# GPU XGBoost uses the project's existing NVIDIA driver/runtime.
+torch==2.7.1
+stable-baselines3==2.7.0
+gymnasium==1.2.0
+nvidia-ml-py==13.580.82
