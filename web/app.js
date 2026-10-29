@@ -23,6 +23,11 @@ function chart(id,series,{base=null,markers=[]}={}){
  canvas.onmousemove=e=>{if(id!=='priceChart')return;let t=minT+(e.offsetX-left)/(w-left-right)*(maxT-minT);const points=valid[0].points;if(!points.length)return;const nearest=points.reduce((a,b)=>Math.abs(b[0]-t)<Math.abs(a[0]-t)?b:a);$('priceHint').textContent=date(nearest[0])+' · '+money(nearest[1])+' USDT';};
 }
 function render(){if(!current)return;const d=current,s=d.status,age=Math.max(0,Math.round((Date.now()-(s.heartbeat_ms||0))/1000));
+ const bt=d.arena_backtest,bc=['#55d5b3','#7ba8ff','#ffca77'];
+ if(bt){const rows=Object.entries(bt.results.base);$('arenaBacktestNote').textContent=date(bt.start_ms)+' — '+date(bt.end_ms)+' · Минутная оценка, не точный повтор live. Комиссия 0,1% и проскальзывание 0,05% за сторону; спред: база 0,02%, стресс 0,06%. Каждой стратегии $15, остановка при потере 20%. История уже использовалась в исследованиях.';
+ $('arenaBacktestRows').innerHTML=rows.map(([k,r])=>`<tr><td>${esc(r.name)}</td><td>${pct(r.return_pct)}</td><td>${pct(bt.results.wide_spread[k].return_pct)}</td><td>${r.trades} / ${r.wins}</td><td>${pct(r.max_drawdown_pct)}</td><td>${r.loss_limit?'Лимит убытка':'Период завершён'}</td></tr>`).join('');
+ chart('arenaBacktestChart',rows.map(([k,r],i)=>({points:r.curve,color:bc[i]})),{base:15});
+ $('arenaBacktestLegend').textContent=rows.map(([k,r],i)=>['Зелёный','Синий','Жёлтый'][i]+' — '+r.name).join(' · ');}
  const arena=d.arena||[],as=d.arena_status,arenaColors=['#55d5b3','#7ba8ff','#bd9bff','#ffca77','#ff8a91','#a7e887','#ffffff','#ff8c42','#41d9ef'];
  const arenaReasons={waiting_signal:'Ждёт сигнал',waiting_cost_signal:'Ждёт сильное движение · фильтр издержек',stale_quote:'Нет свежей цены',loss_limit:'Лимит убытка',cooldown:'Пауза между входами',minimum_order:'Минимальный ордер',insufficient_top_liquidity:'Недостаточная ликвидность',warmup:'Сбор котировок',paused:'Пауза'};
  $('arenaHealth').textContent=as?'Цикл '+Math.max(0,Math.round((Date.now()-as.heartbeat_ms)/1000))+' с назад'+(as.last_error?' · ошибка '+as.last_error:''):'Ожидаем первый цикл';

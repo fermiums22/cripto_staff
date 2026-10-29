@@ -177,3 +177,12 @@ Filters describe past moves, not expected future returns. New account age differ
 from old accounts: compare per-trade results and observation time, not just equity.
 All nine are still spot paper strategies; USDC futures fees must not replace spot
 fees. No claim of improvement is justified until forward observations arrive.
+
+`arena_backtest.py` reads the latest aligned 30 days from research.sqlite3 and
+atomically writes artifacts/arena_backtest.json for the dashboard. It is a
+minute-close proxy of the three v2 rules, not an exact tick replay. Signals use
+closed bars, entries use next opens, ambiguous OHLC exits choose stop first.
+Assumed full spreads: 0.02% base, 0.06% stress; fee/slippage remain spot assumptions.
+No tuning or auto promotion; history was already inspected in earlier research.
+Historical curves are separate from persistent live accounts. Run as codex with
+the project Python; no GPU or new downloads are required except current lot rules.

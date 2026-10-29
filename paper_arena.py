@@ -72,13 +72,13 @@ def signal(strategy, symbol, history, quotes):
     return 0
 
 
-def cost_signal(strategy, symbol, history, quotes):
+def cost_signal(strategy, symbol, history, quotes, cadence_ms=5000):
     q=quotes[symbol];now=q['ts'];mid=(q['bid']+q['ask'])/2
     def window(s):
         points=[p for p in history[s] if 0<now-p[0]<=180000]
-        if len(points)<20 or now-points[0][0]<150000 or now-points[-1][0]>15000:
+        if len(points)<(3 if cadence_ms==60000 else 20) or now-points[0][0]<150000 or now-points[-1][0]>3*cadence_ms:
             return []
-        if any(b[0]-a[0]>15000 for a,b in zip(points,points[1:])):
+        if any(b[0]-a[0]>3*cadence_ms for a,b in zip(points,points[1:])):
             return []
         return [p[1] for p in points]
     prices=window(symbol)
