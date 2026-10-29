@@ -56,3 +56,25 @@ class ArenaTests(unittest.TestCase):
         state=self.state();state['cash']=12
         with self.db:self.db.execute('UPDATE arena_accounts SET payload=? WHERE id=?',(json.dumps(state),'pressure60'))
         self.step();self.assertIsNone(self.state()['position']);self.assertEqual(self.state()['reason'],'loss_limit')
+
+    def test_v2_rejects_small_moves_and_history_gaps(self):
+        self.history={s:[(self.now-180000+i*5000,100+i*.0001) for i in range(36)] for s in agent.SYMBOLS}
+        for k in ('leadlag_cost_v2','breakout_cost_v2','rebound_cost_v2'):
+            self.assertEqual(arena.signal(k,'ETHUSDT',self.history,self.quotes),0)
+        self.quotes['ETHUSDT'].update(bid=101,ask=101.01)
+        self.assertGreater(arena.signal('breakout_cost_v2','ETHUSDT',self.history,self.quotes),0)
+        self.history['ETHUSDT']=self.history['ETHUSDT'][:10]+self.history['ETHUSDT'][15:]
+        self.assertEqual(arena.signal('breakout_cost_v2','ETHUSDT',self.history,self.quotes),0)
+
+    def test_v2_leadlag_uses_current_btc_and_preserves_accounts(self):
+        self.history={s:[(self.now-180000+i*5000,100+i*.002) for i in range(36)] for s in agent.SYMBOLS}
+        self.quotes['BTCUSDT'].update(bid=101,ask=101.01)
+        self.quotes['ETHUSDT'].update(bid=100.2,ask=100.21)
+        self.assertGreater(arena.signal('leadlag_cost_v2','ETHUSDT',self.history,self.quotes),0)
+        self.quotes['BTCUSDT']['ts']-=20000
+        self.assertEqual(arena.signal('leadlag_cost_v2','ETHUSDT',self.history,self.quotes),0)
+        old=self.state();old['cash']=12.34
+        with self.db:self.db.execute('UPDATE arena_accounts SET payload=? WHERE id=?',(json.dumps(old),'pressure60'))
+        arena.setup(self.db)
+        self.assertEqual(self.state()['cash'],12.34)
+        self.assertEqual(self.state('leadlag_cost_v2')['cash'],15)

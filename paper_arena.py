@@ -14,6 +14,9 @@ STRATEGIES = {
     'rebound120': ('Отскок после снижения · 120 с', 120),
     'range90': ('Возврат к средней · 90 с', 90),
     'leadlag180': ('Запаздывание за BTC · 180 с', 180),
+    'leadlag_cost_v2': ('BTC v2 · фильтр издержек · 180 с', 180),
+    'breakout_cost_v2': ('Сильный пробой v2 · 180 с', 180),
+    'rebound_cost_v2': ('Глубокий отскок v2 · 180 с', 180),
 }
 TP = .004
 SL = .002
@@ -44,6 +47,8 @@ def fetch_quote(symbol):
 
 def signal(strategy, symbol, history, quotes):
     q=quotes[symbol];now=q['ts'];mid=(q['bid']+q['ask'])/2
+    if strategy.endswith('_cost_v2'):
+        return cost_signal(strategy,symbol,history,quotes)
     previous=[p for p in history[symbol] if 0<now-p[0]<=30000]
     # Book pressure needs no manufactured warm-up prices.
     if strategy=='pressure60':
@@ -64,6 +69,36 @@ def signal(strategy, symbol, history, quotes):
         if len(btc)>=4 and now-btc[0][0]>=20000:
             lead=btc[-1][1]/btc[0][1]-1
             return lead-change if lead>.00015 and -.0005<change<lead/2 else 0
+    return 0
+
+
+def cost_signal(strategy, symbol, history, quotes):
+    q=quotes[symbol];now=q['ts'];mid=(q['bid']+q['ask'])/2
+    def window(s):
+        points=[p for p in history[s] if 0<now-p[0]<=180000]
+        if len(points)<20 or now-points[0][0]<150000 or now-points[-1][0]>15000:
+            return []
+        if any(b[0]-a[0]>15000 for a,b in zip(points,points[1:])):
+            return []
+        return [p[1] for p in points]
+    prices=window(symbol)
+    if not prices:return 0
+    # Observed movement is a filter, never a prediction of future profit.
+    cost=q['ask']/q['bid']*(1+agent.SLIP)*(1+agent.FEE)/((1-agent.SLIP)*(1-agent.FEE))-1
+    change=mid/prices[0]-1
+    rising=mid>prices[-1]>prices[-2]
+    if strategy=='leadlag_cost_v2' and symbol!='BTCUSDT' and 'BTCUSDT' in quotes:
+        btc=window('BTCUSDT');bq=quotes['BTCUSDT']
+        if not btc or abs(bq['ts']-now)>10000:return 0
+        lead=((bq['bid']+bq['ask'])/2)/btc[0]-1
+        gap=lead-change
+        return gap if lead>1.5*cost and gap>cost and change>0 and rising else 0
+    if strategy=='breakout_cost_v2':
+        return change if change>1.5*cost and mid>max(prices)*1.0001 and rising else 0
+    if strategy=='rebound_cost_v2':
+        drop=max(prices)/min(prices)-1
+        recovery=mid/min(prices)-1
+        return drop if drop>2*cost and .25*cost<recovery<.75*cost and rising else 0
     return 0
 
 
@@ -99,9 +134,9 @@ def step(db, quotes, history, instruments, now):
             elif paused:state['reason']='paused'
             elif not fresh:state['reason']='stale_quote'
             elif state['cash']<=12:state['reason']='loss_limit'
-            elif now-state['last_closed_ms']<10000 or closed:state['reason']='cooldown'
+            elif now-state['last_closed_ms']<(30000 if key.endswith('_cost_v2') else 10000) or closed:state['reason']='cooldown'
             else:
-                state['reason']='waiting_signal'
+                state['reason']='waiting_cost_signal' if key.endswith('_cost_v2') else 'waiting_signal'
                 candidates=[]
                 for symbol,q in fresh.items():
                     spread=q['ask']/q['bid']-1
@@ -118,7 +153,8 @@ def step(db, quotes, history, instruments, now):
                         entry=q['ask']*(1+agent.SLIP);cost=qty*entry*(1+agent.FEE)
                         state['cash']-=cost;state['fees']+=qty*entry*agent.FEE
                         pos=dict(symbol=symbol,qty=qty,entry=entry,cost=cost,opened_ms=now,
-                                 strategy=key,strategy_name=name)
+                                 strategy=key,strategy_name=name,entry_bid=q['bid'],entry_ask=q['ask'],
+                                 fee_per_side=agent.FEE,slippage_per_side=agent.SLIP)
                         state['position']=pos;state['reason']='paper_entry'
                         agent.event(db,now,'paper_entry',pos)
             pos=state['position']
@@ -135,7 +171,7 @@ def step(db, quotes, history, instruments, now):
 
 
 def run():
-    history={s:deque(maxlen=30) for s in agent.SYMBOLS}
+    history={s:deque(maxlen=90) for s in agent.SYMBOLS}
     with agent.connect() as db:
         setup(db);instruments={};refreshed=0
         while True:

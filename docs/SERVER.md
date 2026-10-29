@@ -167,3 +167,13 @@ Keep ledger funding separate from USDC session P&L. Execution fees and ledger
 fees may describe the same charge: do not add both. Positive ledger funding
 means received; positive ledger fee means paid. Empty records are not evidence
 of no charges if a request failed or the ledger is delayed. No orders are sent.
+
+Arena v2 adds three separate accounts (`leadlag_cost_v2`, `breakout_cost_v2`,
+`rebound_cost_v2`), preserving all six original histories. They require a
+continuous three-minute quote window, movements exceeding explicit cost filters,
+and 30 seconds between exits and new entries. Holding limit remains 180 seconds.
+The BTC variant uses the current fresh BTC quote, not the previous sample.
+Filters describe past moves, not expected future returns. New account age differs
+from old accounts: compare per-trade results and observation time, not just equity.
+All nine are still spot paper strategies; USDC futures fees must not replace spot
+fees. No claim of improvement is justified until forward observations arrive.
