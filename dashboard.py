@@ -42,7 +42,7 @@ def snapshot(symbol='BTCUSDT', hours=24):
         comparison_path = agent.ARTIFACTS/'comparison.json'
         comparison = json.loads(comparison_path.read_text(encoding='utf-8')) if comparison_path.exists() else None
         extra = {}
-        for key, filename in [('research_job','research_status.json'),('search_result','search_result.json'),('market_context','market_context.json'),('arena_backtest','arena_backtest.json'),('waiting_research','waiting_research.json'),('sourced_research','sourced_research.json'),('window_experiment','window_experiment.json')]:
+        for key, filename in [('research_job','research_status.json'),('search_result','search_result.json'),('market_context','market_context.json'),('arena_backtest','arena_backtest.json'),('waiting_research','waiting_research.json'),('sourced_research','sourced_research.json'),('window_experiment','window_experiment.json'),('random_brackets','random_brackets.json')]:
             path=agent.ARTIFACTS/filename
             extra[key]=json.loads(path.read_text(encoding='utf-8')) if path.exists() else None
         return dict(now_ms=int(time.time()*1000), status=status, symbol=symbol, candles=candles,
