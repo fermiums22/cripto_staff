@@ -13,7 +13,8 @@ def collect(days=7):
     path=agent.DATA/'window_history.json'
     if path.exists():
         cached=json.loads(path.read_text())
-        if cached['end_ms']>=end-3600000:return cached
+        if (cached['end_ms']>=end-3600000 and cached['end_ms']-cached['start_ms']+60000>=days*86400000
+                and len(cached['trade'][0])>=6):return cached
     result=dict(start_ms=start,end_ms=end,symbol='SOLUSDT')
     for name,endpoint in [('trade','kline'),('mark','mark-price-kline')]:
         rows={};cursor=end
@@ -23,7 +24,7 @@ def collect(days=7):
             if not raw:raise ValueError('Missing futures history')
             for r in raw:
                 ts=int(r[0])
-                if start<=ts<=end:rows[ts]=[ts,*map(float,r[1:5])]
+                if start<=ts<=end:rows[ts]=[ts,*map(float,r[1:6] if name=='trade' else r[1:5])]
             oldest=min(int(r[0]) for r in raw)
             if oldest>cursor:raise ValueError('History cursor stalled')
             cursor=oldest-1
