@@ -7,6 +7,8 @@ motivation, not a forecast or a promised result.
 
 ## Current implementation
 
+User hypotheses and requirements: [original rules 1–8 and learning goals](docs/USER-TRADING-IDEAS.md).
+
 - BTCUSDT, ETHUSDT, SOLUSDT: 30 days of closed five-minute Bybit spot candles.
 - GPU XGBoost training (`device=cuda`); CPU fallback fails explicitly.
 - Three chronological evaluation windows with a purged label horizon; cash and
