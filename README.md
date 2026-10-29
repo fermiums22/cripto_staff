@@ -40,8 +40,11 @@ proxy variables, remove them for that process only.
 
 Research outputs: `artifacts/research.json`, `artifacts/models.json`.
 Market data, simulated accounting and events: `data/agent.sqlite3`.
-These files and `.env` are ignored by Git. `.env` is reserved for a future
-read-only account integration; this agent currently does not read or need it.
+These files, `.env`, and `crypto_cey` are ignored by Git. The supplied three-line
+credential file (name, API key, secret) is stored privately on the server at
+`secrets/bybit.key`. `python check_api.py` verifies authentication and prints only
+permission flags. Per the owner's choice the key has Read-Write permissions;
+this does **not** authorize real orders. The paper process does not read the key.
 
 ## Service and inspection
 
@@ -57,7 +60,8 @@ pct exec 103 -- runuser -u codex -- /home/codex/workspace/cripto_staff/.venv/bin
 ```
 
 Access from Windows is documented in [docs/SERVER.md](docs/SERVER.md).
-Quick Windows status: `powershell -File .\status.ps1`.
+Quick Windows status: `powershell -ExecutionPolicy Bypass -File .\status.ps1`
+(policy override for this process only; system settings remain unchanged).
 Verified initial results: [docs/FIRST-RUN.md](docs/FIRST-RUN.md).
 Stop only the agent with `pct exec 103 -- systemctl stop cripto-paper`.
 

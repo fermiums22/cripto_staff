@@ -92,10 +92,17 @@ Do not stop the entire development container to stop a single application.
 
 Source: `/home/codex/workspace/cripto_staff`, owned by `codex`.
 Service: `cripto-paper.service` (experimental spot simulation, no real orders).
-Windows status: `powershell -File .\status.ps1` from the repository root.
+Windows status: `powershell -ExecutionPolicy Bypass -File .\status.ps1` from the repository root.
 GPU training requires `LD_LIBRARY_PATH=/opt/nvidia-driver`; the main paper
 service performs CPU inference. Nika remains paused.
 
 Downloads must use direct home internet, not VPN. The verified CT 103 default
 route is `192.168.0.1` on `eth0`; remove proxy environment variables for download
 processes. Do not change the remote-access tunnel to accelerate downloads.
+
+Bybit credentials: `secrets/bybit.key` in the project directory, mode 0600,
+parent directory 0700. Local source `crypto_cey` is ignored by Git. First line is
+the label, then API key and secret. Never print the file or raw authenticated API
+responses. The owner explicitly chose Read-Write permissions; real trading is
+still prohibited until separately authorized. `check_api.py` checks authentication
+using only GET `/v5/user/query-api` and prints no credential values.

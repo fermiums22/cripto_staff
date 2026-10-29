@@ -29,7 +29,7 @@ preserved the portfolio, and reported no error. Nine unit tests passed both on
 Windows and in the Linux container. Synthetic unit-test fixtures are not used
 for model training or performance reports.
 
-Read status from Windows with `powershell -File .\status.ps1`. This is a status
+Read status from Windows with `powershell -ExecutionPolicy Bypass -File .\status.ps1`. This is a status
 command, not a dashboard. If heartbeat age exceeds 120 seconds, investigate the
 service and connectivity; an old $15 snapshot is not proof of a working agent.
 
