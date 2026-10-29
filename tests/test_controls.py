@@ -49,5 +49,33 @@ class ControlTests(unittest.TestCase):
                 with self.assertRaises(urllib.error.HTTPError) as caught:
                     urllib.request.urlopen('http://127.0.0.1:'+str(server.server_port)+path)
                 self.assertEqual(caught.exception.code, 404)
+                caught.exception.close()
         finally:
             server.shutdown(); server.server_close(); thread.join()
+
+    def test_pause_blocks_entries_but_keeps_exits(self):
+        now = 1800000001000
+        latest = (now//agent.BAR_MS-1)*agent.BAR_MS
+        bars = [[latest-(29-i)*agent.BAR_MS, 100, 101, 99, 100, 10] for i in range(30)]
+        quote = {'time': now, 'result': {'list': [{'bid1Price': '100', 'ask1Price': '100.01'}]}}
+        models = {s: {'id': 'test-only'} for s in agent.SYMBOLS}
+        instruments = {s: {'lotSizeFilter': {'basePrecision': '0.001', 'minOrderQty': '0.001',
+                                            'minOrderAmt': '5'}} for s in agent.SYMBOLS}
+        with tempfile.TemporaryDirectory() as tmp, patch.object(agent, 'DATA', Path(tmp)), \
+                patch.object(agent, 'collect'), patch.object(agent, 'read_bars', return_value=bars), \
+                patch.object(agent, 'api', return_value=quote), \
+                patch.object(agent, 'probability', return_value=0.8), \
+                patch.object(agent.time, 'time', return_value=now/1000):
+            db = agent.connect(); tg.set_paused(db, True)
+            agent.cycle(db, models, instruments)
+            self.assertEqual(db.execute('SELECT count(*) FROM events').fetchone()[0], 0)
+            position = {'symbol': 'BTCUSDT', 'qty': 0.1, 'entry': 110, 'cost': 11.011, 'opened_ms': now-1000}
+            with db:
+                db.execute("UPDATE state SET value=? WHERE key='portfolio'",
+                           (json.dumps({'cash': 3.989, 'position': position}),))
+            agent.cycle(db, models, instruments)
+            portfolio = json.loads(db.execute("SELECT value FROM state WHERE key='portfolio'").fetchone()[0])
+            self.assertIsNone(portfolio['position'])
+            self.assertEqual(db.execute("SELECT count(*) FROM events WHERE kind='paper_exit'").fetchone()[0], 1)
+            self.assertEqual(db.execute("SELECT count(*) FROM events WHERE kind='paper_entry'").fetchone()[0], 0)
+            db.close()

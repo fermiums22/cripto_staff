@@ -48,6 +48,40 @@ this does **not** authorize real orders. The paper process does not read the key
 
 ## Service and inspection
 
+Live dashboard on the home LAN/VPN: **http://192.168.0.8:8765**.
+It shows real prices, live paper equity, model decisions, events and independent
+strategy comparisons. It is read-only, serves no credentials, and is not exposed
+to public internet. The graph starts when equity recording was added; earlier
+equity is not invented. Model scores are not calibrated success probabilities.
+
+Telegram: **https://t.me/my_home_cripto_bot**. In a private chat, `/id` returns
+the sender's numeric user ID. All other commands require that ID in the private
+`secrets/telegram-access.json` file (`{"user_ids": [123]}`). Only owner-approved
+IDs should be added; do not authorize usernames or automatically trust the first
+sender. Empty allowlist denies all trading information and controls.
+
+Commands: `/status`, `/chart`, `/pause` (also `/stop`), `/resume`.
+Pause blocks new virtual entries but continues exits and market collection.
+Commands cannot submit real orders, change leverage, or execute shell commands.
+Telegram remains online while entries are paused. Browser graphs are accessible
+only on the home network/VPN; Telegram `/chart` sends a PNG without needing VPN.
+The token is stored in `secrets/telegram.token`; local `telega_bot` is Git-ignored.
+
+Services: `cripto-paper`, `cripto-dashboard`, `cripto-telegram`. Source units live
+in `deploy/`. The web service binds only to the private container address.
+
+Run a separate GPU hypothesis comparison with:
+
+```bash
+LD_LIBRARY_PATH=/opt/nvidia-driver .venv/bin/python strategy_lab.py
+```
+
+It compares XGBoost, cross-asset BTC/ETH features, momentum, reversal, and lead-lag
+rules. Training uses the first 60%, validation the next 20%, final test the last
+20%, with purged labels at the train boundary. Model selection uses validation;
+the test is not used for tuning. Results go to `artifacts/comparison.json`.
+The running paper model is not automatically replaced by a candidate.
+
 Install `deploy/cripto-paper.service` into CT 103's `/etc/systemd/system/` after a
 successful research run. Then `systemctl enable --now cripto-paper`.
 
@@ -81,8 +115,9 @@ uses a separate $15 account. The live sandbox uses one shared $15 portfolio.
 Live stops are checked every 30 seconds and can be crossed during outages.
 Stale data prevents new signals; missed signals are not filled retroactively.
 
-No derivatives, leverage, funding, RL, news, cross-asset features or web dashboard
-yet. GPU is used during training; live inference runs on CPU. Retraining is
+No derivatives, leverage, funding, RL, news or historical order-book features
+yet. Cross-asset features are research candidates, not the live model.
+GPU is used during training; live inference runs on CPU. Retraining is
 explicit, not an automatic replacement of the running model.
 
 Data contracts: [Bybit candles](https://bybit-exchange.github.io/docs/v5/market/kline),

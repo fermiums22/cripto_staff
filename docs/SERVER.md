@@ -106,3 +106,25 @@ the label, then API key and secret. Never print the file or raw authenticated AP
 responses. The owner explicitly chose Read-Write permissions; real trading is
 still prohibited until separately authorized. `check_api.py` checks authentication
 using only GET `/v5/user/query-api` and prints no credential values.
+
+## Dashboard and Telegram
+
+Dashboard: `http://192.168.0.8:8765`, service `cripto-dashboard` in CT 103.
+This is a home-LAN/VPN-only read-only endpoint, not a public hosted Site.
+Only explicitly allowlisted static paths and `/api/snapshot` are served.
+Equity history is in SQLite table `equity`; existing paper balance is preserved.
+
+Telegram service: `cripto-telegram`, bot `@my_home_cripto_bot`.
+Token: project `secrets/telegram.token`, mode 0600. Local source: `telega_bot`,
+Git-ignored. Never print either file or Telegram API request URLs containing tokens.
+Allowlist: `secrets/telegram-access.json`, `user_ids` array of integer IDs.
+It is reloaded on each message. Only add IDs supplied/approved by the owner.
+Private `/id` works without authorization, everything else requires the allowlist.
+Do not call `getUpdates` manually while the service polls it.
+
+Pause/resume sets SQLite state `control.paused`. The agent keeps running to
+manage existing simulated positions. No root, systemctl or shell execution is
+available through Telegram. Paused entries remain paused across restarts.
+
+Hypothesis comparison: `strategy_lab.py`, GPU environment as above. It writes
+`artifacts/comparison.json` and never replaces `artifacts/models.json`.
