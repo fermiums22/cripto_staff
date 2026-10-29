@@ -1,0 +1,13 @@
+[Unit]
+Description=Collect public news and exchange announcements
+After=network-online.target
+[Service]
+Type=oneshot
+User=codex
+WorkingDirectory=/home/codex/workspace/cripto_staff
+ExecStart=/home/codex/workspace/cripto_staff/.venv/bin/python market_context.py
+TimeoutStartSec=2min
+MemoryMax=256M
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/home/codex/workspace/cripto_staff/data /home/codex/workspace/cripto_staff/artifacts

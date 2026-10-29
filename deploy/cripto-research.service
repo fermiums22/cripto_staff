@@ -1,0 +1,19 @@
+[Unit]
+Description=Bounded GPU scalping research (paper candidates only)
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=codex
+WorkingDirectory=/home/codex/workspace/cripto_staff
+ExecStart=/home/codex/workspace/cripto_staff/.venv/bin/python research_worker.py
+Environment=LD_LIBRARY_PATH=/opt/nvidia-driver
+Environment=PYTHONUNBUFFERED=1
+CPUQuota=200%
+MemoryMax=4G
+Nice=10
+TimeoutStartSec=2h
+UMask=0077
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/home/codex/workspace/cripto_staff/data /home/codex/workspace/cripto_staff/artifacts

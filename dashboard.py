@@ -33,10 +33,14 @@ def snapshot(symbol='BTCUSDT', hours=24):
         models = json.loads(models_path.read_text()) if models_path.exists() else {}
         comparison_path = agent.ARTIFACTS/'comparison.json'
         comparison = json.loads(comparison_path.read_text(encoding='utf-8')) if comparison_path.exists() else None
+        extra = {}
+        for key, filename in [('research_job','research_status.json'),('search_result','search_result.json'),('market_context','market_context.json')]:
+            path=agent.ARTIFACTS/filename
+            extra[key]=json.loads(path.read_text(encoding='utf-8')) if path.exists() else None
         return dict(now_ms=int(time.time()*1000), status=status, symbol=symbol, candles=candles,
                     equity=equity, signals=signal, events=events, counts=counts, comparison=comparison,
                     models={s: {k: m.get(k) for k in ('id', 'samples', 'training_device', 'trained_through_ms')}
-                            for s, m in models.items()})
+                            for s, m in models.items()}, **extra)
     finally:
         db.close()
 

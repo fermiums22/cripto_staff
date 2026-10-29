@@ -1,0 +1,8 @@
+[Unit]
+Description=Refresh market news every fifteen minutes
+[Timer]
+OnBootSec=2min
+OnUnitInactiveSec=15min
+Unit=cripto-context.service
+[Install]
+WantedBy=timers.target

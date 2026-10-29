@@ -1,0 +1,8 @@
+[Unit]
+Description=Daily GPU research at 03:15 Minsk
+[Timer]
+OnCalendar=*-*-* 00:15:00 UTC
+Persistent=true
+Unit=cripto-research.service
+[Install]
+WantedBy=timers.target
