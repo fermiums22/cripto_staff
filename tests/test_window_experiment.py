@@ -38,3 +38,17 @@ class WindowTests(unittest.TestCase):
         r=simulate(d,1)
         self.assertEqual(r['liquidations'],1)
         self.assertEqual(r['terminal_positions'],0)
+
+    def test_nested_requires_adverse_move_and_never_exceeds_window_cap(self):
+        settings=dict(mode='average',trigger=.003,multiplier=2)
+        flat=simulate(data(),1,nested=settings)
+        self.assertEqual(flat['entries'],1)
+        d=data()
+        for i,row in enumerate(d['trade']):
+            price=100*(1+min(i,70)*.001)
+            row[1:]=[price]*4;d['mark'][i][1:]=[price]*4
+        r=simulate(d,1,nested=settings)
+        self.assertGreater(r['entries'],1)
+        self.assertLessEqual(r['peak_windows'],4)
+        self.assertGreater(r['blocked_minutes'],0)
+        self.assertEqual(r['entries'],r['exits'])

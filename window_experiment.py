@@ -43,7 +43,7 @@ def equity(cash,positions,price,fee,friction):
         -p['qty']*price*(1-p['side']*friction)*fee for p in positions)
 
 
-def simulate(data,seed,fee=.001,spread=.0002,slip=.0005):
+def simulate(data,seed,fee=.001,spread=.0002,slip=.0005,nested=None):
     rng=random.Random(seed);cash=10.;anchor=10.;positions=[];curve=[]
     leverage=10;sl=.10;target=.001;margin_per_window=2.;maximum=4
     friction=spread/2+slip;lot=data['instrument']['lotSizeFilter'];step=float(lot['qtyStep'])
@@ -64,10 +64,17 @@ def simulate(data,seed,fee=.001,spread=.0002,slip=.0005):
             amount=-sum(p['side']*p['qty'] for p in positions)*mark[1]*funding[ts]
             cash+=amount;funding_cash+=amount
         # New windows use candle open; no future high/low/close informs entry.
-        if not insolvent and (not positions or ts-last_entry>=1800000):
-            side=rng.choice((-1,1)) if not positions else -last_side
+        add=not positions or ts-last_entry>=1800000
+        if nested and positions:
+            last=positions[-1]
+            adverse=-last['side']*(bar[1]/last['entry']-1)
+            add=(ts-last_entry>=300000 and adverse>=nested['trigger']
+                 and equity(cash,positions,bar[1],fee,friction)<anchor)
+        if not insolvent and add:
+            side=rng.choice((-1,1)) if not positions else (last_side if nested and nested['mode']=='average' else -last_side)
             fill=bar[1]*(1+side*friction)
-            qty=math.floor((margin_per_window*leverage/fill)/step)*step
+            budget=margin_per_window*(nested['multiplier']**len(positions) if nested else 1)
+            qty=math.floor((budget*leverage/fill)/step)*step
             value=qty*fill;margin=value/leverage
             free=min(cash,equity(cash,positions,mark[1],fee,friction))-sum(p['margin'] for p in positions)
             if len(positions)<maximum and qty>=float(lot['minOrderQty']) and value>=float(lot['minNotionalValue']) and free>=margin+2*value*fee:
