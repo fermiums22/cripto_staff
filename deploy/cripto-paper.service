@@ -1,0 +1,23 @@
+[Unit]
+Description=Bybit experimental spot paper agent (no real orders)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=codex
+WorkingDirectory=/home/codex/workspace/cripto_staff
+ExecStart=/home/codex/workspace/cripto_staff/.venv/bin/python agent.py run
+Environment=PYTHONUNBUFFERED=1
+Restart=on-failure
+RestartSec=15
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/home/codex/workspace/cripto_staff/data
+CPUQuota=150%
+MemoryMax=1500M
+
+[Install]
+WantedBy=multi-user.target
