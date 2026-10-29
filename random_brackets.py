@@ -18,7 +18,7 @@ def hit(bar,side,entry,tp,sl):
 
 
 def simulate(data,a,b,tp,sl,seed,friction=.0006):
-    rng=random.Random(seed);cash=10.;pos=None;fee=.001;fees=0.;fund=0.;trades=0;wins=0;held=[];curve=[];peak=10.;dd=0.;halt=False
+    rng=random.Random(seed);cash=10.;pos=None;fee=.001;fees=0.;fund=0.;trades=0;wins=0;win_sum=0.;loss_sum=0.;held=[];curve=[];peak=10.;dd=0.;halt=False
     lot=data['instrument']['lotSizeFilter'];step=float(lot['qtyStep']);mmr=float(data['risk']['maintenanceMargin'])
     rates={int(r['fundingRateTimestamp']):float(r['fundingRate']) for r in data['funding']}
     for i in range(a,b):
@@ -40,7 +40,9 @@ def simulate(data,a,b,tp,sl,seed,friction=.0006):
             if exit_:
                 fill=exit_[0]*(1-side*friction);commission=qty*fill*fee
                 gross=side*qty*(fill-pos['entry']);cash+=gross-commission;fees+=commission
-                wins+=gross-commission-pos['fee']+pos['fund']>0;trades+=1;held.append((ts+60000-pos['ts'])/60000)
+                net=gross-commission-pos['fee']+pos['fund']
+                wins+=net>0;win_sum+=max(0,net);loss_sum+=max(0,-net)
+                trades+=1;held.append((ts+60000-pos['ts'])/60000)
                 pos=None
                 if liquidated:cash=max(0,cash);halt=True
         value=cash
@@ -49,13 +51,20 @@ def simulate(data,a,b,tp,sl,seed,friction=.0006):
             value+=pos['side']*pos['qty']*(fill-pos['entry'])-pos['qty']*fill*fee
         peak=max(peak,value);dd=max(dd,100*(1-value/peak))
         if i%60==0 or i==b-1:curve.append([ts+60000,value])
-    return dict(return_pct=(cash/10-1)*100,end_equity=cash,trades=trades,wins=wins,fees=fees,funding=fund,
+    return dict(return_pct=(cash/10-1)*100,end_equity=cash,trades=trades,wins=wins,win_sum=win_sum,loss_sum=loss_sum,fees=fees,funding=fund,
         mean_hold_minutes=statistics.mean(held) if held else None,max_drawdown_pct=dd,curve=curve)
 
 
 def summary(runs):
+    total_trades=sum(r['trades'] for r in runs)
+    wins=sum(r['wins'] for r in runs);losses=total_trades-wins
+    avg_win=sum(r['win_sum'] for r in runs)/wins if wins else 0
+    avg_loss=sum(r['loss_sum'] for r in runs)/losses if losses else 0
     return dict(mean_pct=statistics.mean(r['return_pct'] for r in runs),worst_pct=min(r['return_pct'] for r in runs),
         best_pct=max(r['return_pct'] for r in runs),mean_trades=statistics.mean(r['trades'] for r in runs),
+        win_rate_pct=100*sum(r['wins'] for r in runs)/total_trades if total_trades else None,
+        mean_win_usdt=avg_win,mean_loss_usdt=avg_loss,
+        sample_break_even_pct=100*avg_loss/(avg_win+avg_loss) if avg_win+avg_loss else None,
         positive_seeds=sum(r['return_pct']>0 for r in runs),seeds=len(runs))
 
 
