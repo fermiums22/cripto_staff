@@ -15,9 +15,9 @@ Features: lagged returns, historical range, relative volume, candle range, UTC h
 Direction follows the previous five-minute change. Labels require TP before SL
 within 60 minutes and positive net proceeds; expired/unfilled maker orders label0.
 Training first4days, validation next1day, final evaluation last2days. Purge 64
-minutes at training boundary. Threshold .5/.65/.8 and amplitude filter on/off give
-24 candidates. Select only on validation with >=5 trades; freeze before final test.
-This history was inspected previously: the final period is not pristine holdout.
+minutes at training boundary. Threshold .2/.35/.5/.65/.8 and amplitude filter on/off give
+40 candidates. Select only on validation with >=5 trades; freeze before final test.
+Initial thresholds >=.5 had fewer than five validation trades; lower thresholds were added before computing any final-period results. This history was inspected previously: the final period is not pristine holdout.
 Probabilities are uncalibrated model scores, not guaranteed success frequencies.
 
 Maker approximation: limit at last close offset .01%, reject if crossing the

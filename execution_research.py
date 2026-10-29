@@ -108,7 +108,7 @@ def run():
             base=f'{mode}_{tp}_{sl}';models[base]=model
             indices=list(range(train,n));p=dict(zip(indices,agent.probabilities(model,[xs[i] for i in indices])))
             predictions[base]=p
-            for threshold in (.5,.65,.8):
+            for threshold in (.2,.35,.5,.65,.8):
                 for amplitude in (False,True):
                     key=f'{base}_{threshold}_{int(amplitude)}'
                     validation,_=backtest(data,p,train,cut,tp,sl,mode,threshold,amplitude,maker,taker)
