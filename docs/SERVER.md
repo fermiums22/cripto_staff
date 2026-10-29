@@ -153,3 +153,17 @@ on fresh quotes; outages can delay exits. Global `control.paused` blocks entries
 Common `events` include strategy identifiers and feed opted-in Telegram users.
 Dashboard refreshes every five seconds and compares net equity, closed trades,
 holding time and current state. Real trading remains disabled.
+
+## Read-only real execution audit
+
+`python fee_audit.py --symbol AAVEPERP` reads personal fee rates, orders,
+executions, positions, transaction ledger and public funding/quotes. USDC
+display names can differ from API symbols: AAVEUSDC is AAVEPERP. Resolve other
+symbols through instruments-info. Only allowlisted GET endpoints are supported.
+On the workstation use `--credentials crypto_cey`; never print credentials.
+Timestamped private reports go to ignored `artifacts/fee-audits/`. They cover
+the previous 24 hours and follow pagination; this command is not a monitor.
+Keep ledger funding separate from USDC session P&L. Execution fees and ledger
+fees may describe the same charge: do not add both. Positive ledger funding
+means received; positive ledger fee means paid. Empty records are not evidence
+of no charges if a request failed or the ledger is delayed. No orders are sent.
