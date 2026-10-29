@@ -93,7 +93,7 @@ function renderPortfolio(){
  const c=r.candidates.find(v=>v.name===select.value)||r.candidates[0],colors=['#55d5b3','#7ba8ff','#ffca77','#aaa'];
  const peers=r.candidates.filter(v=>(v.family===c.family&&v.leverage===c.leverage)||v.family==='cash');
  chart('portfolioChart',peers.map((v,i)=>({points:v.test.curve,color:colors[i%colors.length]})),{base:15});
- $('portfolioLegend').innerHTML=peers.map((v,i)=>`<span style="color:${colors[i%colors.length]}">${esc(v.name)}</span>`).join(' · ');
+ $('portfolioLegend').innerHTML=peers.map((v,i)=>`<span class="portfolio-series-${i%colors.length}">${esc(v.name)}</span>`).join(' · ');
  const periods=c.subperiods||[];$('portfolioPeriods').textContent='Три отдельные части теста, каждая стартует с $15: '+periods.map(v=>pct(v.return_pct)).join(' / ')+'. На основном графике капитал между днями не сбрасывается. Вероятность разорения не оценена.';
  const slider=$('portfolioTime'),a=c.test.allocations||[];slider.max=Math.max(0,a.length-1);if(slider.dataset.agent!==c.name){slider.value=slider.max;slider.dataset.agent=c.name;}
  const point=a[Number(slider.value)];$('portfolioAllocation').textContent=point?'История: '+date(point.ts)+' · свободно '+money(point.cash)+' USDT · капитал '+money(point.equity)+' USDT. Показаны последние 10 дней распределений.':'Открытых позиций в истории нет.';
