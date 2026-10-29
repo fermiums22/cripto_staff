@@ -17,3 +17,13 @@ class BacktestTests(unittest.TestCase):
         r=bt.simulate({'BTCUSDT':bars},{'BTCUSDT':[0,0,1]},lots,0)
         self.assertEqual(r['trades'],0)
         self.assertEqual(r['equity'],15)
+
+    def test_waiting_variant_has_no_timer_exit_and_accounts_for_terminal_loss(self):
+        bars=[[i*60000,100,100.01,99.99,100,1] for i in range(12)]
+        bars[-1]=[11*60000,100,100.01,99.5,99.5,1]
+        lots={'BTCUSDT':dict(basePrecision='.001',minOrderQty='.001',minOrderAmt='5')}
+        r=bt.simulate({'BTCUSDT':bars},{'BTCUSDT':[1]+[0]*11},lots,0,tp=.006,sl=.012,hold_seconds=None)
+        self.assertEqual(r['exits']['timeout'],0)
+        self.assertEqual(r['exits']['end'],1)
+        self.assertEqual(r['mean_hold_seconds'],660)
+        self.assertLess(r['equity'],15)

@@ -20,6 +20,9 @@ STRATEGIES = {
 }
 TP = .004
 SL = .002
+# Failed experiments remain visible; existing positions still receive exits.
+RETIRED = {'pressure60','momentum60','breakout90','rebound120','range90',
+           'leadlag180','breakout_cost_v2'}
 
 
 def setup(db):
@@ -132,6 +135,7 @@ def step(db, quotes, history, instruments, now):
             if state['position']:
                 state['reason']='position_open' if state['position']['symbol'] in fresh else 'stale_quote'
             elif paused:state['reason']='paused'
+            elif key in RETIRED:state['reason']='retired'
             elif not fresh:state['reason']='stale_quote'
             elif state['cash']<=12:state['reason']='loss_limit'
             elif now-state['last_closed_ms']<(30000 if key.endswith('_cost_v2') else 10000) or closed:state['reason']='cooldown'

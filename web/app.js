@@ -23,13 +23,19 @@ function chart(id,series,{base=null,markers=[]}={}){
  canvas.onmousemove=e=>{if(id!=='priceChart')return;let t=minT+(e.offsetX-left)/(w-left-right)*(maxT-minT);const points=valid[0].points;if(!points.length)return;const nearest=points.reduce((a,b)=>Math.abs(b[0]-t)<Math.abs(a[0]-t)?b:a);$('priceHint').textContent=date(nearest[0])+' · '+money(nearest[1])+' USDT';};
 }
 function render(){if(!current)return;const d=current,s=d.status,age=Math.max(0,Math.round((Date.now()-(s.heartbeat_ms||0))/1000));
+ const wr=d.waiting_research;
+ if(wr){const rows=Object.entries(wr.candidates),colors=['#55d5b3','#7ba8ff','#bd9bff','#ffca77','#ff8a91','#a7e887'];
+ $('waitingNote').textContent='Первые 20 дней — выбор; последние 10 — проверка. '+(wr.passes_screen?'Первичный фильтр пройден; live-прибыль не доказана.':'Кандидат не прошёл фильтр допуска.')+' Выбран по первым 20 дням: '+(wr.selected||'нет: мало сделок')+'. Spot long, без плеча. История ранее использовалась; это не нетронутый тест.';
+ $('waitingRows').innerHTML=rows.map(([k,r])=>`<tr><td>${esc(r.name)} · TP ${pct(r.tp*100)} / SL ${pct(r.sl*100)}</td><td>${pct(r.validation.return_pct)}</td><td>${pct(r.test.return_pct)}</td><td>${pct(r.stress.return_pct)}</td><td>${r.test.trades} / ${r.test.wins}</td><td>${r.test.mean_hold_seconds==null?'—':(r.test.mean_hold_seconds/60).toFixed(1)+' мин'}</td></tr>`).join('');
+ chart('waitingChart',rows.map(([k,r],i)=>({points:r.test.curve,color:colors[i]})),{base:15});
+ $('waitingLegend').textContent=rows.map(([k,r],i)=>['Зелёный','Синий','Фиолетовый','Жёлтый','Красный','Салатовый'][i]+' — '+r.name+' TP '+pct(r.tp*100)).join(' · ');}
  const bt=d.arena_backtest,bc=['#55d5b3','#7ba8ff','#ffca77'];
  if(bt){const rows=Object.entries(bt.results.base);$('arenaBacktestNote').textContent=date(bt.start_ms)+' — '+date(bt.end_ms)+' · Минутная оценка, не точный повтор live. Комиссия 0,1% и проскальзывание 0,05% за сторону; спред: база 0,02%, стресс 0,06%. Каждой стратегии $15, остановка при потере 20%. История уже использовалась в исследованиях.';
  $('arenaBacktestRows').innerHTML=rows.map(([k,r])=>`<tr><td>${esc(r.name)}</td><td>${pct(r.return_pct)}</td><td>${pct(bt.results.wide_spread[k].return_pct)}</td><td>${r.trades} / ${r.wins}</td><td>${pct(r.max_drawdown_pct)}</td><td>${r.loss_limit?'Лимит убытка':'Период завершён'}</td></tr>`).join('');
  chart('arenaBacktestChart',rows.map(([k,r],i)=>({points:r.curve,color:bc[i]})),{base:15});
  $('arenaBacktestLegend').textContent=rows.map(([k,r],i)=>['Зелёный','Синий','Жёлтый'][i]+' — '+r.name).join(' · ');}
  const arena=d.arena||[],as=d.arena_status,arenaColors=['#55d5b3','#7ba8ff','#bd9bff','#ffca77','#ff8a91','#a7e887','#ffffff','#ff8c42','#41d9ef'];
- const arenaReasons={waiting_signal:'Ждёт сигнал',waiting_cost_signal:'Ждёт сильное движение · фильтр издержек',stale_quote:'Нет свежей цены',loss_limit:'Лимит убытка',cooldown:'Пауза между входами',minimum_order:'Минимальный ордер',insufficient_top_liquidity:'Недостаточная ликвидность',warmup:'Сбор котировок',paused:'Пауза'};
+ const arenaReasons={retired:'Отключён: не прошёл проверку',waiting_signal:'Ждёт сигнал',waiting_cost_signal:'Ждёт сильное движение · фильтр издержек',stale_quote:'Нет свежей цены',loss_limit:'Лимит убытка',cooldown:'Пауза между входами',minimum_order:'Минимальный ордер',insufficient_top_liquidity:'Недостаточная ликвидность',warmup:'Сбор котировок',paused:'Пауза'};
  $('arenaHealth').textContent=as?'Цикл '+Math.max(0,Math.round((Date.now()-as.heartbeat_ms)/1000))+' с назад'+(as.last_error?' · ошибка '+as.last_error:''):'Ожидаем первый цикл';
  $('arenaRows').innerHTML=arena.map((a,i)=>`<tr><td>${esc(a.name)}</td><td>${money(a.equity)}</td><td class="${a.equity<15?'negative':'positive'}">${money(a.equity-15)}</td><td>${a.trades}</td><td>${a.trades?(a.holding_seconds/a.trades).toFixed(0)+' с':'—'}</td><td>${a.position?esc(a.position.symbol)+' · '+Math.max(0,Math.round((Date.now()-a.position.opened_ms)/1000))+' с':esc(arenaReasons[a.reason]||a.reason)}</td></tr>`).join('');
  chart('arenaChart',arena.map((a,i)=>({points:a.curve||[],color:arenaColors[i%arenaColors.length]})),{base:15});

@@ -10,9 +10,9 @@ import paper_arena as arena
 KEYS = ('leadlag_cost_v2', 'breakout_cost_v2', 'rebound_cost_v2')
 
 
-def exit_hit(bar, entry, spread):
+def exit_hit(bar, entry, spread, tp=arena.TP, sl=arena.SL):
     # OHLC path unknown: adverse stop wins if both levels were touched.
-    stop=entry*(1-arena.SL);take=entry*(1+arena.TP)
+    stop=entry*(1-sl);take=entry*(1+tp)
     bid=lambda p:p*(1-spread/2)
     if bid(bar[1])<=stop:return bid(bar[1]),'stop'
     if bid(bar[1])>=take:return bid(bar[1]),'take'
@@ -21,7 +21,7 @@ def exit_hit(bar, entry, spread):
     return None
 
 
-def simulate(market, scores, lots, spread):
+def simulate(market, scores, lots, spread, tp=arena.TP, sl=arena.SL, hold_seconds=180):
     symbols=list(market);n=len(market[symbols[0]])
     cash=15.;pos=None;trades=[];curve=[];last_exit=-10**15;peak=15.;drawdown=0.
     for i in range(n):
@@ -35,14 +35,14 @@ def simulate(market, scores, lots, spread):
                     entry=ask*(1+agent.SLIP);cost=qty*entry*(1+agent.FEE)
                     cash-=cost;pos=dict(symbol=s,entry=entry,qty=qty,cost=cost,ts=ts)
         if pos:
-            bar=market[pos['symbol']][i];hit=exit_hit(bar,pos['entry'],spread)
-            if not hit and (ts+60000-pos['ts']>=180000 or i==n-1):
+            bar=market[pos['symbol']][i];hit=exit_hit(bar,pos['entry'],spread,tp,sl)
+            if not hit and ((hold_seconds is not None and ts+60000-pos['ts']>=hold_seconds*1000) or i==n-1):
                 hit=(bar[4]*(1-spread/2),'end' if i==n-1 else 'timeout')
             if hit:
                 price=hit[0]*(1-agent.SLIP);proceeds=pos['qty']*price*(1-agent.FEE)
                 cash+=proceeds
                 trades.append(dict(pnl=proceeds-pos['cost'],reason=hit[1],
-                    fees=agent.FEE*pos['qty']*(pos['entry']+price)))
+                    fees=agent.FEE*pos['qty']*(pos['entry']+price),hold_seconds=(ts+60000-pos['ts'])/1000))
                 # Conservative cooldown from candle end: exact intrabar exit time unknown.
                 last_exit=ts+60000;pos=None
         equity=cash+(pos['qty']*market[pos['symbol']][i][4]*(1-spread/2)*(1-agent.SLIP)*(1-agent.FEE) if pos else 0)
@@ -51,6 +51,7 @@ def simulate(market, scores, lots, spread):
     return dict(equity=equity,return_pct=(equity/15-1)*100,trades=len(trades),
         wins=sum(t['pnl']>0 for t in trades),fees=sum(t['fees'] for t in trades),
         max_drawdown_pct=drawdown,loss_limit=cash<=12,curve=curve,
+        mean_hold_seconds=sum(t['hold_seconds'] for t in trades)/len(trades) if trades else None,
         exits={r:sum(t['reason']==r for t in trades) for r in ('stop','take','timeout','end')})
 
 

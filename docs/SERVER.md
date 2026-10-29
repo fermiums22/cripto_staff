@@ -186,3 +186,12 @@ Assumed full spreads: 0.02% base, 0.06% stress; fee/slippage remain spot assumpt
 No tuning or auto promotion; history was already inspected in earlier research.
 Historical curves are separate from persistent live accounts. Run as codex with
 the project Python; no GPU or new downloads are required except current lot rules.
+
+`waiting_research.py` evaluates six fixed spot-long variants: dip, dip with volume,
+dip with volume and BTC regime; TP .6%/1%, SL twice TP. No time exit, but positions
+are liquidated at each evaluation boundary and included in PnL. First 20 days
+select (minimum 20 trades), last 10 evaluate plus wider-spread stress. Previously
+examined history is not pristine holdout. No automatic promotion or short/leverage.
+Output artifacts/waiting_research.json appears separately on the dashboard.
+The six original arena variants and breakout_cost_v2 are retired: no new entries,
+existing positions still exit normally, all balances and event histories retained.

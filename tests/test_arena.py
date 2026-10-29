@@ -13,6 +13,7 @@ class ArenaTests(unittest.TestCase):
     def setUp(self):
         self.tmp=tempfile.TemporaryDirectory();self.patch=patch.object(agent,'DATA',Path(self.tmp.name));self.patch.start()
         self.db=agent.connect();arena.setup(self.db);self.now=1800000000000
+        self.retired=patch.object(arena,'RETIRED',set());self.retired.start();self.addCleanup(self.retired.stop)
         self.quotes={s:dict(ts=self.now,bid=100.,ask=100.01,bid_size=100,ask_size=10) for s in agent.SYMBOLS}
         self.history={s:[] for s in agent.SYMBOLS}
         self.instruments={s:dict(status='Trading',lotSizeFilter={'basePrecision':'.001','minOrderQty':'.001','minOrderAmt':'5'}) for s in agent.SYMBOLS}
@@ -32,6 +33,16 @@ class ArenaTests(unittest.TestCase):
         arena.setup(self.db);self.step()
         self.assertEqual(self.db.execute("SELECT count(*) FROM events WHERE kind='paper_entry'").fetchone()[0],1)
         self.assertEqual(self.state()['cash'],first['cash'])
+
+    def test_retired_rule_exits_existing_position_without_reentry(self):
+        self.step()
+        with patch.object(arena,'RETIRED',{'pressure60'}):
+            self.now+=61000
+            for q in self.quotes.values():q['ts']=self.now
+            self.step()
+            self.assertEqual(self.state()['trades'],1)
+            self.assertIsNone(self.state()['position'])
+            self.assertEqual(self.state()['reason'],'retired')
 
     def test_pause_keeps_timeout_exit_and_net_fees(self):
         self.step();tg.set_paused(self.db,True)
