@@ -142,3 +142,14 @@ Telegram notification preferences: SQLite `subscriptions`. Delivery attempts:
 `deliveries` with sent/unknown/sending state. Only allowlisted recipients receive
 notifications, and each opts in independently. Do not reset cursors to replay old
 trades or generate fake live events for testing.
+
+## Fast parallel paper strategies
+
+`cripto-arena.service` runs `paper_arena.py` as codex, polling quotes about every
+five seconds. Six independent $15 accounts persist in `arena_accounts`, with
+curves in `arena_equity` and heartbeat in `state.arena_status`. Do not reset them
+to conceal losses. Each position has a 60–180 second time limit, checked only
+on fresh quotes; outages can delay exits. Global `control.paused` blocks entries.
+Common `events` include strategy identifiers and feed opted-in Telegram users.
+Dashboard refreshes every five seconds and compares net equity, closed trades,
+holding time and current state. Real trading remains disabled.

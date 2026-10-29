@@ -146,7 +146,7 @@ orders and duplicate prevention across reconnects.
 
 Historical simulation is approximate: it has fixed slippage but no historical
 spread, liquidity constraints or historical lot-size rules; each symbol's test
-uses a separate $15 account. The live sandbox uses one shared $15 portfolio.
+uses a separate $15 account. The baseline live sandbox uses one shared $15 portfolio.
 Live stops are checked every 30 seconds and can be crossed during outages.
 Stale data prevents new signals; missed signals are not filled retroactively.
 
@@ -158,3 +158,19 @@ explicit, not an automatic replacement of the running model.
 Data contracts: [Bybit candles](https://bybit-exchange.github.io/docs/v5/market/kline),
 [instrument rules](https://bybit-exchange.github.io/docs/v5/market/instrument).
 GPU algorithm: [XGBoost documentation](https://xgboost.readthedocs.io/en/stable/gpu/).
+
+## Fast live paper comparison
+
+`paper_arena.py` runs six experimental spot rules independently: best-price size
+imbalance, momentum, breakout, rebound, mean reversion and BTC lead/lag. Each has
+its own persistent virtual $15 account. Quotes are polled approximately every
+five seconds; positions exit on TP/SL or after 60–180 seconds when a fresh quote
+is available. Network delays can extend holding time; this is not HFT.
+
+Dashboard comparison and Telegram trade notifications identify each strategy.
+Global pause blocks new entries in both the arena and baseline. Existing
+positions keep being managed. Each account stops entering at $12 cash or less.
+Trades include observed spread, assumed 0.1% fee and 0.05% slippage per side.
+Entry checks best-ask size; fills and exit depth are still simulated. These are
+unvalidated experiments, not profitable models. No private/order API is used.
+Market contract: [Bybit tickers](https://bybit-exchange.github.io/docs/v5/market/tickers).

@@ -25,6 +25,14 @@ def snapshot(symbol='BTCUSDT', hours=24):
         signal = db.execute('SELECT ts,probability FROM signals WHERE symbol=? AND ts>=? ORDER BY ts',
                             (symbol, since)).fetchall()
         tables = {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        arena=[];arena_status=None
+        if 'arena_accounts' in tables:
+            arena=[dict(id=key,**json.loads(payload)) for key,payload in db.execute('SELECT id,payload FROM arena_accounts ORDER BY id')]
+            row=db.execute("SELECT value FROM state WHERE key='arena_status'").fetchone()
+            arena_status=json.loads(row[0]) if row else None
+            for account in arena:
+                points=db.execute('SELECT ts,value FROM arena_equity WHERE strategy=? AND ts>=? ORDER BY ts', (account['id'],since)).fetchall()
+                account['curve']=points[::max(1,len(points)//600)]+points[-1:]
         equity = db.execute('SELECT ts,value FROM equity WHERE ts>=? ORDER BY ts', (since,)).fetchall() if 'equity' in tables else []
         events = [{'ts': t, 'kind': k, **json.loads(p)} for t, k, p in db.execute(
             'SELECT ts,kind,payload FROM events ORDER BY id DESC LIMIT 100')]
@@ -39,6 +47,7 @@ def snapshot(symbol='BTCUSDT', hours=24):
             extra[key]=json.loads(path.read_text(encoding='utf-8')) if path.exists() else None
         return dict(now_ms=int(time.time()*1000), status=status, symbol=symbol, candles=candles,
                     equity=equity, signals=signal, events=events, counts=counts, comparison=comparison,
+                    arena=arena,arena_status=arena_status,
                     models={s: {k: m.get(k) for k in ('id', 'samples', 'training_device', 'trained_through_ms')}
                             for s, m in models.items()}, **extra)
     finally:
@@ -57,10 +66,15 @@ def graph_png():
     axes[0].plot(dates(candles), [b[4] for b in candles], color='#008f85')
     axes[0].set_title('BTCUSDT | real Bybit spot, 5 min | UTC')
     equity = data['equity']
-    if equity:
+    if data.get('arena'):
+        for account in data['arena']:
+            points=account['curve']
+            if points:axes[1].plot(dates(points),[p[1] for p in points],label=account['name'])
+        axes[1].legend(fontsize=7,loc='best')
+    elif equity:
         axes[1].plot(dates(equity), [p[1] for p in equity], color='#437df5', marker='.' if len(equity)==1 else None)
     axes[1].axhline(15, color='gray', linestyle='--', linewidth=0.8)
-    axes[1].set_title('Live PAPER equity (USDT) | not real money')
+    axes[1].set_title('Live PAPER comparison (USDT) | independent $15 accounts')
     for ax in axes:
         ax.grid(alpha=0.2)
     output = io.BytesIO()

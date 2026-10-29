@@ -1,0 +1,18 @@
+[Unit]
+Description=Parallel short-horizon paper strategies (no real orders)
+After=network-online.target
+[Service]
+User=codex
+WorkingDirectory=/home/codex/workspace/cripto_staff
+ExecStart=/home/codex/workspace/cripto_staff/.venv/bin/python paper_arena.py
+Restart=on-failure
+RestartSec=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/home/codex/workspace/cripto_staff/data
+MemoryMax=256M
+CPUQuota=100%
+UMask=0077
+[Install]
+WantedBy=multi-user.target

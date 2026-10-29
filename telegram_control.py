@@ -58,12 +58,13 @@ def subscribe(db, user_id, enabled):
 
 def trade_text(kind, payload):
     p = json.loads(payload)
+    strategy='\nСтратегия: '+p.get('strategy_name','Базовая ML-модель')
     if kind == 'paper_entry':
-        return (f"ВИРТУАЛЬНЫЙ ВХОД · {p['symbol']}\nЦена: {p['entry']:.6f}"
+        return (f"ВИРТУАЛЬНЫЙ ВХОД · {p['symbol']}"+strategy+f"\nЦена: {p['entry']:.6f}"
                 f"\nОбъём: {p['qty']:.8f}\nЗатрачено с комиссией: {p['cost']:.4f} USDT")
     pct = p['pnl_usdt']/p['cost']*100 if p['cost'] else 0
     reason = {'take': 'Take Profit', 'stop': 'Stop Loss', 'timeout': 'Лимит времени'}.get(p['reason'], p['reason'])
-    return (f"ВИРТУАЛЬНЫЙ ВЫХОД · {p['symbol']}\nПричина: {reason}"
+    return (f"ВИРТУАЛЬНЫЙ ВЫХОД · {p['symbol']}"+strategy+f"\nПричина: {reason}"
             f"\nЧистый результат: {p['pnl_usdt']:+.4f} USDT ({pct:+.2f}%)"
             '\nКомиссии и проскальзывание учтены. Это не реальные деньги.')
 
@@ -126,6 +127,9 @@ def status_text():
     state = data['status']
     age = max(0, (data['now_ms']-state.get('heartbeat_ms', 0))//1000)
     pos = state.get('portfolio', {}).get('position')
+    arena=data.get('arena',[])
+    arena_text='\n\nБыстрые стратегии (каждой выделено $15):'+''.join(
+        f"\n{a['name']}: {a['equity']-15:+.4f} USDT, закрыто {a['trades']}" for a in arena) if arena else ''
     return ('Только виртуальные сделки\n'
             + ('ПАУЗА новых входов' if state.get('paused') else 'Новые входы разрешены')
             + f"\nПоследний цикл: {age} с назад"
@@ -134,7 +138,7 @@ def status_text():
             + f"\nПозиция: {pos['symbol'] if pos else 'нет'}"
             + ('\nВНИМАНИЕ: цикл устарел' if age > 120 else '')
             + ('\nОшибка получения данных' if state.get('last_error') else '')
-            + '\nПанель дома/VPN: http://192.168.0.8:8765')
+            + arena_text+'\nПанель дома/VPN: http://192.168.0.8:8765')
 
 
 def main():
@@ -146,7 +150,7 @@ def main():
             try:
                 row = db.execute("SELECT value FROM state WHERE key='telegram_offset'").fetchone()
                 offset = int(row[0]) if row else 0
-                updates = call(token, 'getUpdates', {'offset': offset, 'timeout': 10, 'allowed_updates': ['message']})
+                updates = call(token, 'getUpdates', {'offset': offset, 'timeout': 3, 'allowed_updates': ['message']})
                 for update in updates:
                     message = update.get('message', {})
                     access = json.loads(ACCESS_FILE.read_text()) if ACCESS_FILE.exists() else {'user_ids': []}
