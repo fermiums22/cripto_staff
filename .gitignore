@@ -1,0 +1,12 @@
+/codex-home.key
+/work-pc-to-codex-home_ed25519
+/work-pc-to-codex-home_ed25519.*
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.pyc
+/data/
+/artifacts/
+/secrets/
