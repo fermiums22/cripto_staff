@@ -12,3 +12,7 @@ __pycache__/
 /secrets/
 /crypto_cey
 /crypto_cey.*
+/telegram_token
+/telegram_token.*
+/telega_bot
+/telega_bot.*

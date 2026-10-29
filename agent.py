@@ -57,6 +57,8 @@ def connect():
         PRIMARY KEY(symbol,ts));
       CREATE TABLE IF NOT EXISTS events (
         id INTEGER PRIMARY KEY, ts INTEGER, kind TEXT, payload TEXT);
+      CREATE TABLE IF NOT EXISTS equity (
+        ts INTEGER PRIMARY KEY, value REAL, cash REAL, symbol TEXT);
     ''')
     with db:
         db.execute("INSERT OR IGNORE INTO state VALUES ('portfolio', ?)",
@@ -156,8 +158,9 @@ def exit_price(bar, entry, age):
     return None
 
 
-def backtest(bars, predictions, start, end):
+def backtest(bars, predictions, start, end, trace=False):
     cash, position, trades, peak, drawdown = 15.0, None, 0, 15.0, 0.0
+    curve, executions = [], []
     for i in range(start, end):
         bar = bars[i]
         if position is None and predictions.get(i-1, 0) >= THRESHOLD:
@@ -166,19 +169,30 @@ def backtest(bars, predictions, start, end):
             qty = budget / (entry * (1+FEE))
             cash -= budget
             position = (entry, qty, i)
+            if trace:
+                executions.append({'ts': bar[0], 'kind': 'entry', 'price': entry})
         if position:
             entry, qty, opened = position
             hit = exit_price(bar, entry, i-opened+1)
             if hit or i == end-1:
                 price = (hit[0] if hit else bar[4]) * (1-SLIP)
                 cash += qty * price * (1-FEE)
+                if trace:
+                    executions.append({'ts': bar[0]+BAR_MS, 'kind': 'exit', 'price': price,
+                                       'reason': hit[1] if hit else 'end_of_test',
+                                       'pnl': qty*(price*(1-FEE)-entry*(1+FEE))})
                 position = None
                 trades += 1
         equity = cash + (position[1] * bar[4] * (1-SLIP) * (1-FEE) if position else 0)
         peak = max(peak, equity)
         drawdown = max(drawdown, 1-equity/peak)
-    return {'end_usdt': cash, 'return_pct': (cash/15-1)*100,
-            'trades': trades, 'max_drawdown_pct': drawdown*100}
+        if trace:
+            curve.append([bar[0]+BAR_MS, equity])
+    result = {'end_usdt': cash, 'return_pct': (cash/15-1)*100,
+              'trades': trades, 'max_drawdown_pct': drawdown*100}
+    if trace:
+        result.update(curve=curve, executions=executions)
+    return result
 
 
 def fit_model(xs, ys):
@@ -268,7 +282,7 @@ def event(db, now, kind, payload):
 
 
 def cycle(db, models, instruments):
-    quotes, signals, newest = {}, [], {}
+    quotes, signals, newest, decisions = {}, [], {}, {}
     for symbol in SYMBOLS:
         collect(db, symbol)
         bars = read_bars(db, symbol)
@@ -284,10 +298,19 @@ def cycle(db, models, instruments):
         last = bars[-1]
         newest[symbol] = last[0]
         x = features(bars, len(bars)-1)
-        if x is not None and 0 <= now-(last[0]+BAR_MS) < 120000:
-            signals.append((symbol, last[0], probability(models[symbol], x), models[symbol]['id']))
+        prob = probability(models[symbol], x) if x is not None else None
+        fresh = 0 <= now-(last[0]+BAR_MS) < 120000
+        decisions[symbol] = dict(probability=prob, threshold=THRESHOLD,
+                                 candle_ms=last[0], bid=bid, ask=ask,
+                                 reason='data_gap' if x is None else 'stale_signal' if not fresh else
+                                 'below_threshold' if prob < THRESHOLD else 'eligible')
+        if x is not None and fresh:
+            signals.append((symbol, last[0], prob, models[symbol]['id']))
     # All simulated accounting and the processed-signal watermark commit together.
     with db:
+        db.execute('BEGIN IMMEDIATE')
+        control = db.execute("SELECT value FROM state WHERE key='control'").fetchone()
+        paused = json.loads(control[0]).get('paused', False) if control else False
         portfolio = json.loads(db.execute("SELECT value FROM state WHERE key='portfolio'").fetchone()[0])
         pos = portfolio['position']
         if pos:
@@ -304,13 +327,22 @@ def cycle(db, models, instruments):
         for symbol, ts, prob, model_id in sorted(signals, key=lambda s: s[2], reverse=True):
             inserted = db.execute('INSERT OR IGNORE INTO signals VALUES (?,?,?,?)',
                                   (symbol, ts, prob, model_id)).rowcount
-            if not inserted or portfolio['position'] or prob < THRESHOLD:
+            if paused:
+                decisions[symbol]['reason'] = 'paused'
+                continue
+            if portfolio['position']:
+                decisions[symbol]['reason'] = 'position_open'
+                continue
+            if not inserted or prob < THRESHOLD:
+                if not inserted and prob >= THRESHOLD:
+                    decisions[symbol]['reason'] = 'already_processed'
                 continue
             _, ask, now = quotes[symbol]
             if int(time.time()*1000)-now > 15000:
                 continue
             qty = order_quantity(portfolio['cash'], ask, instruments[symbol]['lotSizeFilter'])
             if qty <= 0:
+                decisions[symbol]['reason'] = 'minimum_order'
                 event(db, now, 'skip_minimum_order', {'symbol': symbol})
                 continue
             entry = ask*(1+SLIP)
@@ -319,12 +351,16 @@ def cycle(db, models, instruments):
             portfolio['position'] = dict(symbol=symbol, qty=qty, entry=entry, cost=cost,
                                          opened_ms=now, probability=prob, model_id=model_id)
             event(db, now, 'paper_entry', portfolio['position'])
+            decisions[symbol]['reason'] = 'paper_entry'
         db.execute("UPDATE state SET value=? WHERE key='portfolio'", (json.dumps(portfolio),))
         pos = portfolio['position']
         equity = portfolio['cash'] + (pos['qty']*quotes[pos['symbol']][0]*(1-SLIP)*(1-FEE) if pos else 0)
         snapshot = dict(mode='experimental_spot_paper', heartbeat_ms=int(time.time()*1000),
                         equity_usdt=equity, pnl_usdt=equity-15, portfolio=portfolio,
-                        latest_candles_ms=newest, signals=signals, last_error=None)
+                        latest_candles_ms=newest, signals=signals, last_error=None,
+                        paused=paused, decisions=decisions)
+        db.execute('INSERT OR REPLACE INTO equity VALUES (?,?,?,?)',
+                   (snapshot['heartbeat_ms'], equity, portfolio['cash'], pos['symbol'] if pos else None))
         db.execute("INSERT OR REPLACE INTO state VALUES ('status',?)", (json.dumps(snapshot),))
     logging.info('heartbeat equity=%.6f position=%s signals=%s', equity,
                  pos['symbol'] if pos else 'none', [(s[0], round(s[2], 3)) for s in signals])

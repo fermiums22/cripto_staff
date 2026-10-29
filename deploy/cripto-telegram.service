@@ -1,0 +1,20 @@
+[Unit]
+Description=Allowlisted Telegram paper trading controls
+After=network-online.target cripto-paper.service
+
+[Service]
+User=codex
+WorkingDirectory=/home/codex/workspace/cripto_staff
+ExecStart=/home/codex/workspace/cripto_staff/.venv/bin/python telegram_control.py
+Restart=on-failure
+RestartSec=10
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/home/codex/workspace/cripto_staff/data
+Environment=MPLCONFIGDIR=/tmp/cripto-matplotlib
+MemoryMax=512M
+
+[Install]
+WantedBy=multi-user.target

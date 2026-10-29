@@ -1,0 +1,44 @@
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const date=t=>new Intl.DateTimeFormat('ru',{timeZone:'Europe/Minsk',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(t));
+const money=n=>Number(n).toLocaleString('ru',{minimumFractionDigits:2,maximumFractionDigits:4});
+const pct=n=>(n>0?'+':'')+Number(n).toFixed(2)+'%';
+const reasons={below_threshold:'Оценка ниже порога — ждём',stale_signal:'Ждём следующую закрытую свечу',data_gap:'Пропуск данных — вход запрещён',paused:'Пауза новых входов',position_open:'Уже есть открытая позиция',already_processed:'Эта свеча уже обработана',minimum_order:'Недостаточно суммы для минимального ордера',paper_entry:'Открыта виртуальная позиция',eligible:'Сигнал проверяется'};
+let current=null, busy=false;
+function chart(id,series,{base=null,markers=[]}={}){
+ const canvas=$(id),dpr=window.devicePixelRatio||1,w=canvas.clientWidth,h=canvas.clientHeight;
+ canvas.width=w*dpr;canvas.height=h*dpr;const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);
+ const valid=series.map(s=>({...s,points:s.points.filter(p=>Number.isFinite(p[0])&&Number.isFinite(p[1]))}));
+ const all=valid.flatMap(s=>s.points);ctx.font='11px system-ui';ctx.fillStyle='#94a6bb';
+ if(!all.length){ctx.fillText('Пока нет наблюдений за выбранный период',20,60);canvas.onmousemove=null;return;}
+ let minT=Math.min(...all.map(p=>p[0])),maxT=Math.max(...all.map(p=>p[0]));if(maxT===minT)maxT+=60000;
+ let min=Math.min(...all.map(p=>p[1]),...(base===null?[]:[base])),max=Math.max(...all.map(p=>p[1]),...(base===null?[]:[base]));
+ let pad=(max-min)*.12||Math.max(Math.abs(min)*.001,.01);min-=pad;max+=pad;
+ const left=68,right=12,top=12,bottom=32,x=t=>left+(t-minT)/(maxT-minT)*(w-left-right),y=v=>top+(max-v)/(max-min)*(h-top-bottom);
+ ctx.lineWidth=1;for(let i=0;i<5;i++){let v=min+(max-min)*i/4;ctx.strokeStyle='#263344';ctx.beginPath();ctx.moveTo(left,y(v));ctx.lineTo(w-right,y(v));ctx.stroke();ctx.fillStyle='#94a6bb';ctx.fillText(money(v),2,y(v)+4);}
+ ctx.fillText(date(minT),left,h-8);ctx.textAlign='right';ctx.fillText(date(maxT),w-right,h-8);ctx.textAlign='left';
+ if(base!==null){ctx.setLineDash([4,4]);ctx.strokeStyle='#94a6bb';ctx.beginPath();ctx.moveTo(left,y(base));ctx.lineTo(w-right,y(base));ctx.stroke();ctx.setLineDash([]);}
+ for(const s of valid){ctx.strokeStyle=s.color;ctx.lineWidth=2;ctx.beginPath();s.points.forEach((p,i)=>i?ctx.lineTo(x(p[0]),y(p[1])):ctx.moveTo(x(p[0]),y(p[1])));ctx.stroke();if(s.points.length===1){ctx.fillStyle=s.color;ctx.beginPath();ctx.arc(x(s.points[0][0]),y(s.points[0][1]),3,0,7);ctx.fill();}}
+ for(const m of markers){if(m.ts<minT||m.ts>maxT)continue;ctx.fillStyle=m.kind==='paper_entry'?'#55d5b3':'#ff8a91';ctx.beginPath();ctx.arc(x(m.ts),y(m.price),4,0,7);ctx.fill();}
+ canvas.onmousemove=e=>{if(id!=='priceChart')return;let t=minT+(e.offsetX-left)/(w-left-right)*(maxT-minT);const points=valid[0].points;if(!points.length)return;const nearest=points.reduce((a,b)=>Math.abs(b[0]-t)<Math.abs(a[0]-t)?b:a);$('priceHint').textContent=date(nearest[0])+' · '+money(nearest[1])+' USDT';};
+}
+function render(){if(!current)return;const d=current,s=d.status,age=Math.max(0,Math.round((Date.now()-(s.heartbeat_ms||0))/1000));
+ $('health').textContent=age>120?'● Нет свежего цикла':s.paused?'● Пауза новых входов':'● Бот работает · проверяет рынок';$('updated').textContent='Цикл '+age+' с назад';
+ $('equity').textContent=money(s.equity_usdt??15)+' USDT';$('pnl').textContent=(s.pnl_usdt>0?'+':'')+money(s.pnl_usdt??0)+' USDT';$('pnl').className=s.pnl_usdt<0?'negative':'positive';
+ $('position').textContent=s.portfolio?.position?.symbol||'Нет позиции';$('bars').textContent=Object.values(d.counts).reduce((a,b)=>a+b,0).toLocaleString('ru');
+ $('error').hidden=!s.last_error;if(s.last_error)$('error').textContent='Ошибка цикла: '+s.last_error;
+ $('decisions').innerHTML=Object.entries(d.models).map(([symbol,m])=>{const q=s.decisions?.[symbol],p=q?.probability;return `<article><h3>${esc(symbol)}<span>${p==null?'—':(p*100).toFixed(1)+'%'}</span></h3><progress max="1" value="${p??0}"></progress><p>${esc(s.paused?'Пауза новых входов':reasons[q?.reason]||'Ожидаем диагностику')} · порог 60%</p></article>`}).join('');
+ const marks=d.events.filter(e=>e.symbol===d.symbol&&['paper_entry','paper_exit'].includes(e.kind)).map(e=>({...e,price:e.kind==='paper_entry'?e.entry:e.proceeds/(e.qty*(1-.001))}));
+ chart('priceChart',[{points:d.candles.map(b=>[b[0]+300000,b[4]]),color:'#55d5b3'}],{markers:marks});
+ chart('equityChart',[{points:d.equity,color:'#7ba8ff'}],{base:15});
+ const c=d.comparison;
+ if(c){$('strategies').innerHTML=Object.entries(c.strategies).map(([id,r])=>`<tr><td>${esc(r.name)}${id===c.selected_on_validation?' · кандидат':''}</td><td class="${r.validation_mean_pct<0?'negative':'positive'}">${pct(r.validation_mean_pct)}</td><td class="${r.test_mean_pct<0?'negative':'positive'}">${pct(r.test_mean_pct)}</td><td>${r.test_trades}</td></tr>`).join('');
+ const prev=$('strategy').value;$('strategy').innerHTML=Object.entries(c.strategies).map(([id,r])=>`<option value="${esc(id)}">${esc(r.name)}</option>`).join('');if(c.strategies[prev])$('strategy').value=prev;
+ const chosen=c.strategies[c.selected_on_validation];$('researchNote').textContent='Тест: '+date(c.test_start_ms)+' — '+date(c.test_end_ms)+'. Средние результаты по трём монетам. '+(chosen.passes_initial_screen?'Кандидат прошёл первичный численный фильтр; нужны дальнейшие проверки.':'Доходность не подтверждена: кандидат не прошёл первичный фильтр.');renderResearch();
+ }else{$('strategies').innerHTML='<tr><td colspan="4">Исследование запускается…</td></tr>';}
+ const names={paper_entry:'Вход',paper_exit:'Выход',error:'Ошибка',skip_minimum_order:'Минимальный ордер'};
+ $('events').innerHTML=d.events.length?d.events.map(e=>`<tr><td>${date(e.ts)}</td><td>${esc(names[e.kind]||e.kind)}</td><td>${esc(e.symbol||'—')}</td><td>${e.pnl_usdt!=null?money(e.pnl_usdt)+' USDT':esc(e.reason||'—')}</td></tr>`).join(''):'<tr><td colspan="4">Сделок ещё нет. Бот ждёт подходящего сигнала; принудительные входы не создаются.</td></tr>';
+}
+function renderResearch(){const c=current?.comparison,r=c?.strategies[$('strategy').value]?.symbols[$('symbol').value]?.test;$('curveTitle').textContent='Тест стратегии · '+$('symbol').value;chart('researchChart',[{points:r?.curve||[],color:'#bd9bff'}],{base:15});}
+async function refresh(){if(busy)return;busy=true;try{const response=await fetch('/api/snapshot?'+new URLSearchParams({symbol:$('symbol').value,hours:$('hours').value}),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);current=await response.json();render();}catch(e){$('error').hidden=false;$('error').textContent='Панель не получает данные: '+e.message;$('health').textContent='● Соединение потеряно';}finally{busy=false;}}
+$('symbol').onchange=refresh;$('hours').onchange=refresh;$('strategy').onchange=renderResearch;window.addEventListener('resize',render);refresh();setInterval(refresh,15000);
