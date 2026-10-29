@@ -1,0 +1,21 @@
+[Unit]
+Description=Public Bybit market research recorder (no orders)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=codex
+WorkingDirectory=/home/codex/workspace/cripto_staff
+ExecStart=/home/codex/workspace/cripto_staff/.venv/bin/python -u portfolio_stream.py
+Restart=on-failure
+RestartSec=15
+CPUQuota=50%
+MemoryMax=256M
+Nice=15
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/home/codex/workspace/cripto_staff/data /home/codex/workspace/cripto_staff/artifacts
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

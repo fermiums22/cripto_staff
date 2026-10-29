@@ -23,6 +23,7 @@ function chart(id,series,{base=null,markers=[]}={}){
  canvas.onmousemove=e=>{if(id!=='priceChart')return;let t=minT+(e.offsetX-left)/(w-left-right)*(maxT-minT);const points=valid[0].points;if(!points.length)return;const nearest=points.reduce((a,b)=>Math.abs(b[0]-t)<Math.abs(a[0]-t)?b:a);$('priceHint').textContent=date(nearest[0])+' · '+money(nearest[1])+' USDT';};
 }
 function render(){if(!current)return;const d=current,s=d.status,age=Math.max(0,Math.round((Date.now()-(s.heartbeat_ms||0))/1000));
+ renderPortfolio();
  if(d.evolution_status){const s=d.evolution_status,g=s.gpu||{};$('evolutionStatus').textContent='Стадия: '+s.stage+' · поколение '+(s.generation??'—')+' · '+(s.candidate||s.selected||'')+' · обновлено '+date(s.updated_ms)+'. PPO: CPU; XGBoost: CUDA. '+(g.name?g.name+' · память '+g.used_mb+'/'+g.total_mb+' MiB · загрузка '+g.utilization_pct+'% (снимок '+date(g.measured_ms)+')':'');}
  if(d.evolution_research){const r=d.evolution_research,colors=['#55d5b3','#7ba8ff','#bd9bff','#ffca77','#ff8a91','#40bbcf','#aaa','#ee9555','#d8f080'];
  $('evolutionNote').textContent='Выбран по проверочному периоду: '+r.selected+'. Финальный тест: '+date(r.test_start_ms)+' — '+date(r.end_ms)+'. Run '+r.run_id+'.';
@@ -78,5 +79,27 @@ function render(){if(!current)return;const d=current,s=d.status,age=Math.max(0,M
  $('events').innerHTML=d.events.length?d.events.map(e=>`<tr><td>${date(e.ts)}</td><td>${esc(names[e.kind]||e.kind)} · ${esc(e.strategy_name||'Базовая ML')}</td><td>${esc(e.symbol||'—')}</td><td>${e.pnl_usdt!=null?money(e.pnl_usdt)+' USDT':esc(e.reason||'—')}</td></tr>`).join(''):'<tr><td colspan="4">Сделок ещё нет. Бот ждёт подходящего сигнала; принудительные входы не создаются.</td></tr>';
 }
 function renderResearch(){const c=current?.comparison,r=c?.strategies[$('strategy').value]?.symbols[$('symbol').value]?.test;$('curveTitle').textContent='Тест стратегии · '+$('symbol').value;chart('researchChart',[{points:r?.curve||[],color:'#bd9bff'}],{base:15});}
+
+function renderPortfolio(){
+ const d=current;if(!d)return;const status=d.portfolio_status,scan=d.market_scan,stream=d.market_stream_status;
+ if(status)$('portfolioStatus').textContent='Стадия: '+status.stage+' · '+date(status.updated_ms)+(status.epoch?' · эпоха '+status.epoch+'/'+status.epochs:'');
+ if(scan)$('portfolioScan').textContent='Сканирование: '+scan.scanned+' USDT-контрактов, '+scan.eligible+' криптовалют прошли текущий фильтр спреда и оборота. Список обновлён '+date(scan.observed_ms)+'. Поток: '+(stream?stream.stage+' · '+date(stream.updated_ms):'подключение готовится')+'.';
+ const r=d.portfolio_research;if(!r)return;const select=$('portfolioAgent');
+ if(select.dataset.run!==r.run){select.innerHTML=r.candidates.map(v=>`<option value="${esc(v.name)}">${esc(v.name)}</option>`).join('');select.value=r.selected;select.dataset.run=r.run;$('portfolioTime').dataset.agent='';}
+ $('portfolioNote').textContent=r.manifest.symbols.length+' монет · обучение 45 дней, отбор 15, непрерывный тест 30 дней: '+date(r.test_start_ms)+' — '+date(r.end_ms)+'. Выбран на отборе: '+r.selected+'. Нейросеть: '+r.neural_device+'; XGBoost: CUDA. Начальный капитал каждого варианта — $15 на весь портфель.';
+ $('portfolioRows').innerHTML=r.candidates.map(v=>`<tr><td>${esc(v.name)}${v.name===r.selected?' ★':''}</td><td>${pct(v.validation.return_pct)}</td><td>${pct(v.test.return_pct)}</td><td>${money(v.test.capital)}</td><td>${money(v.test.max_capital)}</td><td>${Number(v.test.max_drawdown_pct).toFixed(2)}%</td><td>${v.test.trades}</td><td>${money(v.test.fees)}</td><td>${v.test.liquidations}</td><td>${pct(v.stress.return_pct)}</td></tr>`).join('');
+ const c=r.candidates.find(v=>v.name===select.value)||r.candidates[0],colors=['#55d5b3','#7ba8ff','#ffca77','#aaa'];
+ const peers=r.candidates.filter(v=>(v.family===c.family&&v.leverage===c.leverage)||v.family==='cash');
+ chart('portfolioChart',peers.map((v,i)=>({points:v.test.curve,color:colors[i%colors.length]})),{base:15});
+ $('portfolioLegend').innerHTML=peers.map((v,i)=>`<span style="color:${colors[i%colors.length]}">${esc(v.name)}</span>`).join(' · ');
+ const periods=c.subperiods||[];$('portfolioPeriods').textContent='Три отдельные части теста, каждая стартует с $15: '+periods.map(v=>pct(v.return_pct)).join(' / ')+'. На основном графике капитал между днями не сбрасывается. Вероятность разорения не оценена.';
+ const slider=$('portfolioTime'),a=c.test.allocations||[];slider.max=Math.max(0,a.length-1);if(slider.dataset.agent!==c.name){slider.value=slider.max;slider.dataset.agent=c.name;}
+ const point=a[Number(slider.value)];$('portfolioAllocation').textContent=point?'История: '+date(point.ts)+' · свободно '+money(point.cash)+' USDT · капитал '+money(point.equity)+' USDT. Показаны последние 10 дней распределений.':'Открытых позиций в истории нет.';
+ $('portfolioPositions').innerHTML=point?.positions.length?point.positions.map(v=>`<tr><td>${esc(v.symbol)}</td><td>${v.side>0?'Long':'Short'}</td><td>${money(v.margin)}</td><td>${money(v.notional)}</td><td>${money(v.unrealized)}</td><td>${esc(v.reason)}</td></tr>`).join(''):'<tr><td colspan="6">Капитал свободен — позиции не открыты.</td></tr>';
+ $('portfolioAttribution').textContent='Вклад монет за весь тест, после издержек: '+Object.entries(c.test.attribution).filter(([s,v])=>Math.abs(v)>1e-8).sort((a,b)=>b[1]-a[1]).map(([s,v])=>s+' '+money(v)).join('; ');
+ const weights=Object.values(r.routing);$('portfolioRouting').textContent='Средние веса экспертов нейросети: '+['own_sequence','cross_asset','funding_basis'].map(k=>k+' '+(100*weights.reduce((sum,v)=>sum+v[k],0)/weights.length).toFixed(1)+'%').join(' · ')+'. Это распределение внимания, не доказательство причинной важности.';
+}
+$('portfolioAgent').onchange=renderPortfolio;$('portfolioTime').oninput=renderPortfolio;
+
 async function refresh(){if(busy)return;busy=true;try{const response=await fetch('/api/snapshot?'+new URLSearchParams({symbol:$('symbol').value,hours:$('hours').value}),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);current=await response.json();render();}catch(e){$('error').hidden=false;$('error').textContent='Панель не получает данные: '+e.message;$('health').textContent='● Соединение потеряно';}finally{busy=false;}}
 $('symbol').onchange=refresh;$('hours').onchange=refresh;$('strategy').onchange=renderResearch;window.addEventListener('resize',render);refresh();setInterval(refresh,5000);
