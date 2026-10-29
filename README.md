@@ -57,6 +57,8 @@ pct exec 103 -- runuser -u codex -- /home/codex/workspace/cripto_staff/.venv/bin
 ```
 
 Access from Windows is documented in [docs/SERVER.md](docs/SERVER.md).
+Quick Windows status: `powershell -File .\status.ps1`.
+Verified initial results: [docs/FIRST-RUN.md](docs/FIRST-RUN.md).
 Stop only the agent with `pct exec 103 -- systemctl stop cripto-paper`.
 
 ## Validation and current limits
