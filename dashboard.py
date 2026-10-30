@@ -88,7 +88,9 @@ def graph_png():
     if not data:
         status = 'Ожидание данных адаптивного сервиса'
     if data.get('paused'):
-        status += ' · глобальная пауза'
+        status = 'Глобальная пауза входов' if data.get('live_gate') else status+' · глобальная пауза'
+    if wallet.get('halted') and data.get('live_gate'):
+        status = 'Лимит риска · новые входы запрещены'
     updated = data.get('updated_ms')
     age = max(0, int(time.time()-updated/1000)) if updated else None
     stale = age is None or age>120 or bool(data.get('last_error'))

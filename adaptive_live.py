@@ -49,6 +49,27 @@ def closed_features(symbol, now_ms):
     return symbol,features(bars,len(bars)-1)
 
 
+def event_schema(db):
+    db.execute('CREATE TABLE IF NOT EXISTS events (id INTEGER PRIMARY KEY AUTOINCREMENT, ts INTEGER NOT NULL, kind TEXT NOT NULL, payload TEXT NOT NULL)')
+
+
+def persist_cycle(db, previous, working, selected):
+    """Wallet changes and their notification outbox commit or roll back together."""
+    before = previous['wallet']; after = working['wallet']; events = []
+    if not before['position'] and after['position']:
+        p = after['position']
+        payload = {k:p[k] for k in ('symbol','side','entry','qty','margin','fees','reason','opened_ms')}
+        events.append((p['opened_ms'],'paper_entry',payload))
+    for trade in after['trades'][len(before['trades']):]:
+        events.append((trade['closed_ms'],'paper_exit',dict(trade)))
+    with db:
+        db.execute('INSERT OR REPLACE INTO state VALUES (1,?)',(json.dumps(working,allow_nan=False),))
+        for ts,kind,payload in events:
+            payload.update(strategy='adaptive',strategy_name=selected)
+            db.execute('INSERT INTO events(ts,kind,payload) VALUES (?,?,?)',
+                       (ts,kind,json.dumps(payload,ensure_ascii=False,allow_nan=False)))
+
+
 def run(once=False):
     import fcntl  # Server worker is Linux; one writer including manual --once runs.
     agent.DATA.mkdir(exist_ok=True); agent.ARTIFACTS.mkdir(exist_ok=True)
@@ -65,6 +86,7 @@ def run(once=False):
     db = sqlite3.connect(agent.DATA/'adaptive.sqlite3',timeout=10)
     db.execute('PRAGMA journal_mode=WAL'); db.execute('PRAGMA synchronous=FULL')
     db.execute('CREATE TABLE IF NOT EXISTS state (id INTEGER PRIMARY KEY CHECK(id=1),payload TEXT NOT NULL)')
+    event_schema(db)
     row = db.execute('SELECT payload FROM state WHERE id=1').fetchone()
     saved = json.loads(row[0]) if row else dict(identity=identity,wallet=Wallet(config).s,last_signal_ms=0,
         funding_through_ms=0,started_ms=int(time.time()*1000))
@@ -133,8 +155,7 @@ def run(once=False):
             if len(wallet.s['trades'])>=10000: wallet.s['halted'] = True
             working.update(quote_ms=quote_ms,updated_ms=now,candidate=candidate,paused=is_paused,
                 observed_symbols=len(fresh),prices={s:quotes[s] for s in fresh},last_error=None)
-            with db:
-                db.execute('INSERT OR REPLACE INTO state VALUES (1,?)',(json.dumps(working,allow_nan=False),))
+            persist_cycle(db,saved,working,selected['id'] if selected else 'cash')
             saved = working
             view = dict(mode='LIVE PAPER / no real orders',equity=equity,**working,
                         live_gate=protocol['live_gate'],selected=selected['id'] if selected else 'cash',

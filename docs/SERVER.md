@@ -142,6 +142,12 @@ Telegram notification preferences: SQLite `subscriptions`. Delivery attempts:
 `deliveries` with sent/unknown/sending state. Only allowlisted recipients receive
 notifications, and each opts in independently. Do not reset cursors to replay old
 trades or generate fake live events for testing.
+Telegram status, chart and runtime notifications now refer only to the adaptive
+PAPER wallet. Its durable outbox is `data/adaptive.sqlite3.events`; Telegram
+imports events once using `agent.sqlite3.adaptive_bridge`. Existing subscription
+preferences and delivery records remain intact. Legacy strategy events stay in
+history but are excluded from this notification stream. `top_bot_feed.py` was
+retired; do not start a second Telegram sender for old leaders.
 
 ## Fast parallel paper strategies
 
