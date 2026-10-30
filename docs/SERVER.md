@@ -208,5 +208,7 @@ Reports: `artifacts/adaptive_research.json`, `adaptive_protocol.json`,
 `adaptive_live.json`, `adaptive_delivery_report.md`. Research preserves existing
 frozen results rather than silently reusing the holdout. See
 `docs/ADAPTIVE-REPORT-2026-10-30.md` for assumptions and unimplemented experiments.
-The complete workstation checkout is `C:\Users\v.taranov\cripto_staff-adaptive`
-because drive D: filled up; the original checkout is retained, not synchronized.
+Primary workstation checkout: `D:\w_spase\cripto_staff`. The temporary checkout
+`C:\Users\v.taranov\cripto_staff-adaptive` is also synchronized. Drive D: ran out
+of space during implementation; free space was available again at handoff.
+Use `docs/HANDOFF.md` to continue work from another AI or workstation.

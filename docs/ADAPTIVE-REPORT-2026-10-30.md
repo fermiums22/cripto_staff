@@ -84,6 +84,8 @@ Those pre-existing experiments were not rewritten or promoted to the new bot.
 Drive D: ran out of free space during implementation. The complete working copy
 is `C:\Users\v.taranov\cripto_staff-adaptive`; the original directory and source
 snapshot were retained. No user data was deleted to free space.
+At subsequent handoff, free space was available on D: again and the original
+checkout was synchronized as well; see `docs/HANDOFF.md` for current locations.
 
 Operational checks: `systemctl status cripto-adaptive`,
 `journalctl -u cripto-adaptive`; pause entries through the existing global PAPER
