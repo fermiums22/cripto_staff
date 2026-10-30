@@ -58,25 +58,50 @@ def graph_png():
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
+    import matplotlib.dates as mdates
     import datetime
-    data = snapshot()
-    fig, axes = plt.subplots(2, 1, figsize=(10, 6), layout='constrained')
+    path = agent.ARTIFACTS/'adaptive_live.json'
+    data = json.loads(path.read_text(encoding='utf-8')) if path.exists() else {}
+    wallet = data.get('wallet', {})
+    points = wallet.get('curve', [])
+    fig, ax = plt.subplots(figsize=(10, 6))
+    fig.subplots_adjust(top=.66, bottom=.17, left=.10, right=.97)
     dates = lambda points: [datetime.datetime.fromtimestamp(p[0]/1000, datetime.timezone.utc) for p in points]
-    candles = data['candles']
-    axes[0].plot(dates(candles), [b[4] for b in candles], color='#008f85')
-    axes[0].set_title('BTCUSDT | real Bybit spot, 5 min | UTC')
-    equity = data['equity']
-    if data.get('arena'):
-        for account in data['arena']:
-            points=account['curve']
-            if points:axes[1].plot(dates(points),[p[1] for p in points],label=account['name'])
-        axes[1].legend(fontsize=7,loc='best')
-    elif equity:
-        axes[1].plot(dates(equity), [p[1] for p in equity], color='#437df5', marker='.' if len(equity)==1 else None)
-    axes[1].axhline(15, color='gray', linestyle='--', linewidth=0.8)
-    axes[1].set_title('Live PAPER comparison (USDT) | independent $15 accounts')
-    for ax in axes:
-        ax.grid(alpha=0.2)
+    fig.suptitle('Адаптивный PAPER · '+data.get('selected', 'ожидание запуска'), fontsize=15, y=.96)
+    if points:
+        ax.plot(dates(points), [p[1] for p in points], color='#008f85', linewidth=2,
+                marker='.' if len(points)==1 else None, label='Общий кошелёк · LIVE PAPER')
+        values = [15., *[p[1] for p in points]]
+        padding = max(.05, (max(values)-min(values))*.1)
+        ax.set_ylim(min(values)-padding, max(values)+padding)
+    else:
+        ax.text(.5, .5, 'Ожидание живой истории кошелька', transform=ax.transAxes, ha='center')
+    ax.axhline(15, color='gray', linestyle='--', linewidth=.8, label='Старт $15')
+    ax.set_ylabel('USDT'); ax.set_xlabel('UTC'); ax.grid(alpha=.2); ax.legend(loc='best', fontsize=9)
+    ax.xaxis.set_major_formatter(mdates.DateFormatter('%d.%m %H:%M', tz=datetime.timezone.utc))
+    ax.tick_params(axis='x', labelsize=9)
+    equity = data.get('equity', points[-1][1] if points else None)
+    capital = f'${equity:.4f}' if equity is not None else 'нет данных'
+    position = wallet.get('position')
+    holding = f"{position['symbol']} {'LONG' if position['side']>0 else 'SHORT'}" if position else 'нет позиции'
+    status = 'Входы разрешены' if data.get('live_gate') else 'Сбор данных · входы отключены: отбор убыточен'
+    if not data:
+        status = 'Ожидание данных адаптивного сервиса'
+    if data.get('paused'):
+        status += ' · глобальная пауза'
+    updated = data.get('updated_ms')
+    age = max(0, int(time.time()-updated/1000)) if updated else None
+    stale = age is None or age>120 or bool(data.get('last_error'))
+    freshness = (f'{age} с назад' if age is not None else 'ещё нет данных')
+    if stale:
+        freshness += ' · ВНИМАНИЕ: данные устарели или цикл завершился с ошибкой'
+    fig.text(.10, .86, f'Капитал {capital} / $15 · {holding} · закрыто сделок: {len(wallet.get("trades", []))}', fontsize=11)
+    fig.text(.10, .81, status, fontsize=10)
+    fig.text(.10, .76, 'Обновлено: '+freshness, fontsize=9, color='#bb3333' if stale else '#555555')
+    candidate = data.get('candidate')
+    if candidate:
+        fig.text(.10, .71, f"Кандидат: {candidate['symbol']} {'LONG' if candidate['side']>0 else 'SHORT'}", fontsize=10)
+    fig.text(.10, .05, 'Только живой PAPER-кошелёк · реальные ордера отключены\nhttp://192.168.0.8:8765/adaptive', fontsize=9, color='#555555')
     output = io.BytesIO()
     fig.savefig(output, format='png', dpi=140)
     plt.close(fig)

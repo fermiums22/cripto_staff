@@ -245,7 +245,7 @@ def main():
                         text = ('Уведомления о новых виртуальных входах и выходах включены для этого аккаунта.'
                                 if action == 'notify_on' else 'Уведомления выключены для этого аккаунта.')
                     elif action == 'chart':
-                        call(token, 'sendPhoto', {'chat_id': chat, 'caption': 'Реальные котировки · виртуальный капитал'}, dashboard.graph_png())
+                        call(token, 'sendPhoto', {'chat_id': chat, 'caption': 'Адаптивный PAPER · текущий общий кошелёк $15\nСостояние и свежесть данных — на графике. Реальные ордера отключены.'}, dashboard.graph_png())
                     elif action == 'help':
                         text = '/status — состояние\n/chart — график\n/pause — пауза входов\n/resume — продолжить'
                     if text:
