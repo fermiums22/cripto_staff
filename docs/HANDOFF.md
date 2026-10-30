@@ -1,3 +1,5 @@
+> Latest autonomous Market Brain work: read docs/BRAIN-EVIDENCE-HANDOFF.md first. Existing PAPER services are preserved; no profitable candidate has been established.
+
 # Передача проекта другим ИИ — 30 октября 2026
 
 ## С чего начать
