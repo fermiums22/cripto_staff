@@ -19,7 +19,7 @@ def fill(price,side,friction,instrument):
 
 
 def simulate(market,predictions,start,end,mode='multi',leverage=1,fee=.001,
-             threshold=.006,friction=.0006,allocation=.9,max_positions=3,hold_bars=16):
+             threshold=.006,friction=.0006,allocation=.9,max_positions=3,hold_bars=16,priority=None):
     symbols=sorted(market);clock=market[symbols[0]]['trade'];cash=15.;positions={};records=[]
     curve=[[clock[start][0],15.]];allocations=[];peak=15.;dd=0.;peak_ms=clock[start][0];drawdown_event=None
     rejected=dict(minimum_order=0,correlated=0,liquidity=0,risk_limit=0)
@@ -86,7 +86,9 @@ def simulate(market,predictions,start,end,mode='multi',leverage=1,fee=.001,
                 if turnover<3000000 or abs(recent)>.05:
                     rejected['liquidity']+=1;continue
                 vol=float(np.std(returns[s][max(0,i-97):i-1]))
-                candidates.append((abs(signal)/(vol+.001),s,1 if signal>0 else -1,signal,vol))
+                score=float(priority[s][i-1]) if priority is not None else abs(signal)/(vol+.001)
+                if not math.isfinite(score) or score<=0:continue
+                candidates.append((score,s,1 if signal>0 else -1,signal,vol))
             candidates.sort(reverse=True);chosen=[]
             limit=max_positions if mode=='multi' else 1
             for score,s,side,signal,vol in candidates:
@@ -122,6 +124,7 @@ def simulate(market,predictions,start,end,mode='multi',leverage=1,fee=.001,
                 if margin+entry_fee>cash+1e-9:raise AssertionError('Overspent shared capital')
                 cash-=margin+entry_fee
                 reason=f'Прогноз {signal:+.4%}; оценка с учётом риска {score:.3f}; прошлая волатильность {vol:.4%}'
+                if priority is not None:reason=f'Ранговое направление {"Long" if side>0 else "Short"}; преимущество оценки над cash {score:.3f}; не прогноз доходности'
                 positions[s]=dict(qty=q,side=side,entry=price,margin=margin,initial_margin=margin,
                     entry_fee=entry_fee,opened=i,funding=0.,funding_cash=0.,reason=reason)
         max_open=max(max_open,len(positions))

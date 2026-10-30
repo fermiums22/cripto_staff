@@ -1,5 +1,8 @@
 """Private-chat control, explicit numeric allowlist, paper pause/resume only."""
 import json
+import hashlib
+import hmac
+import urllib.parse
 import logging
 import os
 import time
@@ -122,23 +125,89 @@ def call(token, method, data, photo=None):
     return result['result']
 
 
+def account_balance():
+    """Read wallet compartments; no orders, transfers, or raw API error text."""
+    try:
+        _, key, secret = [v.strip() for v in (agent.ROOT/'secrets/bybit.key').read_text(encoding='utf-8-sig').splitlines()]
+    except Exception:
+        return 'ключ недоступен'
+    def query(path, params):
+        qs=urllib.parse.urlencode(params)
+        ts=str(int(time.time()*1000)); window='5000'
+        signature=hmac.new(secret.encode(), (ts+key+window+qs).encode(), hashlib.sha256).hexdigest()
+        req=urllib.request.Request('https://api.bybit.com/v5/'+path+'?'+qs,headers={
+            'X-BAPI-API-KEY':key,'X-BAPI-TIMESTAMP':ts,
+            'X-BAPI-RECV-WINDOW':window,'X-BAPI-SIGN':signature})
+        with urllib.request.build_opener(urllib.request.ProxyHandler({})).open(req,timeout=7) as response:
+            data=json.load(response)
+        if data.get('retCode')!=0:raise ValueError('API error')
+        return data['result']
+    lines=[]; incomplete=[]; total=0.
+    for kind in ('UNIFIED','SPOT','CONTRACT'):
+        try:
+            info=query('account/wallet-balance',{'accountType':kind})['list'][0]
+            equity=info.get('totalEquity')
+            if equity is not None and equity!='':
+                amount=float(equity); total+=amount
+                lines.append(f'{kind}: {amount:.2f} USD')
+            else:
+                coins=[c for c in info.get('coin',[]) if float(c.get('walletBalance') or 0)>0]
+                if coins:lines.append(kind+': '+', '.join(str(c['coin'])+' '+str(c['walletBalance']) for c in coins[:5]))
+                incomplete.append(kind+' без оценки')
+        except Exception:
+            if kind=='UNIFIED':incomplete.append(kind+' недоступен')
+    try:
+        info=query('asset/transfer/query-account-coins-balance',{'accountType':'FUND'})
+        coins=[c for c in info.get('balance',[]) if float(c.get('walletBalance') or 0)>0]
+        if coins:
+            lines.append('FUNDING: '+', '.join(str(c['coin'])+' '+str(c['walletBalance']) for c in coins[:6]))
+            total+=sum(float(c['walletBalance']) for c in coins if c['coin']=='USDT')
+            if any(c['coin']!='USDT' for c in coins):incomplete.append('Funding с другими активами')
+        else:lines.append('FUNDING: 0')
+    except Exception:
+        incomplete.append('Funding недоступен')
+    if not lines:return 'балансы недоступны'
+    lines.append(f'Известная сумма: ≈{total:.2f} USD'+(' (неполная)' if incomplete else ''))
+    if incomplete:lines.append('Ограничения: '+', '.join(incomplete))
+    return '\n'.join(lines)
+
+
 def status_text():
-    data = dashboard.snapshot()
-    state = data['status']
-    age = max(0, (data['now_ms']-state.get('heartbeat_ms', 0))//1000)
-    pos = state.get('portfolio', {}).get('position')
-    arena=data.get('arena',[])
-    arena_text='\n\nБыстрые стратегии (каждой выделено $15):'+''.join(
-        f"\n{a['name']}: {a['equity']-15:+.4f} USDT, закрыто {a['trades']}" for a in arena) if arena else ''
-    return ('Только виртуальные сделки\n'
-            + ('ПАУЗА новых входов' if state.get('paused') else 'Новые входы разрешены')
-            + f"\nПоследний цикл: {age} с назад"
-            + f"\nКапитал: {state.get('equity_usdt', 15):.4f} USDT"
-            + f"\nPnL: {state.get('pnl_usdt', 0):+.4f} USDT"
-            + f"\nПозиция: {pos['symbol'] if pos else 'нет'}"
-            + ('\nВНИМАНИЕ: цикл устарел' if age > 120 else '')
-            + ('\nОшибка получения данных' if state.get('last_error') else '')
-            + arena_text+'\nПанель дома/VPN: http://192.168.0.8:8765')
+    data=dashboard.snapshot()
+    state=data['status'];now=data['now_ms']
+    age=max(0,(now-state.get('heartbeat_ms',0))//1000)
+    arena={a['id']:a for a in data.get('arena',[])}
+    leader=arena.get('hb_bollinger',{})
+    pos=leader.get('position')
+    reason={'waiting_signal':'ждёт входа','position_open':'держит позицию',
+            'paused':'пауза','stale_quote':'нет свежих котировок',
+            'loss_limit':'лимит убытков','cooldown':'перерыв после сделки',
+            'minimum_order':'меньше минимального ордера'}.get(leader.get('reason'),leader.get('reason','неизвестно'))
+    lines=['📊 Сводка Bybit · '+time.strftime('%d.%m %H:%M UTC',time.gmtime()),
+           '💰 Реальный баланс: '+account_balance(),
+           f"🧪 PAPER-лидер: Hummingbot Bollinger · {leader.get('equity',15):.4f} / 15 USDT",
+           'Состояние: '+reason+(' · '+pos['symbol'] if pos else ''),
+           f"Закрыто сделок: {leader.get('trades',0)}",
+           f"Базовый ML: {state.get('equity_usdt',15):.4f} USDT · {'пауза' if state.get('paused') else 'работает'} · цикл {age}с"]
+    scan_path=agent.ARTIFACTS/'market_scan.json'
+    if scan_path.exists():
+        try:
+            scan=json.loads(scan_path.read_text())
+            scan_age=(now-scan['observed_ms'])//60000
+            bysymbol={v['symbol']:v for v in scan.get('rows',[])}
+            lines.append(f"🎯 Монеты на прицеле (скан {scan_age} мин назад):")
+            for sym in scan.get('watchlist',[])[:5]:
+                r=bysymbol.get(sym,{})
+                change=r.get('recent_move')
+                spread=r.get('spread')
+                lines.append(f"• {sym}: {change*100:+.2f}% / 5 мин" if isinstance(change,(int,float)) else f"• {sym}")
+            if scan_age>30:lines.append('⚠️ Скан рынка устарел')
+            lines.append(f"Рынок: {scan.get('scanned',0)} просмотрено, {scan.get('eligible',0)} прошло фильтры")
+        except Exception:lines.append('Скан рынка: данные недоступны')
+    lines.append('⚠️ Монеты из сканера — наблюдение, не подтверждённые сигналы к покупке.')
+    if age>120:lines.append('⚠️ Основной PAPER-цикл устарел')
+    lines.append('Панель: http://192.168.0.8:8765')
+    return '\n'.join(lines)
 
 
 def main():
