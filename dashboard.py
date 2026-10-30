@@ -87,16 +87,24 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         parsed = urlparse(self.path)
         try:
-            if parsed.path == '/api/snapshot':
+            if parsed.path == '/api/adaptive':
+                data = {}
+                for key in ('research', 'live'):
+                    path = agent.ARTIFACTS/('adaptive_'+key+'.json')
+                    data[key] = json.loads(path.read_text(encoding='utf-8')) if path.exists() else None
+                content = json.dumps(dict(now_ms=int(time.time()*1000), **data), ensure_ascii=False).encode()
+                kind = 'application/json; charset=utf-8'
+            elif parsed.path == '/api/snapshot':
                 query = parse_qs(parsed.query)
                 content = json.dumps(snapshot(query.get('symbol', ['BTCUSDT'])[0],
                                               int(query.get('hours', ['24'])[0])), ensure_ascii=False).encode()
                 kind = 'application/json; charset=utf-8'
-            elif parsed.path in ('/', '/app.js', '/style.css'):
-                name = {'/': 'index.html', '/app.js': 'app.js', '/style.css': 'style.css'}[parsed.path]
+            elif parsed.path in ('/', '/app.js', '/style.css', '/adaptive', '/adaptive.js', '/adaptive.css'):
+                name = {'/': 'index.html', '/app.js': 'app.js', '/style.css': 'style.css',
+                        '/adaptive': 'adaptive.html', '/adaptive.js': 'adaptive.js', '/adaptive.css': 'adaptive.css'}[parsed.path]
                 content = (agent.ROOT/'web'/name).read_bytes()
-                kind = {'index.html': 'text/html; charset=utf-8', 'app.js': 'text/javascript; charset=utf-8',
-                        'style.css': 'text/css; charset=utf-8'}[name]
+                kind = {'html': 'text/html; charset=utf-8', 'js': 'text/javascript; charset=utf-8',
+                        'css': 'text/css; charset=utf-8'}[name.rsplit('.', 1)[1]]
             else:
                 self.send_error(404)
                 return

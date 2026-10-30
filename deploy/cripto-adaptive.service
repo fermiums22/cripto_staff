@@ -1,0 +1,22 @@
+[Unit]
+Description=Adaptive shared-wallet public-data PAPER collector (no real orders)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=codex
+WorkingDirectory=/home/codex/workspace/cripto_staff
+ExecStart=/home/codex/workspace/cripto_staff/.venv/bin/python -u adaptive_live.py
+Restart=on-failure
+RestartSec=15
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/home/codex/workspace/cripto_staff/data /home/codex/workspace/cripto_staff/artifacts
+InaccessiblePaths=/home/codex/workspace/cripto_staff/secrets
+UMask=0077
+MemoryMax=256M
+CPUQuota=100%
+
+[Install]
+WantedBy=multi-user.target

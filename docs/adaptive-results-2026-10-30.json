@@ -1,0 +1,321 @@
+{
+  "protocol": {
+    "created_ms": 1793343633018,
+    "symbols": [
+      "1000PEPEUSDT",
+      "AAVEUSDT",
+      "ADAUSDT",
+      "BNBUSDT",
+      "BTCUSDT",
+      "DOGEUSDT",
+      "ENAUSDT",
+      "ETHUSDT",
+      "HYPEUSDT",
+      "INITUSDT",
+      "LITUSDT",
+      "LTCUSDT",
+      "NEARUSDT",
+      "QUSDT",
+      "SOLUSDT",
+      "SUIUSDT",
+      "WLDUSDT",
+      "XAUTUSDT",
+      "XRPUSDT",
+      "ZECUSDT"
+    ],
+    "data_hashes": {
+      "BTCUSDT": "52f78f9cb58bf8d951fca7692ef377e41a4b2b66f3108cd174349697e392e67a",
+      "ETHUSDT": "3550ce0536e6fdf91df3339e7778fd95415b1c2d03dec2ab1bb05f26b35564a2",
+      "HYPEUSDT": "9b257cfd866e0030769c6168dc38c40af05e61c139c7bc535907bcf1a35579aa",
+      "SOLUSDT": "30da1f3a4855b1cd88986a111c10eaa5fa2f0d66869deb9628182bae154c5b52",
+      "ZECUSDT": "433d0eac51b076dfda76056249cce877c6de0ad34df28de38d1e914bc01b3e90",
+      "XRPUSDT": "31c930aea55b1868ddff5c2a815e78224b067c5f0bfa9ce636d7dc102321d777",
+      "1000PEPEUSDT": "e8e968aa94042bfecf23380df56299234cfd872b2edbf65f6dcbb2142205157c",
+      "NEARUSDT": "fc2ef9d461264a5e1ae0449c74ab97b4cf6734ffc801ffcdbbf4f6e6a39fba8d",
+      "ENAUSDT": "ee2e551b248a2b3ef936c615a6231d6eefcf7ad4de8e80cd3cf78acaa098cc3e",
+      "QUSDT": "856abe7ee1502ce6fc1215fcd446ddba36aeef251c38021bfdb056735992cd8c",
+      "DOGEUSDT": "6f3c4bf6d29c6d013532c4d6c1dbd94671e783c012682f36c8cfc7eb77bdb0de",
+      "SUIUSDT": "3ae06eb2578939d9ea4abefcacf15f44938fdabeab4d2e2aa2069259ccd4b9d1",
+      "WLDUSDT": "14152d95e73286f75b4aafaf2794ef8870b480cd9271d9e2f1c98a0a36ee32a9",
+      "ADAUSDT": "a65c63a88688094a168010643d9866d57e32e065976605fd7765156fdfc6eb53",
+      "INITUSDT": "907c50b2f0b4cb1257eebc6bb1e26dba2bd10722d54f75042b8e645596761000",
+      "BNBUSDT": "bc7abf0e7e95d6ee7b33d0751e1fd947b6805166c1feee02b66963ab976dda09",
+      "LITUSDT": "13e5a9832b01ceecc2f1d5105657f643d59a3ddeef9816938e5c140cadfa707a",
+      "AAVEUSDT": "d348eb0dce759b5cbde0b93c8d1878ce46bb107ba7988c602e0a7ae7c7fd058f",
+      "LTCUSDT": "53f0eff0a952ab26dfd29dc3fb09d147f7dbaf0331eeb2ca24ce7c1530d45dc0",
+      "XAUTUSDT": "8a0cf30f23832547b3b4c45a6cb388a3c7e5f73565ee499ed1a3238463c90dad"
+    },
+    "train": [
+      "2026-07-31T22:45:00+00:00",
+      "2026-09-23T14:30:00+00:00"
+    ],
+    "validation": [
+      "2026-09-23T14:30:00+00:00",
+      "2026-10-11T14:30:00+00:00"
+    ],
+    "test": [
+      "2026-10-11T14:30:00+00:00",
+      "2026-10-29T14:30:00+00:00"
+    ],
+    "selected": {
+      "id": "leadlag_trail_0.003",
+      "config": {
+        "family": "leadlag",
+        "families": [
+          "leadlag"
+        ],
+        "exit": "trail",
+        "threshold": 0.003,
+        "leverage": 1,
+        "risk_fraction": 0.02,
+        "stop": 0.02,
+        "take": 0.008,
+        "hold_bars": 32,
+        "volume": true,
+        "regime": true,
+        "pyramid": false
+      },
+      "train": {
+        "capital": 10.548299429753413,
+        "net": -4.451700570246587,
+        "gross": -2.828559999999995,
+        "fees": 1.6002928,
+        "funding": -0.0228477702466,
+        "bankruptcy_adjustment": 0.0,
+        "max_drawdown_pct": 32.16873071816393,
+        "liquidations": 0,
+        "bankruptcies": 0,
+        "trades": 83,
+        "milestones": {
+          "30": null,
+          "100": null,
+          "2000": null
+        },
+        "rejected": {
+          "halted_or_cooldown": 361,
+          "minimum_order": 19
+        },
+        "halted": true,
+        "mfe_mean_pct": 1.3013012796621541,
+        "mae_mean_pct": 0.912812529575301
+      },
+      "validation": {
+        "capital": 12.407415153472297,
+        "net": -2.5925848465277035,
+        "gross": -1.5384899999999975,
+        "fees": 1.0573948100000001,
+        "funding": 0.0032999634723000003,
+        "bankruptcy_adjustment": 0.0,
+        "max_drawdown_pct": 23.061529407471404,
+        "liquidations": 0,
+        "bankruptcies": 0,
+        "trades": 53,
+        "milestones": {
+          "30": null,
+          "100": null,
+          "2000": null
+        },
+        "rejected": {
+          "minimum_order": 2,
+          "halted_or_cooldown": 1
+        },
+        "halted": false,
+        "mfe_mean_pct": 1.145028758224088,
+        "mae_mean_pct": 0.8250048206115865
+      }
+    },
+    "selection": "Train >=10 trades; validation >=5, DD<30%, no liquidation; maximize validation net - .03*DD.",
+    "live_gate": false,
+    "costs": {
+      "realistic": {
+        "fee": 0.001,
+        "friction": 0.0006,
+        "funding_multiplier": 1.0
+      },
+      "optimistic": {
+        "fee": 0.001,
+        "friction": 0.0001,
+        "funding_multiplier": 1.0
+      },
+      "severe": {
+        "fee": 0.0015,
+        "friction": 0.003,
+        "funding_multiplier": 2.0
+      }
+    },
+    "fee_note": "SOL taker .001 / maker .00036 from prior verified report; other symbols scenario only. All fills taker.",
+    "execution": "15m OHLC; next open; stop before target; mark liquidation first; next-bar trail; isolated bankruptcy cap; gap stops at open.",
+    "code_sha256": "ce9a9df2c84286e3dcc7b31d6d984ee3798f7bcc5eb72cbbde8fe1a65cfc2458"
+  },
+  "scenarios": {
+    "realistic": {
+      "capital": 12.667667909324988,
+      "net": -2.3323320906750116,
+      "gross": -0.8893200000000073,
+      "fees": 1.4457801000000001,
+      "funding": 0.0027680093249999997,
+      "bankruptcy_adjustment": 0.0,
+      "max_drawdown_pct": 20.212557628251204,
+      "liquidations": 0,
+      "bankruptcies": 0,
+      "trades": 72,
+      "milestones": {
+        "30": null,
+        "100": null,
+        "2000": null
+      },
+      "rejected": {
+        "minimum_order": 1,
+        "halted_or_cooldown": 3
+      },
+      "halted": false,
+      "mfe_mean_pct": 1.2514651677332425,
+      "mae_mean_pct": 0.6947569385645035
+    },
+    "optimistic": {
+      "capital": 15.011212633709397,
+      "net": 0.011212633709396513,
+      "gross": 1.3679099999999964,
+      "fees": 1.35212303,
+      "funding": -0.004574336290600001,
+      "bankruptcy_adjustment": 0.0,
+      "max_drawdown_pct": 12.001416235610607,
+      "liquidations": 0,
+      "bankruptcies": 0,
+      "trades": 67,
+      "milestones": {
+        "30": null,
+        "100": null,
+        "2000": null
+      },
+      "rejected": {
+        "halted_or_cooldown": 4,
+        "minimum_order": 1
+      },
+      "halted": false,
+      "mfe_mean_pct": 1.3513917081362583,
+      "mae_mean_pct": 0.6613240850920182
+    },
+    "severe": {
+      "capital": 10.349401586765582,
+      "net": -4.650598413234418,
+      "gross": -3.246280000000009,
+      "fees": 1.4050035300000001,
+      "funding": 0.0006851167656,
+      "bankruptcy_adjustment": 0.0,
+      "max_drawdown_pct": 31.312785535855326,
+      "liquidations": 0,
+      "bankruptcies": 0,
+      "trades": 55,
+      "milestones": {
+        "30": null,
+        "100": null,
+        "2000": null
+      },
+      "rejected": {
+        "halted_or_cooldown": 26,
+        "minimum_order": 1
+      },
+      "halted": true,
+      "mfe_mean_pct": 1.5751547814233355,
+      "mae_mean_pct": 0.7997491183746469
+    }
+  },
+  "leverage_controls": [
+    {
+      "leverage": 3,
+      "pyramid": false,
+      "selection_allowed": false,
+      "result": {
+        "capital": 12.388907295871983,
+        "net": -2.6110927041280174,
+        "gross": -1.0520000000000085,
+        "fees": 1.5616086,
+        "funding": 0.002515895872,
+        "bankruptcy_adjustment": 0.0,
+        "max_drawdown_pct": 21.48473291620432,
+        "liquidations": 0,
+        "bankruptcies": 0,
+        "trades": 72,
+        "milestones": {
+          "30": null,
+          "100": null,
+          "2000": null
+        },
+        "rejected": {
+          "minimum_order": 1,
+          "halted_or_cooldown": 3
+        },
+        "halted": false,
+        "mfe_mean_pct": 1.2514651677332425,
+        "mae_mean_pct": 0.6947569385645035
+      }
+    },
+    {
+      "leverage": 10,
+      "pyramid": false,
+      "selection_allowed": false,
+      "result": {
+        "capital": 10.50108778281459,
+        "net": -4.49891221718541,
+        "gross": -3.7209300000000076,
+        "fees": 1.22914217,
+        "funding": -0.004516167185400001,
+        "bankruptcy_adjustment": 0.45567611999999913,
+        "max_drawdown_pct": 30.898765957629436,
+        "liquidations": 2,
+        "bankruptcies": 2,
+        "trades": 56,
+        "milestones": {
+          "30": null,
+          "100": null,
+          "2000": null
+        },
+        "rejected": {
+          "minimum_order": 1,
+          "halted_or_cooldown": 56
+        },
+        "halted": true,
+        "mfe_mean_pct": 1.1681557447365665,
+        "mae_mean_pct": 0.68990054651253
+      }
+    },
+    {
+      "leverage": 3,
+      "pyramid": true,
+      "selection_allowed": false,
+      "result": {
+        "capital": 12.388907295871983,
+        "net": -2.6110927041280174,
+        "gross": -1.0520000000000085,
+        "fees": 1.5616086,
+        "funding": 0.002515895872,
+        "bankruptcy_adjustment": 0.0,
+        "max_drawdown_pct": 21.48473291620432,
+        "liquidations": 0,
+        "bankruptcies": 0,
+        "trades": 72,
+        "milestones": {
+          "30": null,
+          "100": null,
+          "2000": null
+        },
+        "rejected": {
+          "pyramid_not_eligible": 45,
+          "minimum_order": 1,
+          "halted_or_cooldown": 3
+        },
+        "halted": false,
+        "mfe_mean_pct": 1.2514651677332425,
+        "mae_mean_pct": 0.6947569385645035
+      }
+    }
+  ],
+  "limitations": [
+    "Current surviving-liquidity shortlist, not point-in-time whole-market universe.",
+    "History examined previously: chronological holdout is not pristine.",
+    "Current instrument/risk constraints applied historically; historical rules unavailable.",
+    "Microstructure only in retained sessions; no reconstructed book or participant counts.",
+    "Stream imbalance is diagnostic: insufficient independent history for strategy selection."
+  ]
+}
