@@ -95,7 +95,7 @@ def graph_png():
     freshness = (f'{age} с назад' if age is not None else 'ещё нет данных')
     if stale:
         freshness += ' · ВНИМАНИЕ: данные устарели или цикл завершился с ошибкой'
-    fig.text(.10, .86, f'Капитал {capital} / $15 · {holding} · закрыто сделок: {len(wallet.get("trades", []))}', fontsize=11)
+    fig.text(.10, .86, f'Капитал {capital} / $15 · {holding} · закрыто сделок: {len(wallet.get("trades", []))}', fontsize=11, parse_math=False)
     fig.text(.10, .81, status, fontsize=10)
     fig.text(.10, .76, 'Обновлено: '+freshness, fontsize=9, color='#bb3333' if stale else '#555555')
     candidate = data.get('candidate')
