@@ -118,3 +118,9 @@ depth consumption, mark-to-market drawdown, persistent pending orders and
 restart recovery. Current proxy drawdown only observes closed trades. Do not
 auto-promote or claim execution readiness. Obtain enough independent market
 days before fitting; do not relax gates to manufacture GPU activity.
+
+Validation: full suite 128 tests passed (expected mocked Telegram delivery log).
+Code commit: 6d4a689. Push via existing HTTPS origin failed because this device
+has no noninteractive GitHub credential helper. Local commits and mounted data
+are durable; continue work without resetting or discarding them. Synchronize
+using an already authorized credential path when available; never print tokens.
