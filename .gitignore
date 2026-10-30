@@ -16,3 +16,6 @@ __pycache__/
 /telegram_token.*
 /telega_bot
 /telega_bot.*
+
+# Local CUDA libraries, never source artifacts
+/.gpu-torch/
