@@ -6,9 +6,12 @@ Remote repository: `https://github.com/fermiums22/cripto_staff.git`.
 ## Network
 
 Windows WireGuard profile `codex-home` starts automatically. It routes only
-`192.168.0.2/32` and `192.168.0.8/32` through the home VPN. Normal internet and
+`192.168.0.2/32`, `192.168.0.3/32` (TrueNAS), and `192.168.0.8/32` through the home VPN. Normal internet and
 DNS use the office network. Profile files are outside Git in
 `C:\Users\v.taranov\.ssh\codex-network`.
+
+TrueNAS UI: `http://192.168.0.3/ui/`. Its host route was added to the persistent
+`codex-home.conf` and verified from Windows on 2026-10-30.
 
 The old full-tunnel profile `fermiums` is stopped and its service startup is
 Manual. **Do not activate both profiles together:** they reuse one VPN identity.
