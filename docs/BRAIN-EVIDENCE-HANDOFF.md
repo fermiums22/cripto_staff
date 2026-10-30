@@ -81,3 +81,40 @@ env LD_LIBRARY_PATH=/opt/nvidia-driver PYTHONPATH=.gpu-torch:.venv/lib/python3.1
 
 Preserve preexisting unstaged adaptive_live.py, telegram_control.py, web/adaptive.js and legacy untracked training files.
 Only new evidence-workflow files and existing motivation dependency are included in the new commit.
+
+## Continuation 2026-10-30: microstructure validation and prospective reservation
+
+The first continuation overlapped the initial evidence-workflow commit.
+Commit 9afafc5 already includes the microstructure call sites changed by this
+continuation; the follow-up commit supplies their new modules. Preserve both.
+
+Implemented:
+- samples-v2 stores session IDs. Labels cannot cross reconnects, missing 5s
+  observations, or hourly funding boundaries. Delayed entry and costs retained.
+- A stale/out-of-order book delta invalidates book and price history until a new
+  snapshot; stale, invalid and future-dated trade events cannot enter order flow.
+- Fixed momentum/reversal/cash comparisons, one shared diagnostic wallet per
+  strategy, compounded returns, extra 10bp cost stress and paired daily bounds.
+- Qualified development candidates reserve ONE immutable future 14-day period,
+  beginning next UTC midnight; model, scaler, source and protocol are hashed.
+  No candidate currently qualifies, so no microstructure trial has been reserved.
+- brain_micro_prospective.py evaluates that fixed future archive once after end,
+  using received-time delayed bid/ask labels. Reserved observations are excluded
+  from subsequent development. Source/artifact changes invalidate evaluation.
+- This is prospective PAPER REPLAY, not the requested full-depth live micro
+  PAPER executor. ready remains false even after a statistical pass. Do not
+  describe it as complete execution validation. No real-order interface exists.
+- Daily supervisor invokes the updated micro workflow without restarting it.
+  Original 15m frozen source hashes were verified intact.
+
+Verified operational observations:
+- Existing paper/arena/adaptive/Telegram/dashboard services active.
+- Mature 5-minute raw session reconstructed: 85,420 messages, 216 feature samples.
+- GPU temperature read by NVML: 31 C; no training forced on a few minutes of data.
+- 15m trial protocol integrity passed. No wallets reset or service changes.
+
+Remaining: independent LIVE microstructure paper executor with exact lot rules,
+depth consumption, mark-to-market drawdown, persistent pending orders and
+restart recovery. Current proxy drawdown only observes closed trades. Do not
+auto-promote or claim execution readiness. Obtain enough independent market
+days before fitting; do not relax gates to manufacture GPU activity.

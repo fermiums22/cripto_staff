@@ -18,7 +18,11 @@ class Sampler:
         if topic.startswith("publicTrade."):
             symbol=topic.split(".")[-1]
             for t in m["data"]:
-                self.flows[symbol].append((stamp,float(t["v"])*(1 if t["S"]=="Buy" else -1)))
+                volume=float(t["v"])
+                if (not 0<=stamp-int(t["T"])<=1500 or not np.isfinite(volume)
+                    or volume<=0 or t["S"] not in ("Buy","Sell")):
+                    continue
+                self.flows[symbol].append((stamp,volume*(1 if t["S"]=="Buy" else -1)))
             while self.flows[symbol] and stamp-self.flows[symbol][0][0]>30000:self.flows[symbol].popleft()
             return None
         if not topic.startswith("orderbook."):return None
