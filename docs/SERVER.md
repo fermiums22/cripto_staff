@@ -195,3 +195,18 @@ examined history is not pristine holdout. No automatic promotion or short/levera
 Output artifacts/waiting_research.json appears separately on the dashboard.
 The six original arena variants and breakout_cost_v2 are retired: no new entries,
 existing positions still exit normally, all balances and event histories retained.
+
+## Adaptive shared-wallet PAPER (2026-10-30)
+
+Dashboard: `http://192.168.0.8:8765/adaptive`; service `cripto-adaptive.service`.
+Uses only public linear market data and a separate persistent $15 simulated wallet
+in `data/adaptive.sqlite3`. Never delete this database to reset losses. The service
+cannot read project secrets, uses 1x exposure, and respects global PAPER pause.
+Current frozen train/validation results are negative: collection is active but
+entries are blocked. Do not bypass this gate to manufacture activity.
+Reports: `artifacts/adaptive_research.json`, `adaptive_protocol.json`,
+`adaptive_live.json`, `adaptive_delivery_report.md`. Research preserves existing
+frozen results rather than silently reusing the holdout. See
+`docs/ADAPTIVE-REPORT-2026-10-30.md` for assumptions and unimplemented experiments.
+The complete workstation checkout is `C:\Users\v.taranov\cripto_staff-adaptive`
+because drive D: filled up; the original checkout is retained, not synchronized.

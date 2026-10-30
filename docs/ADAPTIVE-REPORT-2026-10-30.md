@@ -46,7 +46,8 @@ hashes are in `artifacts/adaptive_protocol.json`; current state is in
 ## Verified versus limitations
 
 Server suite: 78 tests passed at initial deployment, including 15 adaptive engine
-and HTTP tests. Covered past-only features, next-observation decisions, gaps,
+and HTTP tests; 83 passed after the preserved workstation tests were synchronized.
+Covered past-only features, next-observation decisions, gaps,
 stop/TP ordering, trailing timing, liquidation, fees/funding reconciliation,
 rounding, shared capital, winning additions, persistence, stale quotes and the
 public-only endpoint allowlist. JavaScript syntax and read-only HTTP endpoints
