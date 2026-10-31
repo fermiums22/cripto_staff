@@ -1031,3 +1031,25 @@ Coverage caveat for expert comparison: contiguous all-coin training chunks total
 excludes substantial history. Do not claim complete96/48h training coverage;
 next event-specific study should quantify this selection bias and use per-coin
 valid sequences instead of implicitly treating excluded intervals as quiet market.
+
+
+## TRAIN-only impulse opportunity audit (2026-10-31)
+
+Added brain_impulse_opportunities.py, actual bounded run COMPLETED exit0 under
+CPU100%MemoryMax2G. Fixed four hypotheses leadlag/acceleration/flow/momentum;
+feature-only thresholds from Oct2-3, scored once Oct4-7 training data. Inputs
+hash verified. Per-symbol observations thinned180s BEFORE outcomes; no final or
+prospective data read. Two tests pass: causal/side-symmetric masks and outcome-free
+thinning. Test caught int64 sentinel subtraction overflow, fixed via Python int
+before first experiment; no completed frozen result was overwritten.
+Results storage/impulse-opportunities-v1 and docs/impulse-opportunities-2026-10-31.json.
+512 day/coin/side/horizon/hypothesis cells; NONE with>=10 thinned observations
+has positive mean net proxy. Do not fund another threshold sweep of these rules.
+Hindsight share with either direction net>10bp:10s .0583%,30s .1821%,60s .3730%,
+120s .9869%. This uses future outcome choice and is NOT tradable profitability.
+Targets are fixed-horizon sampled-depth proxies, not stopped portfolio results.
+Next meaningful hypothesis: train-only rare-event prediction versus directional
+net-value prediction and calibration, with class imbalance explicitly handled;
+first demonstrate incremental predictability on next training episodes, then
+freeze a separate development execution period. No positive edge or independent
+PAPER proof exists. Goal ACTIVE; prior turn made new empirical progress.
