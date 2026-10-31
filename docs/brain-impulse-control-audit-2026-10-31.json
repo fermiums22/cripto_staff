@@ -1,0 +1,111 @@
+{
+  "books": 2188876,
+  "events": 9018716,
+  "independent_paper_evidence": false,
+  "mode": "historical_development_event_depth_scenario",
+  "ready": false,
+  "reports": {
+    "cash": {
+      "accounting_residual": 0.0,
+      "by_symbol": {},
+      "closed_trade_drawdown": 0.0,
+      "daily_pnl": [
+        0.0
+      ],
+      "decisions": 16837,
+      "evidence_issues": [],
+      "execution_valid": true,
+      "fees": 0.0,
+      "final_cash": 15.0,
+      "final_equity": 15.0,
+      "mark_to_market_drawdown": 0.0,
+      "mean_daily_95ci": [
+        0.0,
+        0.0
+      ],
+      "net_pnl": 0.0,
+      "net_return": 0.0,
+      "pnl_without_best_symbol": 0.0,
+      "ready": false,
+      "reasons": {
+        "no_net_edge": 16802,
+        "paused_or_halted": 35
+      },
+      "trades": 0
+    },
+    "leadlag_flow": {
+      "accounting_residual": 0.0,
+      "by_symbol": {},
+      "closed_trade_drawdown": 0.0,
+      "daily_pnl": [
+        0.0
+      ],
+      "decisions": 16837,
+      "evidence_issues": [],
+      "execution_valid": true,
+      "fees": 0.0,
+      "final_cash": 15.0,
+      "final_equity": 15.0,
+      "mark_to_market_drawdown": 0.0,
+      "mean_daily_95ci": [
+        0.0,
+        0.0
+      ],
+      "net_pnl": 0.0,
+      "net_return": 0.0,
+      "pnl_without_best_symbol": 0.0,
+      "ready": false,
+      "reasons": {
+        "no_net_edge": 16802,
+        "paused_or_halted": 35
+      },
+      "trades": 0
+    },
+    "momentum": {
+      "accounting_residual": -7.216449660063518e-16,
+      "by_symbol": {
+        "DOGEUSDT": {
+          "net_pnl": -0.11056132564259602,
+          "trades": 5
+        },
+        "SOLUSDT": {
+          "net_pnl": -0.04514280431999729,
+          "trades": 1
+        },
+        "XRPUSDT": {
+          "net_pnl": -0.1351355100017951,
+          "trades": 4
+        }
+      },
+      "closed_trade_drawdown": 0.01938930933095928,
+      "daily_pnl": [
+        -0.29083963996438844
+      ],
+      "decisions": 16837,
+      "evidence_issues": [],
+      "execution_valid": true,
+      "fees": 0.14217309796439997,
+      "final_cash": 14.709160360035611,
+      "final_equity": 14.709160360035611,
+      "mark_to_market_drawdown": 0.019392738507113205,
+      "mean_daily_95ci": [
+        -0.29083963996438844,
+        -0.29083963996438844
+      ],
+      "net_pnl": -0.2908396399643891,
+      "net_return": -0.01938930933095928,
+      "pnl_without_best_symbol": -0.24569683564439182,
+      "ready": false,
+      "reasons": {
+        "busy": 60,
+        "entry_filled": 10,
+        "exit_filled": 10,
+        "no_net_edge": 16732,
+        "paused_or_halted": 35
+      },
+      "trades": 10
+    }
+  },
+  "samples": 99659,
+  "confidence_warning": "One calendar day: degenerate bootstrap intervals do not establish statistical evidence"
+}

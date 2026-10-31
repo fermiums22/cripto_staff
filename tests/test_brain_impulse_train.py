@@ -25,7 +25,7 @@ class TrainingIsolationTests(unittest.TestCase):
                 self.assertLess(data.ends[train].max(),data.input_start_ms[early].min())
                 for name in ('model.pt','scaler.npz','checkpoint.pt','identity.json'):(folder/name).write_text('test fixture')
                 return object(),np.zeros(30),np.ones(30)
-            with patch('brain_impulse_train.freeze',side_effect=freeze),patch('brain_impulse_train.Frames',return_value=data) as frames,patch('brain_impulse_train.fit',side_effect=fit) as fitter,patch('brain_impulse_train.predict',side_effect=lambda net,data,ids,*args:np.zeros((len(ids),8))):
+            with patch('brain_impulse_train.KINDS',('mlp','tcn','gru','moe')),patch('brain_impulse_train.freeze',side_effect=freeze),patch('brain_impulse_train.Frames',return_value=data) as frames,patch('brain_impulse_train.fit',side_effect=fit) as fitter,patch('brain_impulse_train.predict',side_effect=lambda net,data,ids,*args:np.zeros((len(ids),8))):
                 run(root,output);self.assertEqual(fitter.call_count,8)
                 frames.assert_called_once_with(['development-only'])
                 run(root,output);self.assertEqual(fitter.call_count,8)

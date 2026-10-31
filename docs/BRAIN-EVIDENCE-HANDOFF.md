@@ -454,3 +454,45 @@ replay PID 3566 active and result pending. Do not restart either based on waitin
 Next: boosted-tree/ridge baseline training, validation event-depth comparison,
 uncertainty/stress/selection protocol, then controlled access to diagnostics.
 No model live deployment or independent success has occurred.
+
+
+## Continuation: ridge/XGBoost competition and completed control audit (2026-10-31)
+
+Previous turn progressed (4cac1a0). Goal remains ACTIVE, no qualifying edge.
+Added brain_impulse_baselines.py: ridge and XGBoost independent regressors using
+90 last/mean/change features from the same eight causal observations. Only train
+indices accepted; max 100,000 evenly spaced chronological examples bounds memory.
+Ridge fixed L2=10 and train-only scaling. XGBoost installed version 3.1.1: CUDA hist,
+depth3, bins64, eta.04, lambda10, child20, 96 fixed rounds, no hyperparameter search.
+Checkpoint each four rounds with atomic progress pointer/checksum; resumed fits
+preserve the same chunk schedule. Actual booster config must report cuda:0; no
+silent CPU fallback. Predictors emit eight net returns compatible with SequenceSignals.
+brain_impulse_train now runs SIX approaches x TWO folds = 12 bounded fits, hashes
+baseline artifacts and validates finite prediction shapes. No diagnostic loading.
+No market training launched before full 21-day admission; rules remain separate
+untrained execution controls. Future selection still needs event-depth validation.
+
+Verification: 184-test full suite PASS. Actual CUDA boosted multi-output training
+and interrupted/resumed equality passed. Ridge ignores poisoned nontrain rows;
+changed experiment identity or damaged completed artifact fails. XGBoost emits
+'nvidia-smi: not found' in this container, but actual booster device config and GPU
+training tests succeed; no driver/env changes were made. API references consulted:
+https://xgboost.readthedocs.io/en/stable/tutorials/multioutput.html
+https://xgboost.readthedocs.io/en/stable/gpu/index.html
+Installed API/version were inspected locally rather than assuming latest requirements.
+
+Control audit COMPLETED (brain-impulse-replay-audit MainPID=0, exit0, inactive).
+Full result storage/impulse-replay-audit-v1/result.json; identity preserved.
+9,018,716 in-interval events, 2,188,876 depth quotes, 99,659 samples; raw input CRC
+exhausted. Momentum: 10 trades, net -$0.2908396399643891 (-1.93893%), fees $0.1421731,
+MTM drawdown 1.93927%, ending $14.70916036. DOGE 5 trades -$0.11056133; SOL 1 trade
+-$0.04514280; XRP 4 trades -$0.13513551. Cash and leadlag_flow had zero trades.
+No execution evidence issues, accounting residual <1e-15. This is NEGATIVE one-day
+historical scenario evidence. Its one-day bootstrap CI is degenerate and MUST NOT
+be interpreted as statistically meaningful; no independent trial or alpha pass.
+Campaign remains active, seven completed days, processing Oct 8 at last check.
+
+Next: finish admitted dataset, run fixed 12 fits, execute validation folds with
+frozen models/controls and cost/latency stress, choose or reject before diagnostics.
+Need multi-day paired uncertainty, concentration and execution gates before any
+independent candidate PAPER trial. Preserve all frozen active source files.
