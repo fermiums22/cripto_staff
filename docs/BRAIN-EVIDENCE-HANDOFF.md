@@ -306,3 +306,53 @@ Next high-value work:
 3. Run model selection once per fixed hypothesis protocol, then frozen independent
    future PAPER with cost/depth/coverage/coin-diversification confidence gates.
 4. Finish maker/partial/funding/margin accounting before claiming execution-ready.
+
+
+## Continuation 2026-10-31: historical stream campaign and GPU impulse models
+
+Goal remains ACTIVE; no demonstrated net edge or independent successful candidate.
+The prior conversational response made no research progress. This continuation
+revalidated the live jobs and completed the implementation checks below.
+
+- Added bounded resumable six-symbol archive downloads, stream merging with
+  explicit simulated receipt delays, full ZIP/gzip consumption and checksums.
+  Adjacent midnight spill records are clipped and counted, not treated as a new
+  day's history; larger wrong-day records fail. RPI trades are excluded.
+- Pilot reconstructed 9,018,727 messages into 99,659 feature observations.
+  Failed pre-fix output remains preserved separately. Successful derived path:
+  storage/archive-pilot-v1/derived-d6cb8fcd167d.
+- brain_impulse_dataset.py writes immutable, hashed binary arrays: eight trailing
+  observations of 30 features, eight long/short 10/30/60/120-second net targets.
+  Reservation, session, gap and hourly boundaries are excluded. Targets remain
+  sampled-depth FIXED-HORIZON proxies, not full risk-stopped portfolio PnL.
+- Fixed Oct 1-21 campaign preflight checked 252 files, 14,798,627,880 bytes total;
+  32 GiB raw budget, 512 MiB/file, 10 GiB free reserve. Source code, source ETags,
+  instrument scenario and reservations are frozen in campaign-plan.json.
+  brain-archive-campaign.service enabled: CPU quota 100%, RAM 1280 MiB, no swap,
+  own storage paths only, restart-on-failure with bounded retry rate.
+  Last live check: PID 3313, active, NRestarts=0, RSS 70,404 KiB. Three completed
+  days passed coverage, all four alts have 24 qualified hours/day. Target counts
+  61,848 / 53,531 / 58,709. The remaining days are not yet verified complete.
+  MemoryCurrent near cgroup cap includes filesystem cache; process RSS is small.
+- Added brain_impulse_models.py: MLP/TCN/GRU/MoE eight-output net-return regressors,
+  train-only scaling, lookback-aware temporal purge, bounded AMP optimization,
+  thermal guard, early stopping, model/optimizer/scaler/RNG checkpoints and
+  immutable experiment/data/index identities. No orders or auto-promotion.
+- GPU tests actually ran all four backward passes with finite parameter gradients.
+  MLP checkpoint resume matched uninterrupted training bit-for-bit. Full suite:
+  170 tests PASS (expected mocked Telegram error and matplotlib warning).
+  Real Oct 1 dataset loader verified hashes, 61,848 targets, shapes (2,8,30)/(2,8),
+  finite sampled arrays and causal time bounds. No prediction/PnL selection made.
+- Existing live impulse controls still candidate CASH, zero closed trades at
+  last inspection. Campaign and control source freezes preserved. Existing
+  unrelated dirty adaptive/Telegram/frontend changes were not staged.
+
+Next required work: build the immutable competition orchestrator with simple
+controls and boosted trees, purged walk-forward folds, validation-only selection,
+shared risk-stopped execution replay, daily/coin/concentration uncertainty and
+cost/latency stress. Connect trained candidates to a distinct frozen future PAPER
+trial only after gates pass. Neural helper tests are NOT a model competition or
+profit evidence. Historical receipt delays/current lot rules remain scenarios;
+news/OI/funding/liquidations are not invented where archives lack them.
+Do not modify campaign CODE files while it is running. New orchestration modules
+can be developed independently. Data location: storage/archive-campaign-v1.

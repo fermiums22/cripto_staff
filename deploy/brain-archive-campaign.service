@@ -1,0 +1,29 @@
+[Unit]
+Description=Fixed 21-day Bybit depth/flow development dataset (no trading)
+After=network-online.target remote-fs.target
+Wants=network-online.target
+RequiresMountsFor=/home/codex/projects/market-brain-storage
+StartLimitIntervalSec=3600
+StartLimitBurst=3
+
+[Service]
+Type=simple
+User=codex
+WorkingDirectory=/home/codex/workspace/cripto_staff
+ExecStart=/bin/sh /home/codex/workspace/cripto_staff/deploy/brain-supervisor.sh brain_archive_campaign.py --directory /home/codex/projects/market-brain-storage/archive-campaign-v1
+CPUQuota=100%
+MemoryMax=1280M
+MemorySwapMax=0
+Nice=15
+Restart=on-failure
+RestartSec=120
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/codex/projects/market-brain-storage/archive-campaign-v1 /home/codex/projects/market-brain-storage/archive-pilot-v1 /home/codex/projects/market-brain-storage/archive-probe-20261001
+InaccessiblePaths=/home/codex/workspace/cripto_staff/secrets
+PrivateTmp=true
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

@@ -19,13 +19,15 @@ def sha(path):
     return h.hexdigest()
 
 
-def probe(directory,day):
+def probe(directory,day,symbol='SOLUSDT',max_file_bytes=256*1024**2):
+    if symbol not in ('BTCUSDT','ETHUSDT','SOLUSDT','DOGEUSDT','XRPUSDT','BNBUSDT'):
+        raise ValueError('Symbol outside the fixed research universe')
     parsed=date.fromisoformat(day)
     if parsed>=datetime.now(timezone.utc).date():raise ValueError('Closed historical day required')
     directory.mkdir(parents=True,exist_ok=True)
     opener=urllib.request.build_opener(urllib.request.ProxyHandler({}))
-    sources={f'SOLUSDT{day}.csv.gz':f'https://public.bybit.com/trading/SOLUSDT/SOLUSDT{day}.csv.gz',
-        f'{day}_SOLUSDT_ob200.data.zip':f'https://quote-saver.bycsi.com/orderbook/linear/SOLUSDT/{day}_SOLUSDT_ob200.data.zip'}
+    sources={f'{symbol}{day}.csv.gz':f'https://public.bybit.com/trading/{symbol}/{symbol}{day}.csv.gz',
+        f'{day}_{symbol}_ob200.data.zip':f'https://quote-saver.bycsi.com/orderbook/linear/{symbol}/{day}_{symbol}_ob200.data.zip'}
     reports=[]
     for name,url in sources.items():
         target=directory/name;manifest=directory/(name+'.json')
@@ -35,7 +37,7 @@ def probe(directory,day):
             reports.append(previous);continue
         with opener.open(urllib.request.Request(url,method='HEAD'),timeout=20) as response:
             size=int(response.headers['Content-Length']);etag=response.headers.get('ETag')
-        if not 0<size<256*1024**2 or shutil.disk_usage(directory).free-size<10*1024**3:
+        if not 0<size<max_file_bytes or shutil.disk_usage(directory).free-size<10*1024**3:
             raise ValueError('Archive probe storage budget')
         part=directory/(name+'.part');partmeta=directory/(name+'.part.json')
         metadata=dict(url=url,size=size,etag=etag)
@@ -83,4 +85,5 @@ def probe(directory,day):
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('--directory',type=Path,required=True)
-    p.add_argument('--date',required=True);a=p.parse_args();probe(a.directory,a.date)
+    p.add_argument('--date',required=True);p.add_argument('--symbol',default='SOLUSDT')
+    a=p.parse_args();probe(a.directory,a.date,a.symbol)
