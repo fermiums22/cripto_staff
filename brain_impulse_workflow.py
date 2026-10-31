@@ -18,11 +18,11 @@ def run(campaign,output):
         if json.loads(summary.read_text()).get('coverage_admitted') is not True:
             atomic_json(output/'workflow-status.json',dict(stage='data_coverage_rejected',ready=False));return
         root=Path(__file__).resolve().parent
-        for script in ('brain_impulse_train.py','brain_impulse_evaluate.py'):
+        for script in ('brain_impulse_train.py','brain_impulse_evaluate.py','brain_impulse_diagnostic.py'):
             atomic_json(output/'workflow-status.json',dict(stage=script,updated_ms=time.time_ns()//1000000,ready=False))
             subprocess.run(['/bin/sh',str(root/'deploy/brain-supervisor.sh'),script,
                             '--campaign',str(campaign),'--output',str(output)],cwd=root,check=True)
-        atomic_json(output/'workflow-status.json',dict(stage='validation_complete_no_promotion',
+        atomic_json(output/'workflow-status.json',dict(stage='research_complete_no_promotion',
             updated_ms=time.time_ns()//1000000,ready=False))
 
 

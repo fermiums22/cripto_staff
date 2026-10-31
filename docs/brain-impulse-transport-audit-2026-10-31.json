@@ -1,0 +1,135 @@
+{
+  "transport": {
+    "counts": {
+      "allLiquidation": 1,
+      "orderbook": 13655,
+      "publicTrade": 342,
+      "samples": 69,
+      "tickers": 2951
+    },
+    "duration_s": 120.20434172800014,
+    "invalidations": [
+      {
+        "lag_ms": 531,
+        "ms": 1793449379025,
+        "prior_seq": null,
+        "prior_u": null,
+        "reason": "snapshot",
+        "seq": 836170232088,
+        "symbol": "BTCUSDT",
+        "type": "snapshot",
+        "u": 55114753
+      },
+      {
+        "lag_ms": 473,
+        "ms": 1793449379026,
+        "prior_seq": null,
+        "prior_u": null,
+        "reason": "snapshot",
+        "seq": 467515963446,
+        "symbol": "ETHUSDT",
+        "type": "snapshot",
+        "u": 56801934
+      },
+      {
+        "lag_ms": 549,
+        "ms": 1793449379185,
+        "prior_seq": null,
+        "prior_u": null,
+        "reason": "snapshot",
+        "seq": 287385180958,
+        "symbol": "SOLUSDT",
+        "type": "snapshot",
+        "u": 49021259
+      },
+      {
+        "lag_ms": 276,
+        "ms": 1793449379187,
+        "prior_seq": null,
+        "prior_u": null,
+        "reason": "snapshot",
+        "seq": 362677372477,
+        "symbol": "DOGEUSDT",
+        "type": "snapshot",
+        "u": 34666340
+      },
+      {
+        "lag_ms": 670,
+        "ms": 1793449379187,
+        "prior_seq": null,
+        "prior_u": null,
+        "reason": "snapshot",
+        "seq": 270757484090,
+        "symbol": "XRPUSDT",
+        "type": "snapshot",
+        "u": 48843781
+      },
+      {
+        "lag_ms": 712,
+        "ms": 1793449379189,
+        "prior_seq": null,
+        "prior_u": null,
+        "reason": "snapshot",
+        "seq": 287385180839,
+        "symbol": "BNBUSDT",
+        "type": "snapshot",
+        "u": 33721672
+      }
+    ],
+    "lag_ms": {
+      "allLiquidation": {
+        "max": 95.0,
+        "min": 95.0,
+        "p50": 95.0,
+        "p95": 95.0,
+        "p99": 95.0
+      },
+      "orderbook": {
+        "max": 712.0,
+        "min": 93.0,
+        "p50": 94.0,
+        "p95": 95.0,
+        "p99": 99.0
+      },
+      "publicTrade": {
+        "max": 112.0,
+        "min": 94.0,
+        "p50": 95.0,
+        "p95": 96.94999999999999,
+        "p99": 110.58999999999997
+      },
+      "tickers": {
+        "max": 2010.0,
+        "min": 94.0,
+        "p50": 95.0,
+        "p95": 95.0,
+        "p99": 423.5
+      }
+    },
+    "ready": false,
+    "sampler_audit": {
+      "invalidated_books": 6,
+      "stale_or_future_messages": 6
+    }
+  },
+  "ledger": {
+    "commits": 150,
+    "cycles": 50,
+    "ready": false,
+    "single_account_ms": {
+      "max": 2687.6040259994625,
+      "p50": 85.870620499918,
+      "p95": 1350.9250448990292,
+      "p99": 2214.5703855994107
+    },
+    "synthetic": true,
+    "three_account_ms": {
+      "max": 4544.832797999334,
+      "p50": 290.3754965009284,
+      "p95": 3855.8173899996264,
+      "p99": 4445.022904110119
+    }
+  },
+  "ready": false,
+  "conclusion": "Measured synchronous journal stalls exceed freshness limit; causal attribution of all reconnects remains unproven"
+}

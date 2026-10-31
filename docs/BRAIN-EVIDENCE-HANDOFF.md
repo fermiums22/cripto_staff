@@ -577,3 +577,52 @@ Interruption resumes completed model checkpoints/fold-scenarios; an unfinished
 replay scenario restarts from its beginning, not an invented midstream account.
 Unrelated systemd verify warning references existing codex-home-ca-http service;
 that service was not modified. Household/old PAPER wallets remain untouched.
+
+
+## Continuation: selected-model diagnostic and measured live bottleneck (2026-10-31)
+
+Previous turn progressed (f89ea64). Goal ACTIVE, no qualified positive expectation.
+Added brain_impulse_diagnostic.py: recomputes verified validation selection from
+cached event-depth results; CASH leaves final historical sources unopened. Only
+selected fold1 weights + three controls are replayed on days14-21, base and stress.
+No retraining, threshold tuning, alternative-model inspection or live promotion.
+Checks raw campaign/model/selection/policy identity, atomic checksum-protected
+scenario results, seven-day accounting/paired controls/risk/concentration gates.
+Pass means eligible_for_new_future_paper only; historical period was previously
+inspected at candle resolution and is NOT independent new evidence. All readiness
+and live-promotion flags remain false. Workflow now invokes diagnostic stage after
+validation; if rejected it finishes with no candidate and no final-data inspection.
+
+Full suite 195 tests passed. Diagnostic tests demonstrate only prospective PAPER
+eligibility from synthetic success and no access to final paths when CASH selected.
+Frozen before fitting: storage/impulse-competition-v1/diagnostic-policy.json SHA256
+86ccf8142a351caae5149fcd1b9e9af838fa80ea09eb018a623062fdfee6391f.
+Frozen prior selection/execution source files were not modified. Workflow is an
+operational wrapper; its added diagnostic invocation does not alter those trials.
+Campaign verified running, 12 completed days at last check, processing Oct13.
+GPU idle31C, 0% utilization,0MiB at that sample. No overheating observation.
+
+Important actual live finding; prioritize before candidate PAPER:
+- Existing impulse control service active PID2699, but frequent leader-book
+  invalidations/reconnects (35+). Its CPU only1.7%, ~49MiB RSS, so CPU saturation
+  was not observed. No wallets reset, no freshness thresholds loosened.
+- Separate public-stream 120.2s probe completed exit0: 13,655 book messages,
+  2,951 tickers,342 trade messages,69 feature samples. Book latency p50=94ms,
+  p99=99ms,max712ms. Only six initial snapshot resets, no erroneous book sequence
+  or timestamp invalidation in this window. Some stale tickers reached2010ms.
+  Source/result: storage/impulse-transport-audit-v1/probe.py and result.json.
+  First20s attempt failed from probe-only ping serialization typo; failed source
+  and partial result preserved separately, corrected attempt ran120s. Active
+  frozen live service was never edited/restarted by this audit.
+- Separate synthetic durable SQLite benchmark on SAME mounted storage, new isolated
+  accounts, 50 cycles/150 FULL commits: 3-account decision cycle p50=290ms,
+  p95=3856ms,p99=4445ms,max4545ms. Single commit p50=86ms,p95=1351ms,
+  p99=2215ms,max2688ms. storage/impulse-ledger-latency-audit-v1/result.json.
+  This is sufficient to make same-thread socket reads exceed1500ms freshness.
+  It is a measured bottleneck and plausible reconnect cause, NOT proof that every
+  existing reconnect came from storage. The read-only probe did not reproduce it.
+- Next required live engineering: separate timestamped socket ingestion from slow
+  durable writes using bounded buffering/backpressure and fresh decision-clock
+  checks, preserve fail-closed behavior, and version the trial (do not silently
+  patch frozen live/data sources). Never merely accept stale prices or move/reset
+  existing wallets. Validate with controlled slow storage plus real public stream.
