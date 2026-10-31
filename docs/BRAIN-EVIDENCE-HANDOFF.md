@@ -418,3 +418,39 @@ failure: do not restart it. Six existing cripto services verified running.
 No candidate trained/promoted this turn, no edge claim. Next substantial step is
 the immutable experiment orchestrator: admitted campaign, purged folds, boosted
 baseline, bounded neural fits, validation-only selection and event-depth replay.
+
+
+## Continuation: calendar folds and bounded neural training stage (2026-10-31)
+
+Previous turn made progress (4a7bff0, published). No profitable edge is established.
+Added brain_impulse_splits.py: admission requires 21 ordered contiguous days,
+all four alts >=20 qualified hours/day, matching campaign/dataset manifest hashes.
+It freezes first 14 days as development and final 7 as diagnostic. Two expanding
+folds use day offsets (train end, early-stop end, score end): (7,9,11), (9,11,14).
+180s purge applies to both actual feature-history start and label end. Index order
+is explicitly chronological even though targets were written by completion time.
+The new helper avoids the legacy walk_forward issue where end[-1] slightly before
+midnight could reject a fully covered exact-21-day campaign. Legacy helper remains
+unchanged; use the new manifest/calendar path for this competition.
+
+Added brain_impulse_train.py CLI --campaign PATH --output PATH: exactly eight
+neural fits (4 architectures x 2 folds), 25 maximum epochs each, early stopping,
+optimizer/RNG resume from existing model helper, immutable source/split identities,
+validation predictions and hash-verified per-model completed artifacts. It loads
+ONLY the first 14 days; final diagnostic arrays are never loaded. Status/summary
+explicitly say training stage only, no promotion. Do not treat neural validation
+predictions as completed baseline/execution comparison. GPU fitting has NOT been
+launched: campaign is not yet fully admitted. No fake training on partial history.
+
+Checks: 181-test full suite passed; subsequent orchestrator isolation/resume/tamper
+unit test passed separately (182 tests total now). Test verifies only development
+paths reach Frames, all eight fits finish, second invocation skips them, and altered
+model artifact fails. Fixed the test-exposed lock-file resource leak with a context
+manager; focused test passed again. Neural numerical/backward tests remain those
+already verified on CUDA, not this mocked orchestration test.
+
+Latest live check: campaign PID 3313, six completed days, processing Oct 7; control
+replay PID 3566 active and result pending. Do not restart either based on waiting.
+Next: boosted-tree/ridge baseline training, validation event-depth comparison,
+uncertainty/stress/selection protocol, then controlled access to diagnostics.
+No model live deployment or independent success has occurred.
