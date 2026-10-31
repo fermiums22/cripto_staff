@@ -868,3 +868,50 @@ second run6/6 PASS in38.418s. Both results preserved under storage/
 impulse-ledger-recovery-audit-v1 and-v2. Successful report copied to docs.
 Full suite not repeated: latest full206 plus focused feature-contract and ledger
 coverage. No change to policies, active model source freezes or source hashes.
+
+
+## User correction: Evolutionary Trading Lab, first bounded run (2026-10-31)
+
+User explicitly requires EXPLORATION separate from independent EVALUATION: agents
+must learn trading actions and risk/size/exits through after-cost financial
+feedback, not only regress returns behind a deployment threshold. Full goal still
+positive fresh-data and independent PAPER evidence; no success claimed.
+
+New isolated modules brain_evolution_env/policy/tape/lab.py. Environment supports
+BUY/SELL/HOLD/CLOSE/NO TRADE, variable allocation/leverage1-10, stops/holding times,
+entry/exit delay1s, taker fee/slip, visible depth and quantity rules, explicit
+approximate isolated-margin liquidation and bankruptcy. No min-edge or max-DD
+production admission gate. Unknown hourly funding is avoided and crossings/gaps
+invalidate evidence. Liquidation is a declared scenario, NOT exact Bybit engine.
+Raw archives are converted to one-second top10 depth plus causal5s features;
+this coarse simulator is for exploration, not independent execution evidence.
+Every agent has a new independent virtual account per episode; existing wallets
+never opened. Actions/trades and after-cost results retained in gzip journals.
+
+Population18: CASH and fixed Momentum baselines, two each momentum/breakout/
+BTC-ETH leadlag/orderflow/impulse/specialist, four MLP/MoE policies. Mutations vary
+weights, allocation, leverage, horizons, stops and specialist instruments. Within
+families selection uses net return minus drawdown penalty, no trade-count or
+inaction bonus; preserve baseline and parent elites. Neural optimization here is
+explicitly gradient-free financial-fitness evolution with actual CUDA policy
+forward evaluation; gradient_fits=0, random gen0 is NOT an already trained model.
+
+Fixed3 generations on sequential training day pairs Oct2-3,4-5,6-7; final population
+read once on DEVELOPMENT validation Oct8-9. Previously reserved final Oct15-21
+and prospective windows not used. Not independent validation: historical reuse
+is explicitly labeled. No active competition sources/policies modified.
+Frozen plan/input/source hashes, per-generation populations/scaler checkpoints,
+episode checksums and restart skip; unfinished episode restarts from beginning.
+No live promotion or independent evaluation adapter implemented yet.
+
+Five tests PASS including CUDA/CPU numerical parity, actual parameter mutations,
+financial parent selection, delayed fills/close, fee accounting, liquidation,
+CASH reward0 and nonzero synthetic replay trades without deployment edge gate.
+Service brain-evolution-lab enabled for boot, CPU100%,MemoryMax4G,swap0,nice15,
+write restricted to storage/evolution-lab-v1, secrets inaccessible, restart300s.
+Current PID6124 preparing first day tape; no actual historical lab trade result
+observed yet. Monitor status and result rather than assuming service start means
+training success. Existing v2 old competition still completing fold1/base and
+preserved as prior regression experiment. Existing household/PAPER services intact.
+Next: inspect actual financial episodes/offspring behavior, validate resume, then
+implement separately frozen independent action-policy evaluation and future PAPER.
