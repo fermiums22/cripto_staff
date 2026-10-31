@@ -14,10 +14,11 @@ from brain_impulse_data import atomic_json
 from brain_impulse_models import Frames,fit,predict
 from brain_impulse_splits import freeze,indices
 from brain_impulse_baselines import fit as fit_baseline
+from brain_impulse_selection import freeze_policy
 
 KINDS=('ridge','xgboost','mlp','tcn','gru','moe')
 CODE=('brain_impulse_train.py','brain_impulse_models.py','brain_impulse_splits.py',
-      'brain_impulse_dataset.py','brain_impulse_data.py','brain_factory.py','brain_impulse_baselines.py')
+      'brain_impulse_dataset.py','brain_impulse_data.py','brain_factory.py','brain_impulse_baselines.py','brain_impulse_selection.py')
 
 
 def run(campaign,output):
@@ -28,9 +29,10 @@ def run(campaign,output):
 
 
 def _train(campaign,output):
+    selection_sha256=freeze_policy(output)
     plan=freeze(campaign,output)
     source={n:sha(Path(__file__).parent/n) for n in CODE}
-    identity=dict(splits_sha256=sha(output/'split-plan.json'),source=source,kinds=KINDS,
+    identity=dict(splits_sha256=sha(output/'split-plan.json'),selection_sha256=selection_sha256,source=source,kinds=KINDS,
                   max_epochs=25,ready=False,stage='competition_training_only')
     identity=json.loads(json.dumps(identity));ip=output/'training-plan.json'
     if ip.exists() and json.loads(ip.read_text())!=identity:raise ValueError('Frozen training plan changed')

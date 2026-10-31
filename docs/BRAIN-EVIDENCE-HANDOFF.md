@@ -496,3 +496,36 @@ Next: finish admitted dataset, run fixed 12 fits, execute validation folds with
 frozen models/controls and cost/latency stress, choose or reject before diagnostics.
 Need multi-day paired uncertainty, concentration and execution gates before any
 independent candidate PAPER trial. Preserve all frozen active source files.
+
+
+## Continuation: validation rejection policy frozen before fitting (2026-10-31)
+
+Previous turn progressed (3ad615b). Goal remains ACTIVE; no new alpha evidence.
+Added brain_impulse_selection.py, consuming actual event-depth replay ledgers, not
+regression MSE. Requires full fixed six-model family plus CASH/momentum/leadlag_flow
+controls, both base and stress, identical calendar days; reconciles per-trade,
+per-day, net PnL and fee totals. Rejects execution issues, nonpositive folds/stress,
+>10% MTM drawdown, <100 trades, <3 symbols, nonpositive PnL removing best coin,
+>60% positive coin PnL share or >20% positive trade PnL share. Paired two-day
+circular-block bootstrap includes idle days, minimum five days, fixed seed 7301,
+20,000 resamples, one-sided family adjustment across 6x3 model/control comparisons.
+Small five-day development samples are not independent proof; this gate allows
+ONLY later diagnostic evaluation, never live promotion. Final readiness always
+false; no winner becomes PAPER-ready merely by passing this helper.
+
+Policy and source hash frozen now in storage/impulse-competition-v1/selection-policy.json:
+SHA256 052f9e4eca23d7f1b8b13456ea3e31f4dc289f904e082a3309ad667ebd468b11.
+Training runner now checks that freeze and includes its digest/source in identity.
+Use impulse-competition-v1 as the output directory for upcoming training. Do not
+silently edit selection source or gates after seeing candidate outcomes. No market
+fits started yet. Full validation execution orchestration/stress policy binding and
+winner diagnostic activation remain unimplemented; do not call the selector on
+proxy labels or promote automatically.
+
+All 189 tests pass, including rejection of concentrated profits, negative stress,
+missing/misaligned controls, forged fee ledger, too few days, and lack of paired
+advantage. Synthetic positive fixture only receives diagnostic eligibility;
+live_promotion_allowed remains false. Campaign PID 3313 active, NRestarts=0,
+eight completed days, downloading Oct 9. Existing live source/wallets untouched.
+Next: implement validation model loading/artifact checks and actual frozen
+multi-day execution/stress orchestration; complete admitted 21-day data and fits.
