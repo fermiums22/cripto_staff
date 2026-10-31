@@ -36,7 +36,7 @@ def replay(tape,candidates,instruments,mean,std,device='cuda'):
         now=min(bt,ft)
         if bt<=ft:
             symbol=ASSETS[int(tape['bs'][bi])];levels=tape['depth'][bi]
-            book=dict(ts=now,symbol=symbol,bids=[tuple(v) for v in levels[0] if v[1]>0],asks=[tuple(v) for v in levels[1] if v[1]>0])
+            book=dict(ts=now,symbol=symbol,bids=[(float(v[0]),float(v[1])) for v in levels[0] if v[1]>0],asks=[(float(v[0]),float(v[1])) for v in levels[1] if v[1]>0])
             for account in accounts.values():
                 if ((account.position and account.position['symbol']==symbol) or
                     (account.pending and account.pending.get('symbol')==symbol)):
@@ -100,6 +100,11 @@ def freeze(output,campaign):
     p=output/'plan.json'
     if p.exists() and json.loads(p.read_text())!=plan:raise ValueError('Frozen lab plan changed')
     if not p.exists():atomic_json(p,plan)
+    snapshot=output/'source';snapshot.mkdir(exist_ok=True)
+    for name,h in plan['source'].items():
+        target=snapshot/name
+        if not target.exists():target.write_bytes((Path(__file__).parent/name).read_bytes())
+        if sha(target)!=h:raise ValueError('Frozen lab source snapshot changed')
     return plan
 
 

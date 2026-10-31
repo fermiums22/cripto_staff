@@ -1,4 +1,5 @@
 import copy
+import json
 import unittest
 import numpy as np
 import torch
@@ -64,6 +65,7 @@ class EvolutionTests(unittest.TestCase):
         r=replay(tape,pop,INST,np.zeros(30),np.ones(30),'cpu')
         self.assertEqual(r['cash-g0']['trades'],0);self.assertGreater(r['momentum-g0']['trades'],0)
         self.assertEqual(r['momentum-g0']['evidence_issues'],[])
+        self.assertEqual(json.loads(json.dumps(r,allow_nan=False))['momentum-g0']['trades'],r['momentum-g0']['trades'])
 
 
 if __name__=='__main__':unittest.main()

@@ -915,3 +915,31 @@ training success. Existing v2 old competition still completing fold1/base and
 preserved as prior regression experiment. Existing household/PAPER services intact.
 Next: inspect actual financial episodes/offspring behavior, validate resume, then
 implement separately frozen independent action-policy evaluation and future PAPER.
+
+
+### Actual first historical episode and runtime serialization correction
+
+v1 reached the end of Oct2 virtual trading but failed JSON serialization because
+NumPy quote scalars propagated a numpy.bool_ bankruptcy flag. Preserved full v1
+plan/population/tape, failed-source and failure.txt. No financial tuning performed.
+Normalize depth tape quotes to Python floats at execution boundary; synthetic
+integration test now serializes full reports. All5 tests still pass incl CUDA.
+New run storage/evolution-lab-v2 has explicit runtime-lineage.json, reuses ONLY
+completed immutable Oct2 tape via symlink, starts same seeded gen0 and preserves
+old checkpoint. Source snapshots now copied and hashed at freeze. Service writable
+output changed to v2, currently PID6296. No old source hash rewritten.
+
+First actual Oct2 episode completed and checksum verified:
+18 accounts,6921 virtual trades total, max accounting residual3.29e-14,
+no evidence issues. CASH0trades/net0; conservative SOL specialist0trades due
+3196 quantity/depth rejections, NOT a successful learned strategy. Momentum
+baseline563trades,-52.4119%,fees4.91995 on initial15. Four RANDOM gen0 neural
+policies383-466trades each,-91.34% to-92.35%,fees~8.81-8.90. These are exploration
+losses, not qualified trading models. Low balances eventually fall below order
+size requirements; no wallet reset to conceal the loss. Three/four coins traded
+by multiasset policies. Actual orders include entry delay e.g.1095-1669ms.
+All action histories, trades, per-coin PnL/fees, reasons and liquidation counters
+stored in train-0/2026-10-02.json.gz. Current gen0 Oct3 preparing; no completed
+financially selected offspring observed yet. Next inspect generation transition
+and evaluate descendants on their assigned new training days, then final frozen
+development validation. Independent evaluation/PAPER remains outstanding.
