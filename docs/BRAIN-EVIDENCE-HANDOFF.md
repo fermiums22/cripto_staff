@@ -356,3 +356,39 @@ profit evidence. Historical receipt delays/current lot rules remain scenarios;
 news/OI/funding/liquidations are not invented where archives lack them.
 Do not modify campaign CODE files while it is running. New orchestration modules
 can be developed independently. Data location: storage/archive-campaign-v1.
+
+
+## Continuation: event-depth control replay (2026-10-31)
+
+Previous turn made concrete progress (32246c9, published). This turn adds
+brain_impulse_replay.py without modifying any frozen campaign/live-control code.
+archive_events validates raw hashes, reconstructs actual book deltas, feeds
+200ms-limited depth quotes plus causal feature observations and raw-message clock
+advances. The replay uses the SAME execution engine as live controls: 500ms
+signal gather, delayed taker fills, actual visible depth, fees, stop/drawdown and
+funding/gap invalidation. It does not replace execution with fixed-horizon labels.
+Each forecast must match its causal observation timestamp/symbol/session.
+New entries stop 180 seconds before evaluation end; no later prices are used.
+Unclosed positions at EOF are flagged unresolved, never fictitiously liquidated.
+Closed-trade PnL and final marked equity are separate; accounting is reconciled.
+Per-day bootstrap/coin/fees reports use the existing diagnostic reporting helper.
+This is historical scenario evidence, NOT independent PAPER or historical measured
+latency. 200ms sampling may still miss intrainterval moves; maker/funding/tier
+limitations of the shared execution engine remain.
+
+Verification: 174 tests passed. Four new tests demonstrate causal gathers/fills,
+stop execution between feature samples, EOF invalidation and future/clock guards.
+A full Oct 1 control audit is RUNNING as brain-impulse-replay-audit.service,
+verified PID 3566 active. Output: storage/impulse-replay-audit-v1/result.json;
+identity.json freezes sources/raw plan/instrument snapshot and interval. Initial
+launcher attempt failed importing repo modules; fixed only the standalone runner's
+sys.path and restarted after confirming the failed process. No wallet reset.
+This is a transient systemd unit, NOT reboot-enabled; rerun saved run.py with the
+project launcher if interrupted (it preserves completed result and identity).
+Do not change replay source until this audit completes. Inspect the actual unit
+and result before drawing conclusions. No financial result is claimed yet.
+Campaign PID 3313 still active, four completed days, processing Oct 5.
+
+Next: integrate bounded model/baseline competition and train-only window inference
+with this evaluator. Need immutable folds, validation selection and final untouched
+prospective trial; historical control audit alone cannot meet the user goal.
