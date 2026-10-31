@@ -943,3 +943,14 @@ stored in train-0/2026-10-02.json.gz. Current gen0 Oct3 preparing; no completed
 financially selected offspring observed yet. Next inspect generation transition
 and evaluate descendants on their assigned new training days, then final frozen
 development validation. Independent evaluation/PAPER remains outstanding.
+
+
+Gen0 completed both Oct2-3 episodes; runtime advanced to generation1/Oct4.
+All active candidates negative, CASH remains best overall; family diversity is
+research allocation, not qualification. Added end-to-end synthetic CUDA recovery
+test: interrupt at first generation1 tape preparation, resume, exactly six remaining
+episodes execute, two completed episodes byte-identical; rerun completed workflow
+executes none. Final validation population IDs and EVERY neural weight exactly
+match final training population. Six tests PASS (0.437s). This is exception-based
+workflow recovery, not physical power-loss testing. Runtime sources still match
+v2 frozen hashes. Existing six trading services remain active.
