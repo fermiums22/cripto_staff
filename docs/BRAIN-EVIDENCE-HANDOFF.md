@@ -392,3 +392,29 @@ Campaign PID 3313 still active, four completed days, processing Oct 5.
 Next: integrate bounded model/baseline competition and train-only window inference
 with this evaluator. Need immutable folds, validation selection and final untouched
 prospective trial; historical control audit alone cannot meet the user goal.
+
+
+## Continuation: causal neural inference bridge (2026-10-31)
+
+Previous turn made progress (c6bf569, published); goal still unachieved.
+Added brain_impulse_inference.py, independent of frozen active trial sources.
+SequenceSignals constructs eight past observations per symbol, clears on >7s
+sampling gaps/session changes/reservation exclusion, rejects duplicate/regressing
+clocks, and emits all eight net-return outputs with explicit horizon/side mapping.
+Invalid feature/output/scaler/uncertainty values fail closed. Neural adapter uses
+identical training scaling/clipping and converts percentage units back to returns.
+It is a callable compatible with replay's predictor interface, not an automatic
+model loader/promotion or a trained candidate. New instances are required per
+trial. Predictor weights/scaler/artifact identity still must be frozen by the
+forthcoming competition orchestrator.
+
+Evidence: all 178 tests PASS; actual Oct 1 archive streaming produced EXACT input
+window matches for 256 target examples from the binary training dataset. Saved
+storage/impulse-replay-audit-v1/inference-parity.json (engineering, not alpha).
+Campaign PID 3313 remains active: five completed days, downloading Oct 6 at last
+check. Control replay PID 3566 remains active, elapsed 3:13, CPU time 2:07, RSS
+50,632 KiB; result not yet written. This is a verified running job, not a timeout
+failure: do not restart it. Six existing cripto services verified running.
+No candidate trained/promoted this turn, no edge claim. Next substantial step is
+the immutable experiment orchestrator: admitted campaign, purged folds, boosted
+baseline, bounded neural fits, validation-only selection and event-depth replay.
