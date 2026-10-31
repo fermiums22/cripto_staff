@@ -716,3 +716,52 @@ Read-only storage check: research output on NFS4,159GiB free; container root onl
 restart/durability design; no mounts/NAS/root filesystem changes were performed.
 Campaign last verified15 completed days, extracting Oct16; training awaits21.
 Frozen training/selection/execution/diagnostic sources remain intact.
+
+
+## Continuation: atomic grouped journals with measured latency comparison (2026-10-31)
+
+Previous turn progressed (f8619d7). Goal ACTIVE; no demonstrated positive edge.
+Added brain_impulse_ledger.py BatchPaper: one DELETE-journal/FULL-synchronous SQLite
+transaction for a named group of accounts/events, atomic state/trade/event/batch
+identity persistence. Exact prior account/protocol/policy set required on reopen;
+rejects legacy wallet schema and implicit migration/reset. Invalid later account
+rolls back the entire group, duplicate batch keys idempotent, changed payload fails.
+Normal restart restores exact accounts. Initial schema interrupted during first
+creation fails closed if partial; no automatic reset/reinitialization of partial
+existing DB. A future constructor hardening can make initial DDL transactional.
+Added brain_impulse_group_audit.py: consistent backup, replay all batch inputs,
+exact state/trade comparison per account and independent accounting identity.
+
+Added separate finite brain_impulse_group_live.py, preserving buffered receipt and
+actual processing clocks/freshness gates. All controls' decisions/books/halts are
+committed as one group. No old DB migration, no existing wallet reset, no change
+to prior frozen control sources, no model promotion. Source snapshots preserved.
+All205 tests pass: batch rollback, exact single-account equivalence through a real
+synthetic entry/exit and reopen, journal replay, tamper detection, protocol rejection.
+
+Interleaved 40-cycle benchmark on same NFS, alternating batch/singles order, exact
+final account-state equality; storage/impulse-batch-benchmark-v1/run.py/result.json:
+- three separate commits p50=353.72ms,p95=4290.66ms,p99=10532.72ms,max13734.50ms;
+- one grouped commit p50=102.30ms,p95=1190.17ms,p99=2384.91ms,max3086.83ms.
+This is an engineering performance sample, not a guaranteed future latency bound.
+FULL synchronization unchanged. Disk tails still exceed1500ms; freshness checks
+are mandatory. Raw timing pairs are retained, not just selected statistics.
+
+Actual180s group live audit completed exit0, zero failures/reconnects; directory
+storage/impulse-group-live-audit-v1, protocol SHA256
+c450a2f8e4fcb3c45c238ca04f99516501f4f8b4f0312fce29120c87bbc178eb.
+34,496 received /34,394 processed /102 queued at finite close,138 feature samples,
+18 decisions per control;19 committed groups including finite halt. All accounts
+cash15, no trades or unresolved positions. Group audit reproduced exactly, zero
+accounting residual/evidence issues. Candidate CASH, ready false.
+2,692/34,394 (~7.83%) stale processed rows; peak1499 buffered messages/332,698bytes.
+Do not present this separate market window versus the previous9.31% window as a
+controlled strategy performance comparison. Tail latency remains unresolved;
+these are operational/control audits, not independent successful trading.
+
+Campaign last verified18 complete days, extracting Oct19. Automatic competition
+continues waiting for all21 admitted days. No changes to frozen research pipeline
+or household/PAPER services. Next priority: inspect actual bounded GPU training
+once admission is complete; evaluate all rejections honestly. For future candidate
+PAPER, preserve grouped durable intents and quantify usable-decision coverage,
+not just raw messages or lack of reconnects.

@@ -1,0 +1,228 @@
+{
+  "benchmark": {
+    "cycles": 40,
+    "exact_final_states": true,
+    "ready": false,
+    "summary_ms": {
+      "batch": {
+        "max": 3086.833638999451,
+        "p50": 102.29929799879756,
+        "p95": 1190.1653116996383,
+        "p99": 2384.905575279462
+      },
+      "singles": {
+        "max": 13734.50008600048,
+        "p50": 353.71820949967514,
+        "p95": 4290.663588899948,
+        "p99": 10532.71842292004
+      }
+    },
+    "synthetic": true,
+    "timings_ms": {
+      "batch": [
+        83.8180620012281,
+        85.58600300057151,
+        130.18694200036407,
+        225.56827500011423,
+        128.80339299954358,
+        1015.2761169993028,
+        768.3601480002835,
+        79.95681799911836,
+        85.75733399993624,
+        84.51869599957718,
+        85.7493350013101,
+        85.04062999963935,
+        85.53633300107322,
+        85.10792100059916,
+        85.22525099942868,
+        84.51498700014781,
+        85.90070599893807,
+        832.2266159993887,
+        140.43431499885628,
+        85.3289919996314,
+        970.7378890016116,
+        85.91950600020937,
+        84.64062699931674,
+        744.6835009995993,
+        255.73498399899108,
+        84.75789800104394,
+        727.1927220008365,
+        95.44173500034958,
+        102.29115799847932,
+        1185.0677969996468,
+        3086.833638999451,
+        84.68999800061283,
+        85.57252299942775,
+        275.227284999346,
+        141.59529300013673,
+        937.0944399997825,
+        1287.0180909994815,
+        434.5030280001083,
+        360.7023080003273,
+        102.30743799911579
+      ],
+      "singles": [
+        256.348827999318,
+        277.1929270002147,
+        5524.803513999359,
+        740.027691999785,
+        256.166975999804,
+        2646.479294000528,
+        1441.9472260015027,
+        256.17909699940355,
+        255.18872100110457,
+        257.0062119993963,
+        255.6873829998949,
+        277.6911510009086,
+        2652.2485579989734,
+        3847.119546000613,
+        568.9811560005182,
+        290.4152589999285,
+        255.37647100100003,
+        352.8264689994103,
+        311.38422100048047,
+        255.90608499987866,
+        4225.708855999983,
+        422.5609530003567,
+        267.694477999612,
+        290.5668010007503,
+        325.58870899993053,
+        345.003540000107,
+        3559.5978839992313,
+        757.715460998952,
+        1134.7575910003798,
+        1167.3441149996506,
+        831.5827620008349,
+        301.09157700098876,
+        288.61822900034895,
+        1968.868019999718,
+        316.75551400076074,
+        465.7489720011654,
+        13734.50008600048,
+        2329.486676999295,
+        2194.3627149994427,
+        354.60994999994
+      ]
+    }
+  },
+  "live": {
+    "accounts": {
+      "cash": {
+        "cash": 15.0,
+        "closed_trades": 0,
+        "decisions": 18,
+        "equity": 15.0,
+        "events": [],
+        "evidence_issues": [],
+        "funding": 0.0,
+        "halted": true,
+        "last_books": {},
+        "last_ms": 1793450953270,
+        "max_drawdown": 0.0,
+        "peak": 15.0,
+        "pending": null,
+        "policy_sha256": "0ed67ca43b396aba318f001766b0f718484c33d638edbd941a646d2c0aa1e1b5",
+        "position": null,
+        "reasons": {
+          "finite_group_audit_end": 1,
+          "no_net_edge": 18
+        },
+        "trades": []
+      },
+      "leadlag_flow": {
+        "cash": 15.0,
+        "closed_trades": 0,
+        "decisions": 18,
+        "equity": 15.0,
+        "events": [],
+        "evidence_issues": [],
+        "funding": 0.0,
+        "halted": true,
+        "last_books": {},
+        "last_ms": 1793450953270,
+        "max_drawdown": 0.0,
+        "peak": 15.0,
+        "pending": null,
+        "policy_sha256": "0ed67ca43b396aba318f001766b0f718484c33d638edbd941a646d2c0aa1e1b5",
+        "position": null,
+        "reasons": {
+          "finite_group_audit_end": 1,
+          "no_net_edge": 18
+        },
+        "trades": []
+      },
+      "momentum": {
+        "cash": 15.0,
+        "closed_trades": 0,
+        "decisions": 18,
+        "equity": 15.0,
+        "events": [],
+        "evidence_issues": [],
+        "funding": 0.0,
+        "halted": true,
+        "last_books": {},
+        "last_ms": 1793450953270,
+        "max_drawdown": 0.0,
+        "peak": 15.0,
+        "pending": null,
+        "policy_sha256": "0ed67ca43b396aba318f001766b0f718484c33d638edbd941a646d2c0aa1e1b5",
+        "position": null,
+        "reasons": {
+          "finite_group_audit_end": 1,
+          "no_net_edge": 18
+        },
+        "trades": []
+      }
+    },
+    "candidate": "CASH",
+    "failures": 0,
+    "pid": 4861,
+    "processed": 34394,
+    "protocol_sha256": "c450a2f8e4fcb3c45c238ca04f99516501f4f8b4f0312fce29120c87bbc178eb",
+    "ready": false,
+    "samples": 138,
+    "stage": "stopped",
+    "stale_rows": 2692,
+    "transport": {
+      "fault": null,
+      "peak_bytes": 332698,
+      "peak_messages": 1499,
+      "queued": 102,
+      "queued_bytes": 21699,
+      "ready": false,
+      "received": 34496
+    },
+    "unresolved_positions": false,
+    "updated_ms": 1793450954095
+  },
+  "ledger_audit": {
+    "accounts": {
+      "cash": {
+        "accounting_residual": 0.0,
+        "cash": 15.0,
+        "evidence_issues": [],
+        "has_open_position": false,
+        "trades": 0
+      },
+      "leadlag_flow": {
+        "accounting_residual": 0.0,
+        "cash": 15.0,
+        "evidence_issues": [],
+        "has_open_position": false,
+        "trades": 0
+      },
+      "momentum": {
+        "accounting_residual": 0.0,
+        "cash": 15.0,
+        "evidence_issues": [],
+        "has_open_position": false,
+        "trades": 0
+      }
+    },
+    "batches": 19,
+    "financial_qualified": false,
+    "operational_pass": true,
+    "ready": false
+  },
+  "ready": false
+}
