@@ -16,21 +16,23 @@ class BatchPaper:
         self.names=names;self.policy=policy;self.protocol_id=protocol_id
         self.db=sqlite3.connect(path,timeout=30)
         try:
-            tables={r[0] for r in self.db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
-            if tables and tables-{'accounts','batches','trades','events','sqlite_sequence'}:
-                raise ValueError('Not a batch journal; existing wallets cannot be migrated implicitly')
-            if tables and not {'accounts','batches','trades','events'}.issubset(tables):raise ValueError('Incomplete batch schema')
             self.db.execute('PRAGMA journal_mode=DELETE');self.db.execute('PRAGMA synchronous=FULL')
+            # Explicit BEGIN makes schema and initial balances one crash-atomic unit.
+            self.db.execute('BEGIN IMMEDIATE')
             with self.db:
+                tables={r[0] for r in self.db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+                if tables and tables-{'accounts','batches','trades','events','sqlite_sequence'}:
+                    raise ValueError('Not a batch journal; existing wallets cannot be migrated implicitly')
+                if tables and not {'accounts','batches','trades','events'}.issubset(tables):raise ValueError('Incomplete batch schema')
                 self.db.execute('CREATE TABLE IF NOT EXISTS accounts(name TEXT PRIMARY KEY, protocol TEXT NOT NULL, state TEXT NOT NULL)')
                 self.db.execute('CREATE TABLE IF NOT EXISTS batches(key TEXT PRIMARY KEY,digest TEXT NOT NULL,payload TEXT NOT NULL)')
                 self.db.execute('CREATE TABLE IF NOT EXISTS trades(id INTEGER PRIMARY KEY,account TEXT NOT NULL,payload TEXT NOT NULL)')
                 self.db.execute('CREATE TABLE IF NOT EXISTS events(id INTEGER PRIMARY KEY,account TEXT NOT NULL,payload TEXT NOT NULL)')
                 if not tables:
                     for name in names:self.db.execute('INSERT INTO accounts VALUES(?,?,?)',(name,protocol_id,json.dumps(initial_state(policy))))
-            rows=self.db.execute('SELECT name,protocol,state FROM accounts ORDER BY name').fetchall()
-            if tuple(r[0] for r in rows)!=names or any(r[1]!=protocol_id or json.loads(r[2])['policy_sha256']!=policy_digest(policy) for r in rows):
-                raise ValueError('Batch account/protocol/policy mismatch; no resets allowed')
+                rows=self.db.execute('SELECT name,protocol,state FROM accounts ORDER BY name').fetchall()
+                if tuple(r[0] for r in rows)!=names or any(r[1]!=protocol_id or json.loads(r[2])['policy_sha256']!=policy_digest(policy) for r in rows):
+                    raise ValueError('Batch account/protocol/policy mismatch; no resets allowed')
         except BaseException:self.db.close();raise
 
     def states(self):return {n:json.loads(s) for n,s in self.db.execute('SELECT name,state FROM accounts ORDER BY name')}

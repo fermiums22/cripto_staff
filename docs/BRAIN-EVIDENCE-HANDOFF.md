@@ -840,3 +840,31 @@ This is prospective adapter preparation, not evidence of profit, not proof of
 live distribution equivalence, and not permission to ignore actual receipt lag.
 Future trained PAPER must explicitly freeze/integrate this contract AFTER gates;
 no trained live model or automatic promotion exists. Existing services untouched.
+
+
+## Continuation: crash-atomic grouped journal initialization (2026-10-31)
+
+Progress, goal active; no new financial conclusion. Evaluation process5655 under
+workflow5443 verified alive, CPU time increasing, fold0/base still replaying.
+Completed replay scenarios are cached; an interrupted in-progress scenario is
+restarted from its beginning, not resumed mid-event. No active frozen code changed.
+
+Hardened brain_impulse_ledger.BatchPaper initialization: explicit BEGIN IMMEDIATE
+before schema inspection, CREATE TABLE and initial accounts in one transaction,
+identity validation before commit. Prior Python SQLite context manager did not
+start a DDL transaction and could leave a partial schema on process death.
+Existing partial databases still fail closed: no repair/reset/migration. Existing
+completed grouped control audit retains its original source snapshot; no active
+grouped live service uses this file. Old control and research wallets untouched.
+
+Six ledger tests pass locally and on actual NFS storage, including subprocess
+os._exit during third CREATE TABLE and first account INSERT, empty rollback schema,
+integrity_check, successful reopen, subsequent durable state preservation, existing
+trade equivalence, atomic batch rollback and audit tamper detection. This tests
+process death, NOT physical server power loss or NFS server durability guarantees.
+First NFS run failed test cleanup due to unclosed test SQLite connections (the
+context manager commits/rolls back but does not close). Fixed explicit closing;
+second run6/6 PASS in38.418s. Both results preserved under storage/
+impulse-ledger-recovery-audit-v1 and-v2. Successful report copied to docs.
+Full suite not repeated: latest full206 plus focused feature-contract and ledger
+coverage. No change to policies, active model source freezes or source hashes.

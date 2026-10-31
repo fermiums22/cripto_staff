@@ -1,0 +1,7 @@
+{
+  "returncode": 0,
+  "output": "......\n----------------------------------------------------------------------\nRan 6 tests in 38.418s\n\nOK\n",
+  "temporary_database_parent": "/home/codex/projects/market-brain-storage/impulse-ledger-recovery-audit-v2",
+  "scope": "Process-death recovery on NFS; not physical power-loss validation",
+  "ready": false
+}

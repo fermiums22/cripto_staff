@@ -2,6 +2,10 @@ from pathlib import Path
 import tempfile
 import unittest
 import json
+import sqlite3
+from contextlib import closing
+import subprocess
+import sys
 from brain_impulse_ledger import BatchPaper
 from brain_impulse_group_audit import audit
 from brain_impulse_execution import DurablePaper
@@ -44,6 +48,43 @@ class BatchLedgerTests(unittest.TestCase):
             db.apply('one',{'a':dict(type='decision',now_ms=1,signals=[])})
             with self.assertRaises(ValueError):db.apply('one',{'a':dict(type='decision',now_ms=2,signals=[])})
             db.close()
+
+    def test_process_death_during_initialization_recovers_empty_transaction(self):
+        child = r"""
+import os,sqlite3,sys
+from unittest.mock import patch
+from brain_impulse_ledger import BatchPaper
+real_connect=sqlite3.connect
+class Interrupted(sqlite3.Connection):
+    def execute(self,sql,*args,**kwargs):
+        result=super().execute(sql,*args,**kwargs)
+        if sql.startswith(sys.argv[2]):os._exit(73)
+        return result
+with patch('brain_impulse_ledger.sqlite3.connect',lambda *a,**kw:real_connect(*a,**kw,factory=Interrupted)):
+    BatchPaper(sys.argv[1],('a','b'),'test')
+"""
+        for stage in ('CREATE TABLE IF NOT EXISTS trades','INSERT INTO accounts'):
+            with self.subTest(stage=stage),tempfile.TemporaryDirectory() as tmp:
+                path=Path(tmp)/'batch.db'
+                result=subprocess.run([sys.executable,'-c',child,str(path),stage],capture_output=True,text=True,timeout=30)
+                self.assertEqual(result.returncode,73,result.stderr)
+                with closing(sqlite3.connect(path)) as check:
+                    self.assertEqual(check.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall(),[])
+                    self.assertEqual(check.execute('PRAGMA integrity_check').fetchone()[0],'ok')
+                db=BatchPaper(path,('a','b'),'test')
+                self.assertEqual(set(db.states()),{'a','b'})
+                self.assertTrue(all(v['cash']==15 for v in db.states().values()))
+                db.apply('durable',{'a':dict(type='halt',reason='preserve after restart')})
+                before=db.states();db.close()
+                db=BatchPaper(path,('a','b'),'test');self.assertEqual(db.states(),before);db.close()
+
+    def test_preexisting_partial_schema_is_rejected_without_repair(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path=Path(tmp)/'partial.db'
+            with closing(sqlite3.connect(path)) as db:db.execute('CREATE TABLE accounts(name TEXT)')
+            with self.assertRaisesRegex(ValueError,'Incomplete batch schema'):BatchPaper(path,('a',),'test')
+            with closing(sqlite3.connect(path)) as db:
+                self.assertEqual(db.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall(),[('accounts',)])
 
     def test_existing_wallet_and_protocol_cannot_be_reset(self):
         with tempfile.TemporaryDirectory() as tmp:
