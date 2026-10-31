@@ -1053,3 +1053,33 @@ net-value prediction and calibration, with class imbalance explicitly handled;
 first demonstrate incremental predictability on next training episodes, then
 freeze a separate development execution period. No positive edge or independent
 PAPER proof exists. Goal ACTIVE; prior turn made new empirical progress.
+
+
+## Balanced rare-event/conditional-value model: negative controlled outcome
+
+Added brain_impulse_rare.py and2 focused tests (tie-correct average precision,
+outcome-independent selection). Fixed120s horizon, one48/24 MLP with separate
+rare-event and net-value heads, class-balanced BCE (train-only capped weights),
+coin identity, train-only scaling. Train Oct2-5, early-stop Oct6, separate affine
+logit calibration Oct7; selection thresholds fixed at calibration99.5 percentile.
+Score Oct10-11, historical DEVELOPMENT ONLY (previously examined by older studies).
+Compare event head, net-value head and simple contemporaneous volatility ranking;
+selected samples thinned180s per coin before labels, no deployment-gate retuning.
+Actual CUDA run COMPLETED exit0 in storage/impulse-rare-v1, early-stopped after5
+of max12epochs; optimizer/weights/scale/plan checkpoints saved. Resume uses fixed
+per-epoch shuffles; no dropout. No portfolio replay or live promotion justified.
+
+Oct10: class prevalence .0000935995; event AP .000159352, volatility AP .000169339.
+Event selects1 sample net-.00370496; value selects25 mean-.00177491, allnegative.
+Oct11: prevalence .00296830; event AP .01511145, volatility AP .01482400.
+Event selects10 samples mean net-.000190291 (30%positive); value70 mean-.00181374;
+volatility11 mean-.000706644. These are fixed-horizon proxy outcomes, not actual
+portfolio PnL. Sample count tiny and no positive mean on either day. Improved
+ranking over constant prior is largely volatility information, not demonstrated
+directional economic alpha. Do not promote or expand same parameter search.
+
+Full report copied docs/impulse-rare-2026-10-31.json. Next research should test a
+new economically justified information source or conditional direction/timing
+hypothesis and quantify regime/calibration drift; do not call this a profitable
+rare-event strategy. Reserved final/prospective periods remain unopened here.
+Goal ACTIVE; this turn made new code and empirical progress, no blocker.
