@@ -1,0 +1,140 @@
+{
+  "status": {
+    "accounts": {
+      "cash": {
+        "cash": 15.0,
+        "closed_trades": 0,
+        "decisions": 16,
+        "equity": 15.0,
+        "events": [],
+        "evidence_issues": [],
+        "funding": 0.0,
+        "halted": true,
+        "last_books": {},
+        "last_ms": 1793450418648,
+        "max_drawdown": 0.0,
+        "peak": 15.0,
+        "pending": null,
+        "policy_sha256": "0ed67ca43b396aba318f001766b0f718484c33d638edbd941a646d2c0aa1e1b5",
+        "position": null,
+        "reasons": {
+          "finite_buffered_audit_end": 1,
+          "no_net_edge": 16
+        },
+        "trades": []
+      },
+      "leadlag_flow": {
+        "cash": 15.0,
+        "closed_trades": 0,
+        "decisions": 16,
+        "equity": 15.0,
+        "events": [],
+        "evidence_issues": [],
+        "funding": 0.0,
+        "halted": true,
+        "last_books": {},
+        "last_ms": 1793450419075,
+        "max_drawdown": 0.0,
+        "peak": 15.0,
+        "pending": null,
+        "policy_sha256": "0ed67ca43b396aba318f001766b0f718484c33d638edbd941a646d2c0aa1e1b5",
+        "position": null,
+        "reasons": {
+          "finite_buffered_audit_end": 1,
+          "no_net_edge": 16
+        },
+        "trades": []
+      },
+      "momentum": {
+        "cash": 15.0,
+        "closed_trades": 0,
+        "decisions": 16,
+        "equity": 15.0,
+        "events": [],
+        "evidence_issues": [],
+        "funding": 0.0,
+        "halted": true,
+        "last_books": {},
+        "last_ms": 1793450418990,
+        "max_drawdown": 0.0,
+        "peak": 15.0,
+        "pending": null,
+        "policy_sha256": "0ed67ca43b396aba318f001766b0f718484c33d638edbd941a646d2c0aa1e1b5",
+        "position": null,
+        "reasons": {
+          "finite_buffered_audit_end": 1,
+          "no_net_edge": 16
+        },
+        "trades": []
+      }
+    },
+    "candidate": "CASH",
+    "failures": 0,
+    "pid": 4699,
+    "processed": 43675,
+    "protocol_sha256": "86495f48ba7e61a57fada195dcceeeae997ec78f52845fdac93d748da816afc1",
+    "ready": false,
+    "samples": 137,
+    "stage": "stopped",
+    "stale_rows": 4067,
+    "transport": {
+      "fault": null,
+      "peak_bytes": 641469,
+      "peak_messages": 2286,
+      "queued": 45,
+      "queued_bytes": 9580,
+      "ready": false,
+      "received": 43720
+    },
+    "unresolved_positions": false,
+    "updated_ms": 1793450422060
+  },
+  "ledger_audit": {
+    "cash": {
+      "accounting_residual": 0.0,
+      "cash": 15.0,
+      "equity": 15.0,
+      "events": 17,
+      "evidence_issues": [],
+      "fees": 0.0,
+      "financial_qualified": false,
+      "has_open_position": false,
+      "max_drawdown": 0.0,
+      "operational_pass": true,
+      "ready": false,
+      "reason": "Exact event replay is an execution integrity check, not statistical alpha evidence",
+      "trades": 0
+    },
+    "leadlag_flow": {
+      "accounting_residual": 0.0,
+      "cash": 15.0,
+      "equity": 15.0,
+      "events": 17,
+      "evidence_issues": [],
+      "fees": 0.0,
+      "financial_qualified": false,
+      "has_open_position": false,
+      "max_drawdown": 0.0,
+      "operational_pass": true,
+      "ready": false,
+      "reason": "Exact event replay is an execution integrity check, not statistical alpha evidence",
+      "trades": 0
+    },
+    "momentum": {
+      "accounting_residual": 0.0,
+      "cash": 15.0,
+      "equity": 15.0,
+      "events": 17,
+      "evidence_issues": [],
+      "fees": 0.0,
+      "financial_qualified": false,
+      "has_open_position": false,
+      "max_drawdown": 0.0,
+      "operational_pass": true,
+      "ready": false,
+      "reason": "Exact event replay is an execution integrity check, not statistical alpha evidence",
+      "trades": 0
+    }
+  },
+  "ready": false
+}

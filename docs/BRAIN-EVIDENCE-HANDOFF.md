@@ -672,3 +672,47 @@ fills at a fabricated current timestamp. Preserve raw receipt times; use explici
 execution-observed timestamps where processing differs and audit this separately.
 Frozen prior trials/source/old wallets remain intact. Current trained candidate
 selection and diagnostic still await completed21-day archive and bounded fits.
+
+
+## Continuation: buffered live control execution audited (2026-10-31)
+
+Previous turn progressed (deee375). Goal remains ACTIVE; no profitable strategy.
+Added brain_impulse_buffered_live.py as a NEW finite control runner, leaving old
+frozen live service/source/wallets untouched. It combines BufferedReceiver, causal
+ImpulseSampler and DurablePaper. Feature times are original receipts; decisions
+and executions use actual processing wall time, retaining source_received_ms,
+source event time, receive_sequence and processing_delay_ms in book journals.
+Both wall and monotonic freshness are checked per-account after earlier writes.
+Received quotes preceding pending.eligible_ms are rejected even if processed later:
+no retroactive fill at a pre-latency quote. Source/protocol snapshots are immutable.
+Global pause, fixed risk, pending positions, journal replay and finite closure
+remain enforced. No model loader/promotion or real-order interface was added.
+
+Tests: all201 passed. New tests verify separate receipt/processing clock fields,
+stale rejection, pre-latency quote exclusion and actual delayed entry, and invalid
+book refusal. Existing CUDA/resume/accounting tests remain passing.
+
+Actual 180s audit completed exit0, no reconnects/failures; directory
+storage/impulse-buffered-live-audit-v1, protocol SHA256
+86495f48ba7e61a57fada195dcceeeae997ec78f52845fdac93d748da816afc1.
+43,720 received,43,675 processed,45 queued explicitly reported at finite shutdown;
+137 feature samples,16 decisions per control, no trades. All3 accounts15, flat,
+halted by finite-audit termination, no unresolved positions. Independent consistent
+SQLite replay passed exactly for all3:17 events each, zero accounting residual,
+zero evidence issues. ledger-audit.json saved. This proves transport/ledger logic,
+NOT successful independent trading or positive expectation. No new ongoing live
+service installed; the finite audit is stopped. Do not reset its closed journals.
+
+Remaining performance limitation:4,067/43,675 processed messages (~9.31%) failed
+freshness at processing; intermediate sample reached~14%. Peak queue2286 messages
+(641,469 bytes), no overflow. Buffer preserved sequence, but it does NOT make slow
+storage fast or guarantee decision coverage. Some stale ticker source times may
+also contribute; stale-row ratio is not a direct estimate of missed opportunities.
+Investigate bounded batched durable commits/asynchronous journal architecture with
+correct intent/decision ordering before claiming readiness. Do NOT disable FULL
+sync, accept stale data, or move existing wallets casually to hide this issue.
+Read-only storage check: research output on NFS4,159GiB free; container root only
+1.4GiB free (96% used). A local spool would require explicit bounded capacity and
+restart/durability design; no mounts/NAS/root filesystem changes were performed.
+Campaign last verified15 completed days, extracting Oct16; training awaits21.
+Frozen training/selection/execution/diagnostic sources remain intact.
