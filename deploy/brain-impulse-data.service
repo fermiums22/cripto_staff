@@ -1,0 +1,23 @@
+[Unit]
+Description=Bounded impulse feature extraction (public archived data only)
+RequiresMountsFor=/home/codex/projects/market-brain-storage
+After=remote-fs.target
+
+[Service]
+Type=oneshot
+User=codex
+WorkingDirectory=/home/codex/workspace/cripto_staff
+Environment=OMP_NUM_THREADS=1
+ExecStart=/bin/sh /home/codex/workspace/cripto_staff/deploy/brain-supervisor.sh brain_impulse_data.py --source /home/codex/projects/market-brain-storage/evidence-v1/channels --output /home/codex/projects/market-brain-storage/impulse-v1 --max-files 12
+CPUQuota=70%
+MemoryMax=768M
+MemorySwapMax=0
+TimeoutStartSec=600
+Nice=15
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/codex/projects/market-brain-storage/impulse-v1
+InaccessiblePaths=/home/codex/workspace/cripto_staff/secrets
+PrivateTmp=true
+UMask=0077

@@ -124,3 +124,77 @@ Code commit: 6d4a689. Push via existing HTTPS origin failed because this device
 has no noninteractive GitHub credential helper. Local commits and mounted data
 are durable; continue work without resetting or discarding them. Synchronize
 using an already authorized credential path when available; never print tokens.
+
+
+## Continuation 2026-10-31: runtime recovery and impulse data implementation
+
+Goal is ACTIVE, not achieved. No qualified profitable model or independent PAPER
+success has been established. Real orders remain prohibited.
+
+Verified and implemented:
+- Real CUDA mixed-precision backward + AdamW parameter changes for MLP, TCN,
+  GRU, LSTM, Transformer and MoE in two fresh processes, including restoration
+  of optimizer/model checkpoints. cuDNN reports 91900 on RTX 5070.
+  Evidence: storage/gpu-probe-20261031/probe-*.json. GPU probe is NOT alpha evidence.
+- Existing supervisor/children had inherited the OLD LD_LIBRARY_PATH despite
+  the launcher correction. Restarted only this isolated evidence workflow.
+  New channels/forward processes inherit the corrected cuDNN path. Exact wallet
+  dictionaries were unchanged and cycle count advanced. Existing cripto services
+  were NOT restarted. Frozen 15m protocol and its source hashes verified intact.
+- deploy/brain-supervisor.sh now accepts a Python script/arguments, defaults to
+  brain_supervisor.py. Supervisor handles TERM/INT and reaps its own children.
+  Existing cron singleton/restart behavior is preserved.
+- brain_impulse_data.py: 30 receive-time features (price/volume/volatility
+  acceleration, depth/imbalance change, aggressive flow, BTC/ETH leads, OI,
+  funding and liquidation position sides). Missing OI/funding have explicit masks.
+  Full received top-50 public depth is retained in derived rows. No invented RPI.
+- Labels: 10/30/60/120 seconds, long/short, observed depth consumption,
+  quantity step and minimum, fee on both actual notionals, slippage, delayed entry.
+  No cross-session, missing-sample or hourly funding-crossing labels. Current lot
+  snapshots are NOT historical rules; maker queue, funding-crossing execution,
+  event-level mark-to-market/liquidation simulation remain unimplemented.
+- brain-impulse-data.timer enabled. Bounded 12-file batches every 15 minutes and
+  after boot, 70% CPU/768 MiB RAM. Raw files and derived artifacts are preserved,
+  source/code hashed, atomic outputs; no wallet/database writes.
+- First real batch: 12 archives, 2567 feature rows, 9300 executable label rows.
+  Actual sampled latency 5-7 seconds. 8902 labels intersect existing reserved
+  prospective periods and are excluded by the new development-mask function.
+  Their PnL/scores were NOT inspected. Only 398 unreserved labels: no training.
+- brain_impulse_protocol.py: tested reservation-overlap exclusion, per-symbol
+  minute/hour/day coverage, contiguous-day requirements, purged expanding folds,
+  per-coin/calendar-day PnL, fees, daily bootstrap CIs, leave-best-coin-out PnL.
+  These are library helpers, NOT yet connected to a new impulse model trainer.
+  The default requires 21 contiguous development days (7 train/7 validation/7
+  diagnostic evaluation). Never loosen coverage because data are insufficient.
+- Resumed and enabled brain-factory-minute.service. It downloaded 30 days of
+  minute history strictly before frozen prospective boundaries, then began the
+  bounded 16 architecture/horizon comparisons. Check live summary/progress;
+  completion must not be assumed. Completed factory-v1 has 16 rejected trials.
+
+Tests: full suite 140 passed after data/runtime changes; five additional protocol
+unit tests passed separately. The expected mocked Telegram-delivery ERROR is a
+successful negative-path test, not a live delivery. Factory test also verifies
+checkpoint continuation matches uninterrupted GPU optimization exactly.
+
+Paths under /home/codex/projects/market-brain-storage:
+- impulse-v1/status.json, quality-audit-20261031.json, <code-sha-prefix>/*
+- factory-minute-v2/run/{manifest.json,*/progress.json,*/result.json,summary.json}
+- evidence-v1/runtime-restart-before-20261031.json
+
+Next concrete work:
+1. Finish/review minute factory results without modifying its frozen source or
+   retuning on the same diagnostic block. Persist negative hypotheses.
+2. Connect impulse features, reservation exclusions and coverage admission to
+   an isolated resumable trainer. Retain checkpoint RNG/optimizer/scaler state.
+   Do not feed the reserved 15m trial observations into development.
+3. Add causal multi-coin decision-time ranking and full-depth independent live
+   PAPER executor; the current label generator is sampled replay, NOT live PAPER.
+   Preserve global pause, wallets, pending orders and mark-to-market risk state.
+4. News remains excluded until trustworthy first-seen timestamps and ablation.
+5. Independent evidence still requires future observation time. No profitability
+   claim from synthetic GPU probes, code tests, sparse trades or historical tuning.
+
+API semantics checked against official Bybit pages:
+https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook
+https://bybit-exchange.github.io/docs/v5/websocket/public/ticker
+https://bybit-exchange.github.io/docs/v5/websocket/public/all-liquidation

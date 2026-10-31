@@ -1,5 +1,5 @@
 """Restartable, finite evidence workflow. Never touches existing PAPER/Telegram units."""
-import fcntl, json, os, pathlib, subprocess, sys, time
+import fcntl, json, os, pathlib, signal, subprocess, sys, time
 from brain_research import ROOT, STORE, write
 RUN=STORE/"run-20261030-c"
 CHANNELS=STORE/"channels"
@@ -10,6 +10,15 @@ def main():
     except BlockingIOError:return
     os.nice(10)
     children={};last_micro=0
+    def shutdown(signum, frame):
+        for child in children.values():
+            if child.poll() is None: child.terminate()
+        for child in children.values():
+            try: child.wait(timeout=15)
+            except subprocess.TimeoutExpired: child.kill(); child.wait()
+        raise SystemExit(0)
+    signal.signal(signal.SIGTERM, shutdown)
+    signal.signal(signal.SIGINT, shutdown)
     saved=STORE/"supervisor.json"
     if saved.exists():last_micro=json.loads(saved.read_text()).get("last_micro",0)
     while True:

@@ -1,0 +1,10 @@
+[Unit]
+Description=Resume bounded impulse extraction after boot and every 15 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitInactiveSec=15min
+Unit=brain-impulse-data.service
+
+[Install]
+WantedBy=timers.target
