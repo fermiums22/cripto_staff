@@ -1,0 +1,108 @@
+{
+  "accounts": [
+    {
+      "cash": 15.0,
+      "closed_trades": 0,
+      "decisions": 9,
+      "equity": 15.0,
+      "events": [],
+      "evidence_issues": [],
+      "funding": 0.0,
+      "halted": false,
+      "last_books": {},
+      "last_ms": 1793449976991,
+      "max_drawdown": 0.0,
+      "peak": 15.0,
+      "pending": null,
+      "policy_sha256": "0ed67ca43b396aba318f001766b0f718484c33d638edbd941a646d2c0aa1e1b5",
+      "position": null,
+      "reasons": {
+        "no_net_edge": 9
+      },
+      "trades": []
+    },
+    {
+      "cash": 15.0,
+      "closed_trades": 0,
+      "decisions": 8,
+      "equity": 15.0,
+      "events": [],
+      "evidence_issues": [],
+      "funding": 0.0,
+      "halted": false,
+      "last_books": {},
+      "last_ms": 1793449977181,
+      "max_drawdown": 0.0,
+      "peak": 15.0,
+      "pending": null,
+      "policy_sha256": "0ed67ca43b396aba318f001766b0f718484c33d638edbd941a646d2c0aa1e1b5",
+      "position": null,
+      "reasons": {
+        "no_net_edge": 8
+      },
+      "trades": []
+    },
+    {
+      "cash": 15.0,
+      "closed_trades": 0,
+      "decisions": 7,
+      "equity": 15.0,
+      "events": [],
+      "evidence_issues": [],
+      "funding": 0.0,
+      "halted": false,
+      "last_books": {},
+      "last_ms": 1793449977321,
+      "max_drawdown": 0.0,
+      "peak": 15.0,
+      "pending": null,
+      "policy_sha256": "0ed67ca43b396aba318f001766b0f718484c33d638edbd941a646d2c0aa1e1b5",
+      "position": null,
+      "reasons": {
+        "no_net_edge": 7
+      },
+      "trades": []
+    }
+  ],
+  "book_receive_lag_ms": {
+    "max": 639.0,
+    "p50": 95.0,
+    "p95": 96.0,
+    "p99": 101.59000000000015
+  },
+  "cash_decisions": 24,
+  "completed": true,
+  "duration_s": 120.79271001500092,
+  "error": null,
+  "financial_evidence": false,
+  "queue_age_ms": {
+    "max": 4499.669776,
+    "p50": 0.04433,
+    "p95": 423.05470725,
+    "p99": 3176.0109432500003
+  },
+  "reads": 17626,
+  "ready": false,
+  "sampler_audit": {
+    "invalidated_books": 6,
+    "stale_or_future_messages": 7
+  },
+  "samples": 71,
+  "stale_samples_rejected": 8,
+  "synthetic_stall_applied": true,
+  "transport": {
+    "fault": null,
+    "peak_bytes": 182668,
+    "peak_messages": 650,
+    "queued": 87,
+    "queued_bytes": 16494,
+    "ready": false,
+    "received": 17713
+  },
+  "write_ms": {
+    "max": 2134.17488199957,
+    "p50": 542.7131300002657,
+    "p95": 1875.4289107997463,
+    "p99": 2082.4256877596054
+  }
+}

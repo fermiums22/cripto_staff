@@ -626,3 +626,49 @@ Important actual live finding; prioritize before candidate PAPER:
   checks, preserve fail-closed behavior, and version the trial (do not silently
   patch frozen live/data sources). Never merely accept stale prices or move/reset
   existing wallets. Validate with controlled slow storage plus real public stream.
+
+
+## Continuation: bounded asynchronous receipt with actual slow-ledger audit (2026-10-31)
+
+Previous turn progressed (6bfd214). No profitable candidate or independent PAPER
+success; objective remains active. Current campaign continues, thirteen completed
+days at last check, extracting Oct14; no source gates loosened.
+
+Added brain_impulse_transport.py: independent socket thread timestamps messages
+IMMEDIATELY at recv completion with wall and monotonic clocks, preserves source
+order and session/sequence, pings in receiver thread, uses bounded 10,000-message/
+8MiB queue. Overflow, oversized payload, clock regression or subscription failure
+invalidates connection; no delta is silently dropped. Consumer may reconstruct
+historical rows but fresh_for_decision checks both processing delay and exchange
+age against1500ms, including after each slow account write. Thread closes cleanly.
+This is an ingestion component, NOT yet integrated into frozen live control/model
+runner. Do not claim live service bottleneck fully fixed or alter frozen sources.
+
+Added brain_impulse_transport_audit.py, finite public WS + three isolated synthetic
+CASH journals on the same persistent storage, actual FULL commits, deliberate
+4.5s consumer-only stall. No orders, no existing wallet edits, no model inference.
+Audit completed exit0, duration120.79s; storage/impulse-buffered-audit-v1 contains
+source identity, all three journals and result.json. Results:
+- 17,713 received messages,17,626 processed before finite stop;87 queued at close
+  explicitly reported, NOT claimed fully processed. Peak650 messages/182,668B,
+  no transport fault/overflow.
+- Book receipt lag p50=95ms,p99=101.59ms,max639ms despite consumer stall.
+- Queue age max4499.67ms,p99=3176.01ms: delay is recorded, never relabeled fresh.
+- 71 feature samples,8 stale samples rejected. Only six initial book snapshot
+  resets, no book continuity loss observed in this finite window.
+- 24 synthetic CASH decisions: accounts9/8/7, because freshness was rechecked
+  after preceding slow writes. All cash15, no positions/pending entries.
+- Ledger batch p50=542.71ms,max2134.17ms. Buffered receipt stayed timely even while
+  processing was blocked. This demonstrates separation, not alpha or real fills.
+
+All198 tests pass, including actual CUDA tests from existing suite and three new
+transport tests: receiver drains without consumer, strict ordering/timestamps,
+overflow invalidation rather than skipped deltas, oversized/clock-regression
+failure and refusal to trade stale buffered observations.
+Next: integrate receiver into a NEW versioned live candidate/control runner with
+separate receipt and actual processing/decision clocks, per-account fresh checks,
+backlog/gap accounting and durable recovery. Never replay queued old quotes as
+fills at a fabricated current timestamp. Preserve raw receipt times; use explicit
+execution-observed timestamps where processing differs and audit this separately.
+Frozen prior trials/source/old wallets remain intact. Current trained candidate
+selection and diagnostic still await completed21-day archive and bounded fits.
