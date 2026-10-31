@@ -1,0 +1,64 @@
+{
+  "live_integration": false,
+  "ready": false,
+  "results": [
+    {
+      "constant_names": [
+        "oi_change_30s",
+        "oi_known",
+        "funding",
+        "funding_known",
+        "liquidated_longs_log_30s",
+        "liquidated_shorts_log_30s",
+        "receipt_delay_ms"
+      ],
+      "constant_values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        250.0
+      ],
+      "fold": 0,
+      "sha256": "eb8f8b5b194acac95141670793b8256c6da1b6332f84bae6ff032f9aef888d43",
+      "validation": {
+        "changed_windows": 0,
+        "input_invariant": true,
+        "ready": false,
+        "rows": 118477,
+        "validation_indices_sha256": "2b71ed93ff3aea2d0b425081d06d05c6932810d825f840f984b8df86caddeb12"
+      }
+    },
+    {
+      "constant_names": [
+        "oi_change_30s",
+        "oi_known",
+        "funding",
+        "funding_known",
+        "liquidated_longs_log_30s",
+        "liquidated_shorts_log_30s",
+        "receipt_delay_ms"
+      ],
+      "constant_values": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        250.0
+      ],
+      "fold": 1,
+      "sha256": "e40e31e11b52708be46f210c9582b014c2bf0cd2802ad3cffda39f4fd29d52fa",
+      "validation": {
+        "changed_windows": 0,
+        "input_invariant": true,
+        "ready": false,
+        "rows": 188611,
+        "validation_indices_sha256": "c93c505fc668801210fed780328241a11a8401e1b2c0a44b94bac8d1c18f790e"
+      }
+    }
+  ]
+}

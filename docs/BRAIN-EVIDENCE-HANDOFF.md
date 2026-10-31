@@ -819,3 +819,24 @@ live wiring, audit archive-vs-live feature contract: archive OI/funding/liquidat
 channels are missing and receipt delay is simulated/near-constant. Unlearned live
 variation must not silently enter neural feature dimensions. This remains a
 prospective adapter concern; no trained live model is running now.
+
+
+## Continuation: all fits complete, validation replay running, input contract audited (2026-10-31)
+
+All12 v2 fits completed; workflow now brain_impulse_evaluate.py, fold0/base replay.
+No validation PnL result yet and no proven edge. MainPID5443 remains running.
+Added isolated brain_impulse_feature_contract.py (not wired into frozen competition
+or existing live controls). It derives exact constant channels from training rows
+only, projects copies of model inputs, and preserves raw timing/freshness evidence.
+Near-constant but varying channels are retained. Validation changes block freezing.
+Two focused unit tests pass; previous full206-test run remains the latest full run.
+Actual audit completed exit0 under CPU100%/MemoryMax3G; retained run.py, contracts
+and result under storage/impulse-feature-contract-audit-v1. Both folds have seven
+constant channels: OI change/known, funding/known, long/short liquidation logs (0),
+receipt_delay_ms (250). Projection changes ZERO windows over118477 and188611
+score-validation rows. Data beyond first14days were not loaded by this audit.
+Report copied to docs/brain-impulse-feature-contract-2026-10-31.json.
+This is prospective adapter preparation, not evidence of profit, not proof of
+live distribution equivalence, and not permission to ignore actual receipt lag.
+Future trained PAPER must explicitly freeze/integrate this contract AFTER gates;
+no trained live model or automatic promotion exists. Existing services untouched.
