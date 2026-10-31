@@ -1,0 +1,251 @@
+{
+  "mode": "Historical minute diagnostic only, not independent PAPER evidence",
+  "models": 16,
+  "qualified": 0,
+  "ready": false,
+  "manifest_hash": "0bb062b8ec1080b31683a529adce87550666f9b76afa09c90d46d82fcbb32b1f",
+  "results": [
+    {
+      "kind": "ridge",
+      "horizon_minutes": 1,
+      "net_pnl": 0.09689723199999811,
+      "trades": 2,
+      "costs": 0.04734276800000001,
+      "drawdown": 0.0028796533333333985,
+      "stress_net_pnl": 0.07537779199999761,
+      "paired_daily_lower_bounds": {
+        "cash": -0.004877919999999865,
+        "momentum": 0.050417429528124266,
+        "reversal": 0.10513680324958333
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "xgboost",
+      "horizon_minutes": 1,
+      "net_pnl": 0.0,
+      "trades": 0,
+      "costs": 0,
+      "drawdown": 0.0,
+      "stress_net_pnl": 0.0,
+      "paired_daily_lower_bounds": {
+        "cash": 0.0,
+        "momentum": 0.03513591439999992,
+        "reversal": 0.07229814653770883
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "mlp",
+      "horizon_minutes": 1,
+      "net_pnl": -0.46336335000000695,
+      "trades": 13,
+      "costs": 0.30101335,
+      "drawdown": 0.031093556666667133,
+      "stress_net_pnl": -0.5981978880000067,
+      "paired_daily_lower_bounds": {
+        "cash": -0.2316816750000022,
+        "momentum": -0.15810298609979398,
+        "reversal": -0.06665304597104203
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "tcn",
+      "horizon_minutes": 1,
+      "net_pnl": 0.0,
+      "trades": 0,
+      "costs": 0,
+      "drawdown": 0.0,
+      "stress_net_pnl": 0.0,
+      "paired_daily_lower_bounds": {
+        "cash": 0.0,
+        "momentum": 0.03513591439999992,
+        "reversal": 0.07229814653770883
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "gru",
+      "horizon_minutes": 1,
+      "net_pnl": 0.0,
+      "trades": 0,
+      "costs": 0,
+      "drawdown": 0.0,
+      "stress_net_pnl": 0.0,
+      "paired_daily_lower_bounds": {
+        "cash": 0.0,
+        "momentum": 0.03513591439999992,
+        "reversal": 0.07229814653770883
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "lstm",
+      "horizon_minutes": 1,
+      "net_pnl": 0.0,
+      "trades": 0,
+      "costs": 0,
+      "drawdown": 0.0,
+      "stress_net_pnl": 0.0,
+      "paired_daily_lower_bounds": {
+        "cash": 0.0,
+        "momentum": 0.03513591439999992,
+        "reversal": 0.07229814653770883
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "transformer",
+      "horizon_minutes": 1,
+      "net_pnl": 0.0,
+      "trades": 0,
+      "costs": 0,
+      "drawdown": 0.0,
+      "stress_net_pnl": 0.0,
+      "paired_daily_lower_bounds": {
+        "cash": 0.0,
+        "momentum": 0.03513591439999992,
+        "reversal": 0.07229814653770883
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "moe",
+      "horizon_minutes": 1,
+      "net_pnl": 0.0,
+      "trades": 0,
+      "costs": 0,
+      "drawdown": 0.0,
+      "stress_net_pnl": 0.0,
+      "paired_daily_lower_bounds": {
+        "cash": 0.0,
+        "momentum": 0.03513591439999992,
+        "reversal": 0.07229814653770883
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "ridge",
+      "horizon_minutes": 4,
+      "net_pnl": -0.13965598800000123,
+      "trades": 1,
+      "costs": 0.026255988,
+      "drawdown": 0.009958399200000079,
+      "stress_net_pnl": -0.1515905280000016,
+      "paired_daily_lower_bounds": {
+        "cash": -0.0698279940000005,
+        "momentum": -0.0038793678486206185,
+        "reversal": -0.034943181460833056
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "xgboost",
+      "horizon_minutes": 4,
+      "net_pnl": -0.04452761600000166,
+      "trades": 2,
+      "costs": 0.052547616000000005,
+      "drawdown": 0.0054413514666666885,
+      "stress_net_pnl": -0.06841289600000167,
+      "paired_daily_lower_bounds": {
+        "cash": -0.02226380800000043,
+        "momentum": 0.02720938797150495,
+        "reversal": 0.011845514313542601
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "mlp",
+      "horizon_minutes": 4,
+      "net_pnl": -0.1763505119999973,
+      "trades": 6,
+      "costs": 0.14217051200000003,
+      "drawdown": 0.018082829466666728,
+      "stress_net_pnl": -0.2409794079999994,
+      "paired_daily_lower_bounds": {
+        "cash": -0.08817525599999979,
+        "momentum": -0.023431269568236747,
+        "reversal": 0.011845514313542601
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "tcn",
+      "horizon_minutes": 4,
+      "net_pnl": 0.0,
+      "trades": 0,
+      "costs": 0,
+      "drawdown": 0.0,
+      "stress_net_pnl": 0.0,
+      "paired_daily_lower_bounds": {
+        "cash": 0.0,
+        "momentum": 0.039969614422179556,
+        "reversal": 0.011845514313542601
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "gru",
+      "horizon_minutes": 4,
+      "net_pnl": 0.12369959999999836,
+      "trades": 1,
+      "costs": 0.0213004,
+      "drawdown": 0.004020026666666565,
+      "stress_net_pnl": 0.11401759999999861,
+      "paired_daily_lower_bounds": {
+        "cash": 0.0,
+        "momentum": 0.060396434934003415,
+        "reversal": 0.011845514313542601
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "lstm",
+      "horizon_minutes": 4,
+      "net_pnl": -0.3535024000000053,
+      "trades": 11,
+      "costs": 0.2827924,
+      "drawdown": 0.03737934330222481,
+      "stress_net_pnl": -0.4804079680000015,
+      "paired_daily_lower_bounds": {
+        "cash": -0.1768916370000003,
+        "momentum": -0.09898462952070362,
+        "reversal": -0.12491349891854132
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "transformer",
+      "horizon_minutes": 4,
+      "net_pnl": -0.04145061200000377,
+      "trades": 7,
+      "costs": 0.179010612,
+      "drawdown": 0.009361242933333513,
+      "stress_net_pnl": -0.12233030400000189,
+      "paired_daily_lower_bounds": {
+        "cash": -0.04413074120000097,
+        "momentum": 0.016448358890385446,
+        "reversal": 0.0212204608545837
+      },
+      "status": "rejected"
+    },
+    {
+      "kind": "moe",
+      "horizon_minutes": 4,
+      "net_pnl": -0.027117119999999773,
+      "trades": 1,
+      "costs": 0.026157120000000006,
+      "drawdown": 0.01262380800000007,
+      "stress_net_pnl": -0.03900671999999972,
+      "paired_daily_lower_bounds": {
+        "cash": -0.01355855999999995,
+        "momentum": 0.03195106439971015,
+        "reversal": 0.011845514313542601
+      },
+      "status": "rejected"
+    }
+  ],
+  "conclusion": "Reject this fixed candle-model family; do not rerun threshold search on its evaluation block",
+  "next_hypothesis": "Impulse onset from cross-market leads plus aggressive flow and depth changes, with reserved-data exclusion"
+}

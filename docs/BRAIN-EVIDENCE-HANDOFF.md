@@ -198,3 +198,17 @@ API semantics checked against official Bybit pages:
 https://bybit-exchange.github.io/docs/v5/websocket/public/orderbook
 https://bybit-exchange.github.io/docs/v5/websocket/public/ticker
 https://bybit-exchange.github.io/docs/v5/websocket/public/all-liquidation
+
+Minute factory subsequently COMPLETED successfully: all 16/16 rejected. Best
+positive model was GRU/4m +$0.12370 on ONE trade; ridge/1m +$0.09690 on TWO.
+Neither establishes advantage. MLP/1m -$0.46336 (13 trades), stressed -$0.59820
+from $15; LSTM/4m -$0.35350 (11 trades). See docs/brain-minute-results-2026-10-31.json.
+Do not repeat this family on the same evaluation period. Source/model/checkpoint
+artifacts and summary are preserved. The enabled service exits on its existing
+summary after reboot rather than retraining it.
+
+Branch research/impulse-20261031 published via workstation Git Credential Manager;
+container HTTPS push has no credentials. Workstation transport-only bare repo:
+D:/HAOS/server-control/brain-development-20261031/sync.git. Bundle transport avoids
+copying any credential onto the server. Existing uncommitted adaptive_live.py,
+telegram_control.py, web/adaptive.js and legacy files remain untouched.
