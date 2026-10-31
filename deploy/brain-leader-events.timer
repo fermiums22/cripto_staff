@@ -1,0 +1,10 @@
+[Unit]
+Description=Resume raw leader study after boot or incomplete day
+
+[Timer]
+OnBootSec=5min
+OnUnitInactiveSec=15min
+Unit=brain-leader-events.service
+
+[Install]
+WantedBy=timers.target

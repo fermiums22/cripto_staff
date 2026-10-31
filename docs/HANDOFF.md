@@ -92,3 +92,29 @@ read-only API, запрет доступа к секретам через HTTP �
 
 После любых новых правок: узкие тесты, коммит, push; на другой машине — сначала
 проверка незакоммиченного состояния и fast-forward. Секреты в Git не добавлять.
+
+
+## A/B/C $15 execution experiment (2026-10-31)
+
+Concrete comparison completed; see docs/THREE-HYPOTHESES-2026-10-31.md and
+three-hypotheses-2026-10-31.json/.csv. Modules research/hypothesis_a,b,c and
+research.compare; isolated wallets, no live orders or production changes.
+Train Oct2, early Oct3, execution Oct4-5, ALL DEVELOPMENT previously examined.
+A 18trades: midgross+.05016, net-.273465; B rule19: -.429556; C rule9: -.165594.
+XGBoost/MLP B/C hit ~10% drawdown stop with net around-$1.50. All stress/slow
+variants nonpositive. CASH wins. BTC min lot observed >=$84.6773 unavailable
+at $15/1x; SOL baseline mostly unavailable at $12 cap. No PAPER candidate.
+Archive receive time is simulated, 1s top10 alt execution/5s BTC snapshots;
+lot rules are snapshot scenario. Do not call this independent or exact-tick proof.
+Leader reaction lags1..120s saved with actual snapshot offsets. Prior raw leader
+study Oct2-5 completed:42 BTC/ETH events, no aligned positive net group.
+Storage three-hypotheses-v3 includes checkpoints, models, costs, trade journal,
+reactions, artifacts.json; resume command in report verified checksum-only no rerun.
+v1/v2 preserved: JSON serialization and summary CASH-prefix defects corrected
+through checkpoint recovery; trading results and model parameters verified
+identical, no retraining/parameter search.12 narrow tests pass. Six cripto
+services remain active; unrelated dirty files untouched. Broad profit goal
+remains unachieved; latest bounded task has measured negative evidence.
+Do not repeat these experiments or expand population; new information or a
+new justified mechanism needs a separately frozen protocol and prospective
+validation before any promotion.

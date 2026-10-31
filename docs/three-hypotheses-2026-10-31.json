@@ -1,0 +1,1617 @@
+{
+  "audits": {
+    "2026-10-04": {
+      "btc_min_observed_notional": 84.6773,
+      "events": 412221,
+      "features": 82270,
+      "leader_signals": 7,
+      "quotes": 329951,
+      "reaction_observations": 3359,
+      "unresolved_reactions": 0
+    },
+    "2026-10-05": {
+      "btc_min_observed_notional": 84.9338,
+      "events": 416689,
+      "features": 83066,
+      "leader_signals": 18,
+      "quotes": 333623,
+      "reaction_observations": 8638,
+      "unresolved_reactions": 0
+    }
+  },
+  "candidate": null,
+  "hypotheses": {
+    "A": {
+      "best_development_variant": "base/A_leader",
+      "candidate_frozen": false,
+      "net_pnl": -0.2734652231913923,
+      "ready": false,
+      "verdict": "no_positive_net_edge_in_this_protocol"
+    },
+    "B": {
+      "best_development_variant": "base/B_rule",
+      "candidate_frozen": false,
+      "net_pnl": -0.4295561993161847,
+      "ready": false,
+      "verdict": "no_positive_net_edge_in_this_protocol"
+    },
+    "C": {
+      "best_development_variant": "base/C_rule",
+      "candidate_frozen": false,
+      "net_pnl": -0.16559360720838967,
+      "ready": false,
+      "verdict": "no_positive_net_edge_in_this_protocol"
+    }
+  },
+  "limitations": [
+    "All dates previously studied: development, not independent confirmation",
+    "Archive reception clocks simulated: book +250ms, trade +350ms; actual reception unavailable",
+    "Alt execution uses recorded 1s top10 book; BTC baseline recorded approximately 5s top50 snapshots",
+    "Current lot-size snapshot applied historically as a scenario; no historical instrument-rule proof",
+    "Depth loss is not identifiable cancellation of a particular order in aggregate book data",
+    "Funding avoided by hourly-boundary exclusion; any unexpected crossing invalidates evidence",
+    "Rank scores are relative, not a calibrated positive expected return; active models compared without profit claims",
+    "Two development days do not support an independent confidence interval or promotion"
+  ],
+  "protocol": {
+    "decision_interval_ms": 120000,
+    "development": [
+      "2026-10-04",
+      "2026-10-05"
+    ],
+    "early": [
+      "2026-10-03"
+    ],
+    "hold_ms": 120000,
+    "independent_evidence": false,
+    "initial_cash": 15.0,
+    "inputs": {
+      "/home/codex/projects/market-brain-storage/archive-campaign-v1/instrument-scenario.json": "b2236f83fb75adbd0a8d8f3c7c9ee73764e478b2543e4b4a3792de81b310ca40",
+      "/home/codex/workspace/cripto_staff/research/__init__.py": "ca4618c8965226ef7a1aa2b6f044177d5709fedcfd77840ac40810507d516d09",
+      "/home/codex/workspace/cripto_staff/research/compare.py": "dae9bf1f3d11da12e226379d0aa46192ca650a6dbbc83fdb1caec23b44aa6867",
+      "/home/codex/workspace/cripto_staff/research/execution.py": "43b395a3a16d91e1a42bdd88d969b614289884dd87c71abfb07f88e741448bf3",
+      "/home/codex/workspace/cripto_staff/research/hypothesis_a.py": "89bb38e87dbbc0a2aef291dd42ca1d42246ff5579c858656e0203c2af4524fdf",
+      "/home/codex/workspace/cripto_staff/research/hypothesis_b.py": "d188e4951e555fa6d0dbe1b68925c40566cd1d41a8048ad8091ae014b27294e8",
+      "/home/codex/workspace/cripto_staff/research/hypothesis_c.py": "f62df6d430a0098bd56bcdbbd0afa880ad1aad7ba69e8cf90125e13212b3ee5b",
+      "archive-campaign-v1/2026-10-04/derived/samples.jsonl.gz": "7fc6a03d252cdd11188d2c291031d8a2654da1c123ab820e19043c119c76a17e",
+      "archive-campaign-v1/2026-10-05/derived/samples.jsonl.gz": "ba30ab4c3ed759a841711000fb24c97b33822c28dc28bf3a6da20fc609ba06c2",
+      "brain_evolution_env.py": "69d832dc54ccc45fa867e15e060af09a087310ad3841a85789aa54a5ccca1436",
+      "brain_factory.py": "ec2fb72518e8a1544598174ff69ec817ece6588220afd82fad9adefc2f2c1e73",
+      "brain_impulse_data.py": "4efce2744495ac9efb9cc9120bc0b851455c131c2f77427540689c4d16fe15fb",
+      "brain_impulse_execution.py": "c54402ef28628c048db2b23399558328ea63a6e7a43e541f883b4df27e46b00d",
+      "evolution-lab-v2/tapes/2026-10-02/manifest.json": "561a60a815bb9ca325964d8270b3cc16eae0320a3aad184ada5beae11de80903",
+      "evolution-lab-v2/tapes/2026-10-02/tape.npz": "4ca2caaf2d827010fb60def2faaa27ee67a3c63f83c0d01d42b529a5ea33578e",
+      "evolution-lab-v2/tapes/2026-10-03/manifest.json": "5673676f30f49e889160fa994ab01f91658e9d7177a2ce748ad4ecb8ff5f2c6b",
+      "evolution-lab-v2/tapes/2026-10-03/tape.npz": "23387a5dacb4ad5784f96f86026fcbf023a867aba3f25e42dba6f1404fbe3ecb",
+      "evolution-lab-v2/tapes/2026-10-04/manifest.json": "cb4f37d3e519a37b26d037c2d44fc460030e4db7f7c936e0a05bbaaac6acfc02",
+      "evolution-lab-v2/tapes/2026-10-04/tape.npz": "368fd9d3db3f198fe21a4d3e2617e61a79fa74d98147c8b78a24d25ea542c4ae",
+      "evolution-lab-v2/tapes/2026-10-05/manifest.json": "dc94ce01b8096b806246451ca7e896a969ed35d632fc410fae68c08f50cc76a7",
+      "evolution-lab-v2/tapes/2026-10-05/tape.npz": "362fa022bbbdc03e91e9cce7a89965c5e4541560c2c83224546d3f9ad788cc1f",
+      "leader-events-v1/2026-10-04.json": "18c0cf295c0113ec6225ec5b0110a79f755946f3561087f910cfdd405e2e25d1",
+      "leader-events-v1/2026-10-05.json": "b4f37d0cdd94906bc06243315adb49d6b1787a1653be47b371badbfb1f8e2aa4"
+    },
+    "leverage": 1,
+    "max_drawdown": 0.1,
+    "notional_cap": 12.0,
+    "ready": false,
+    "scenarios": {
+      "base": {
+        "fee": 0.0006,
+        "latency_ms": 1000,
+        "slip": 0.0003
+      },
+      "slow": {
+        "fee": 0.0006,
+        "latency_ms": 5000,
+        "slip": 0.0003
+      },
+      "stress": {
+        "fee": 0.0008,
+        "latency_ms": 2000,
+        "slip": 0.0008
+      }
+    },
+    "scope": null,
+    "stop": 0.01,
+    "train": [
+      "2026-10-02"
+    ]
+  },
+  "ready": false,
+  "results": {
+    "base/A_leader": {
+      "accounting_residual": 6.106226635438361e-16,
+      "average_net_pnl": -0.015192512399521827,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -0.07357823821019688,
+        "2026-10-05": -0.19988698498119606
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.10438200719999997,
+          "net_pnl": -0.19657300719999793,
+          "trades": 11
+        },
+        "DOGEUSDT": {
+          "fees": 0.042975606301199995,
+          "net_pnl": -0.03280341230119742,
+          "trades": 3
+        },
+        "XRPUSDT": {
+          "fees": 0.0564658666902,
+          "net_pnl": -0.044088803690197576,
+          "trades": 4
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.20382348019139998,
+      "final_cash": 14.726534776808608,
+      "final_equity": 14.726534776808608,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.018992868649089778,
+      "mid_gross_pnl": 0.05015999999999977,
+      "mode": "EXPLORATION",
+      "net_pnl": -0.2734652231913923,
+      "net_return": -0.018231014879426133,
+      "ready": false,
+      "rejections": {},
+      "slippage": 0.10191174299999999,
+      "spread": 0.01789000000000016,
+      "trades": 18,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "base/B_boost": {
+      "accounting_residual": -1.0436096431476471e-14,
+      "average_net_pnl": -0.015338063295542444,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.50313020296316
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.8850126142199998,
+          "net_pnl": -1.4065189142199641,
+          "trades": 94
+        },
+        "DOGEUSDT": {
+          "fees": 0.013131983575199999,
+          "net_pnl": -0.017337975575201045,
+          "trades": 1
+        },
+        "XRPUSDT": {
+          "fees": 0.04111554316799999,
+          "net_pnl": -0.07927331316799442,
+          "trades": 3
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.9392601409631994,
+      "final_cash": 13.49686979703683,
+      "final_equity": 13.49686979703683,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.1002086801975447,
+      "mid_gross_pnl": 0.003240000000011537,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.5031302029631703,
+      "net_return": -0.1002086801975447,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.469630062,
+      "spread": 0.09748000000001647,
+      "trades": 98,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "base/B_neural": {
+      "accounting_residual": -1.2212453270876722e-14,
+      "average_net_pnl": -0.015415328952119995,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.5107022373077597
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.8850126142199998,
+          "net_pnl": -1.4065189142199641,
+          "trades": 94
+        },
+        "DOGEUSDT": {
+          "fees": 0.027841299686399996,
+          "net_pnl": -0.06224194768640009,
+          "trades": 2
+        },
+        "XRPUSDT": {
+          "fees": 0.026474250401399998,
+          "net_pnl": -0.041941375401395364,
+          "trades": 2
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.9393281643077994,
+      "final_cash": 13.489297762692228,
+      "final_equity": 13.489297762692228,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.10071348248718481,
+      "mid_gross_pnl": -0.0037299999999870176,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.5107022373077719,
+      "net_return": -0.10071348248718481,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.469664073,
+      "spread": 0.09798000000001786,
+      "trades": 98,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "base/B_rule": {
+      "accounting_residual": -2.1094237467877974e-15,
+      "average_net_pnl": -0.02260822101664119,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -0.04516074342659712,
+        "2026-10-05": -0.3843954558895855
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.00952740054,
+          "net_pnl": -0.01729110054000082,
+          "trades": 1
+        },
+        "DOGEUSDT": {
+          "fees": 0.14053669004459995,
+          "net_pnl": -0.23327503304459526,
+          "trades": 10
+        },
+        "XRPUSDT": {
+          "fees": 0.1129133777316,
+          "net_pnl": -0.17899006573158652,
+          "trades": 8
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.2629774683162,
+      "final_cash": 14.570443800683815,
+      "final_equity": 14.570443800683815,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.02930501400786578,
+      "mid_gross_pnl": -0.01559999999999811,
+      "mode": "EXPLORATION",
+      "net_pnl": -0.4295561993161847,
+      "net_return": -0.028637079954412337,
+      "ready": false,
+      "rejections": {},
+      "slippage": 0.13148873099999997,
+      "spread": 0.019490000000003213,
+      "trades": 19,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "base/CASH": {
+      "accounting_residual": 0.0,
+      "average_net_pnl": null,
+      "bankrupt": false,
+      "by_day": {},
+      "by_symbol": {},
+      "depth_impact": 0,
+      "evidence_issues": [],
+      "fees": 0.0,
+      "final_cash": 15.0,
+      "final_equity": 15.0,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.0,
+      "mid_gross_pnl": 0,
+      "mode": "EXPLORATION",
+      "net_pnl": 0.0,
+      "net_return": 0.0,
+      "ready": false,
+      "rejections": {},
+      "slippage": 0,
+      "spread": 0,
+      "trades": 0,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "base/C_boost": {
+      "accounting_residual": -1.1324274851176597e-14,
+      "average_net_pnl": -0.015348135226115864,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.5041172521593549
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.8850126138599997,
+          "net_pnl": -1.4045189138599634,
+          "trades": 94
+        },
+        "XRPUSDT": {
+          "fees": 0.0541788932994,
+          "net_pnl": -0.0995983382993914,
+          "trades": 4
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.9391915071593995,
+      "final_cash": 13.495882747840634,
+      "final_equity": 13.495882747840634,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.10027448347729107,
+      "mid_gross_pnl": 0.0017000000000094713,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.5041172521593662,
+      "net_return": -0.10027448347729107,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.469595745,
+      "spread": 0.09703000000001295,
+      "trades": 98,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "base/C_neural": {
+      "accounting_residual": -1.1324274851176597e-14,
+      "average_net_pnl": -0.015388328018571016,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.5080561458199597
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.8850126142199998,
+          "net_pnl": -1.4065189142199641,
+          "trades": 94
+        },
+        "DOGEUSDT": {
+          "fees": 0.041294805468599996,
+          "net_pnl": -0.08121220646859852,
+          "trades": 3
+        },
+        "XRPUSDT": {
+          "fees": 0.0130633501314,
+          "net_pnl": -0.02032502513139697,
+          "trades": 1
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.9393707698199996,
+      "final_cash": 13.491943854180029,
+      "final_equity": 13.491943854180029,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.10053707638799803,
+      "mid_gross_pnl": -0.0005599999999897031,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.508056145819971,
+      "net_return": -0.10053707638799803,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.469685376,
+      "spread": 0.09844000000001413,
+      "trades": 98,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "base/C_rule": {
+      "accounting_residual": -3.9968028886505635e-15,
+      "average_net_pnl": -0.01839928968982063,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -0.08684916220879085,
+        "2026-10-05": -0.07874444499959482
+      },
+      "by_symbol": {
+        "DOGEUSDT": {
+          "fees": 0.09977961283559998,
+          "net_pnl": -0.13208942083558836,
+          "trades": 7
+        },
+        "XRPUSDT": {
+          "fees": 0.028362790372799998,
+          "net_pnl": -0.03350418637279729,
+          "trades": 2
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.12814240320839998,
+      "final_cash": 14.83440639279161,
+      "final_equity": 14.83440639279161,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.013350567274105996,
+      "mid_gross_pnl": 0.036899999999993806,
+      "mode": "EXPLORATION",
+      "net_pnl": -0.16559360720838967,
+      "net_return": -0.011039573813892645,
+      "ready": false,
+      "rejections": {},
+      "slippage": 0.06407120399999999,
+      "spread": 0.010279999999991244,
+      "trades": 9,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "base/Momentum": {
+      "accounting_residual": -2.886579864025407e-15,
+      "average_net_pnl": -0.020277883165358935,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.5005633542365604
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.16942259874,
+          "net_pnl": -0.24713389873999625,
+          "trades": 18
+        },
+        "DOGEUSDT": {
+          "fees": 0.4486782494387999,
+          "net_pnl": -0.747677367438771,
+          "trades": 33
+        },
+        "XRPUSDT": {
+          "fees": 0.31102806105779995,
+          "net_pnl": -0.5057520880577941,
+          "trades": 23
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.9291289092366,
+      "final_cash": 13.499436645763437,
+      "final_equity": 13.499436645763437,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.10003755694910421,
+      "mid_gross_pnl": -0.03113999999999208,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.5005633542365633,
+      "net_return": -0.10003755694910421,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 2
+      },
+      "slippage": 0.464564445,
+      "spread": 0.07573000000001133,
+      "trades": 74,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "base/fixed_BTC": {
+      "accounting_residual": 0.0,
+      "average_net_pnl": null,
+      "bankrupt": false,
+      "by_day": {},
+      "by_symbol": {},
+      "depth_impact": 0,
+      "evidence_issues": [],
+      "fees": 0.0,
+      "final_cash": 15.0,
+      "final_equity": 15.0,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.0,
+      "mid_gross_pnl": 0,
+      "mode": "EXPLORATION",
+      "net_pnl": 0.0,
+      "net_return": 0.0,
+      "ready": false,
+      "rejections": {
+        "quantity_or_depth": 1147,
+        "unknown_funding_boundary": 33
+      },
+      "slippage": 0,
+      "spread": 0,
+      "trades": 0,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "base/fixed_SOL": {
+      "accounting_residual": 2.7755575615628914e-17,
+      "average_net_pnl": -0.03150955180000015,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -0.053074001800001214,
+        "2026-10-05": -0.0729642053999994
+      },
+      "by_symbol": {
+        "SOLUSDT": {
+          "fees": 0.0573588072,
+          "net_pnl": -0.1260382072000006,
+          "trades": 4
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.057358807199999993,
+      "final_cash": 14.8739617928,
+      "final_equity": 14.8739617928,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.008402547146666661,
+      "mid_gross_pnl": -0.035999999999997104,
+      "mode": "EXPLORATION",
+      "net_pnl": -0.12603820720000058,
+      "net_return": -0.008402547146666661,
+      "ready": false,
+      "rejections": {
+        "quantity_or_depth": 1141,
+        "unknown_funding_boundary": 44
+      },
+      "slippage": 0.028679399999999997,
+      "spread": 0.004000000000002046,
+      "trades": 4,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "slow/A_leader": {
+      "accounting_residual": 5.551115123125783e-16,
+      "average_net_pnl": -0.015318572922021672,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -0.07608451965839727,
+        "2026-10-05": -0.19964979293799287
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.10438260774,
+          "net_pnl": -0.19957390773999442,
+          "trades": 11
+        },
+        "DOGEUSDT": {
+          "fees": 0.042986809005,
+          "net_pnl": -0.036730216004998414,
+          "trades": 3
+        },
+        "XRPUSDT": {
+          "fees": 0.056466789851399996,
+          "net_pnl": -0.0394301888513973,
+          "trades": 4
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.20383620659639998,
+      "final_cash": 14.72426568740361,
+      "final_equity": 14.72426568740361,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.01875624191322589,
+      "mid_gross_pnl": 0.04790999999999999,
+      "mode": "EXPLORATION",
+      "net_pnl": -0.2757343125963896,
+      "net_return": -0.01838228750642601,
+      "ready": false,
+      "rejections": {},
+      "slippage": 0.10191810599999998,
+      "spread": 0.017889999999997876,
+      "trades": 18,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "slow/B_boost": {
+      "accounting_residual": -9.547918011776346e-15,
+      "average_net_pnl": -0.015410557288175072,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.5102346142411573
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.8850150156599998,
+          "net_pnl": -1.4145225156599606,
+          "trades": 94
+        },
+        "DOGEUSDT": {
+          "fees": 0.013131983575199999,
+          "net_pnl": -0.017337975575201045,
+          "trades": 1
+        },
+        "XRPUSDT": {
+          "fees": 0.041116083006,
+          "net_pnl": -0.07837412300599576,
+          "trades": 3
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.9392630822411997,
+      "final_cash": 13.489765385758833,
+      "final_equity": 13.489765385758833,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.10068230761607777,
+      "mid_gross_pnl": -0.0038599999999876025,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.510234614241167,
+      "net_return": -0.10068230761607777,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.46963153199999996,
+      "spread": 0.09748000000001471,
+      "trades": 98,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "slow/B_neural": {
+      "accounting_residual": -1.1546319456101628e-14,
+      "average_net_pnl": -0.015468697855844891,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.5004636920169547
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.8755596151199998,
+          "net_pnl": -1.3973394151199603,
+          "trades": 93
+        },
+        "DOGEUSDT": {
+          "fees": 0.027842835225599997,
+          "net_pnl": -0.0596842512255989,
+          "trades": 2
+        },
+        "XRPUSDT": {
+          "fees": 0.026473350671399998,
+          "net_pnl": -0.04344002567139549,
+          "trades": 2
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.9298758010169995,
+      "final_cash": 13.499536307983034,
+      "final_equity": 13.499536307983034,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.10003091280113108,
+      "mid_gross_pnl": -0.008669999999982877,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.5004636920169663,
+      "net_return": -0.10003091280113108,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.46493789099999994,
+      "spread": 0.09698000000001764,
+      "trades": 97,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "slow/B_rule": {
+      "accounting_residual": 8.326672684688674e-15,
+      "average_net_pnl": -0.023478091046154666,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -0.04891186910159809,
+        "2026-10-05": -0.373693769729186
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.00952619982,
+          "net_pnl": -0.013289299819999573,
+          "trades": 1
+        },
+        "DOGEUSDT": {
+          "fees": 0.126592183146,
+          "net_pnl": -0.229588271145994,
+          "trades": 9
+        },
+        "XRPUSDT": {
+          "fees": 0.1129120458648,
+          "net_pnl": -0.17972806786479048,
+          "trades": 8
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.24903042883080004,
+      "final_cash": 14.577394361169224,
+      "final_equity": 14.577394361169224,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.028841643308838538,
+      "mid_gross_pnl": -0.030790000000010392,
+      "mode": "EXPLORATION",
+      "net_pnl": -0.42260563883077573,
+      "net_return": -0.028173709255385093,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.12451520999999999,
+      "spread": 0.018269999999991866,
+      "trades": 18,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "slow/CASH": {
+      "accounting_residual": 0.0,
+      "average_net_pnl": null,
+      "bankrupt": false,
+      "by_day": {},
+      "by_symbol": {},
+      "depth_impact": 0,
+      "evidence_issues": [],
+      "fees": 0.0,
+      "final_cash": 15.0,
+      "final_equity": 15.0,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.0,
+      "mid_gross_pnl": 0,
+      "mode": "EXPLORATION",
+      "net_pnl": 0.0,
+      "net_return": 0.0,
+      "ready": false,
+      "rejections": {},
+      "slippage": 0,
+      "spread": 0,
+      "trades": 0,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "slow/C_boost": {
+      "accounting_residual": -9.103828801926284e-15,
+      "average_net_pnl": -0.015420629218748502,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.5112216634373536
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.8850150152999999,
+          "net_pnl": -1.4125225152999608,
+          "trades": 94
+        },
+        "XRPUSDT": {
+          "fees": 0.05417943313739999,
+          "net_pnl": -0.09869914813739274,
+          "trades": 4
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.9391944484373994,
+      "final_cash": 13.488778336562637,
+      "final_equity": 13.488778336562637,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.10074811089582414,
+      "mid_gross_pnl": -0.005399999999989687,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.5112216634373627,
+      "net_return": -0.10074811089582414,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.46959721499999996,
+      "spread": 0.09703000000001118,
+      "trades": 98,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "slow/C_neural": {
+      "accounting_residual": -1.0880185641326534e-14,
+      "average_net_pnl": -0.015479022371928124,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.5169441924489566
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.8850150156599998,
+          "net_pnl": -1.4145225156599606,
+          "trades": 94
+        },
+        "DOGEUSDT": {
+          "fees": 0.041184435657599994,
+          "net_pnl": -0.08209665165759883,
+          "trades": 3
+        },
+        "XRPUSDT": {
+          "fees": 0.0130633501314,
+          "net_pnl": -0.02032502513139697,
+          "trades": 1
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.9392628014489995,
+      "final_cash": 13.483055807551033,
+      "final_equity": 13.483055807551033,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.10112961282993116,
+      "mid_gross_pnl": -0.00961999999998478,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.5169441924489675,
+      "net_return": -0.10112961282993116,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.4696313909999999,
+      "spread": 0.09843000000001748,
+      "trades": 98,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "slow/C_rule": {
+      "accounting_residual": 2.9698465908722937e-15,
+      "average_net_pnl": -0.022280346499532117,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -0.11644587253499528,
+        "2026-10-05": -0.08407724596079377
+      },
+      "by_symbol": {
+        "DOGEUSDT": {
+          "fees": 0.0997848568386,
+          "net_pnl": -0.16544728383859236,
+          "trades": 7
+        },
+        "XRPUSDT": {
+          "fees": 0.028357222657199997,
+          "net_pnl": -0.03507583465719668,
+          "trades": 2
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.12814207949579998,
+      "final_cash": 14.799476881504214,
+      "final_equity": 14.799476881504214,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.016032034290078934,
+      "mid_gross_pnl": 0.0019699999999984383,
+      "mode": "EXPLORATION",
+      "net_pnl": -0.20052311849578608,
+      "net_return": -0.013368207899719042,
+      "ready": false,
+      "rejections": {},
+      "slippage": 0.064071039,
+      "spread": 0.010279999999998216,
+      "trades": 9,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "slow/Momentum": {
+      "accounting_residual": 1.7763568394002505e-15,
+      "average_net_pnl": -0.020345516528191422,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.505568223086165
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.16941900018,
+          "net_pnl": -0.25512850017999206,
+          "trades": 18
+        },
+        "DOGEUSDT": {
+          "fees": 0.44869260805979994,
+          "net_pnl": -0.7511489050597814,
+          "trades": 33
+        },
+        "XRPUSDT": {
+          "fees": 0.3112072138464,
+          "net_pnl": -0.499290817846392,
+          "trades": 23
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.9293188220862001,
+      "final_cash": 13.494431776913837,
+      "final_equity": 13.494431776913837,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.10037121487241085,
+      "mid_gross_pnl": -0.03584999999999448,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.5055682230861631,
+      "net_return": -0.10037121487241085,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 2
+      },
+      "slippage": 0.46465940099999997,
+      "spread": 0.07574000000000909,
+      "trades": 74,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "slow/fixed_BTC": {
+      "accounting_residual": 0.0,
+      "average_net_pnl": null,
+      "bankrupt": false,
+      "by_day": {},
+      "by_symbol": {},
+      "depth_impact": 0,
+      "evidence_issues": [],
+      "fees": 0.0,
+      "final_cash": 15.0,
+      "final_equity": 15.0,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.0,
+      "mid_gross_pnl": 0,
+      "mode": "EXPLORATION",
+      "net_pnl": 0.0,
+      "net_return": 0.0,
+      "ready": false,
+      "rejections": {
+        "quantity_or_depth": 1146,
+        "unknown_funding_boundary": 34
+      },
+      "slippage": 0,
+      "spread": 0,
+      "trades": 0,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "slow/fixed_SOL": {
+      "accounting_residual": 1.0824674490095276e-15,
+      "average_net_pnl": -0.03100775170999919,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -0.048071300899998795,
+        "2026-10-05": -0.07595970593999797
+      },
+      "by_symbol": {
+        "SOLUSDT": {
+          "fees": 0.05735400684,
+          "net_pnl": -0.12403100683999677,
+          "trades": 4
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.05735400684,
+      "final_cash": 14.875968993160004,
+      "final_equity": 14.875968993160004,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.008669093861333299,
+      "mid_gross_pnl": -0.0339999999999975,
+      "mode": "EXPLORATION",
+      "net_pnl": -0.12403100683999568,
+      "net_return": -0.008268733789333016,
+      "ready": false,
+      "rejections": {
+        "quantity_or_depth": 1140,
+        "unknown_funding_boundary": 45
+      },
+      "slippage": 0.028677,
+      "spread": 0.004000000000002046,
+      "trades": 4,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "stress/A_leader": {
+      "accounting_residual": -4.9960036108132044e-15,
+      "average_net_pnl": -0.028262571263288634,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -0.14638689208960118,
+        "2026-10-05": -0.3623393906495941
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.13917362752000004,
+          "net_pnl": -0.3213472275199942,
+          "trades": 11
+        },
+        "DOGEUSDT": {
+          "fees": 0.056993833497600004,
+          "net_pnl": -0.07882768949760244,
+          "trades": 3
+        },
+        "XRPUSDT": {
+          "fees": 0.0748056697216,
+          "net_pnl": -0.10855136572159867,
+          "trades": 4
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.2709731307392,
+      "final_cash": 14.4912737172608,
+      "final_equity": 14.4912737172608,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.033915085515946686,
+      "mid_gross_pnl": 0.05107000000000615,
+      "mode": "EXPLORATION",
+      "net_pnl": -0.5087262827392003,
+      "net_return": -0.033915085515946686,
+      "ready": false,
+      "rejections": {},
+      "slippage": 0.270973152,
+      "spread": 0.017850000000008193,
+      "trades": 18,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "stress/B_boost": {
+      "accounting_residual": -3.552713678800501e-15,
+      "average_net_pnl": -0.026399535192701308,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.5047735059839749
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.6898488223999998,
+          "net_pnl": -1.4146976223999743,
+          "trades": 55
+        },
+        "XRPUSDT": {
+          "fees": 0.035987947584,
+          "net_pnl": -0.09007588358400018,
+          "trades": 2
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.7258367699839996,
+      "final_cash": 13.495226494016022,
+      "final_equity": 13.495226494016022,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.10031823373226523,
+      "mid_gross_pnl": 0.003410000000004606,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.5047735059839784,
+      "net_return": -0.10031823373226523,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.725836736,
+      "spread": 0.056510000000007804,
+      "trades": 57,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "stress/B_neural": {
+      "accounting_residual": -4.440892098500626e-15,
+      "average_net_pnl": -0.026439984900603036,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.5070791393343734
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.6898488223999998,
+          "net_pnl": -1.4146976223999743,
+          "trades": 55
+        },
+        "DOGEUSDT": {
+          "fees": 0.0360857649344,
+          "net_pnl": -0.0923815169343987,
+          "trades": 2
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.7259345873343995,
+      "final_cash": 13.492920860665622,
+      "final_equity": 13.492920860665622,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.10047194262229187,
+      "mid_gross_pnl": 0.0022200000000043873,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.5070791393343779,
+      "net_return": -0.10047194262229187,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.7259345519999999,
+      "spread": 0.05743000000000864,
+      "trades": 57,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "stress/B_rule": {
+      "accounting_residual": -1.9984014443252818e-15,
+      "average_net_pnl": -0.03811286665667298,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -0.07844243351679916,
+        "2026-10-05": -0.6457020329599876
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.01270320192,
+          "net_pnl": -0.028406401920000806,
+          "trades": 1
+        },
+        "DOGEUSDT": {
+          "fees": 0.18510756261119998,
+          "net_pnl": -0.3867951146111921,
+          "trades": 10
+        },
+        "XRPUSDT": {
+          "fees": 0.1498264779456,
+          "net_pnl": -0.3089429499455938,
+          "trades": 8
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.34763724247679995,
+      "final_cash": 14.275855533523211,
+      "final_equity": 14.275855533523211,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.048927338181119384,
+      "mid_gross_pnl": -0.00955999999999211,
+      "mode": "EXPLORATION",
+      "net_pnl": -0.7241444664767887,
+      "net_return": -0.048276297765119214,
+      "ready": false,
+      "rejections": {},
+      "slippage": 0.347637224,
+      "spread": 0.019310000000006586,
+      "trades": 19,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "stress/CASH": {
+      "accounting_residual": 0.0,
+      "average_net_pnl": null,
+      "bankrupt": false,
+      "by_day": {},
+      "by_symbol": {},
+      "depth_impact": 0,
+      "evidence_issues": [],
+      "fees": 0.0,
+      "final_cash": 15.0,
+      "final_equity": 15.0,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.0,
+      "mid_gross_pnl": 0,
+      "mode": "EXPLORATION",
+      "net_pnl": 0.0,
+      "net_return": 0.0,
+      "ready": false,
+      "rejections": {},
+      "slippage": 0,
+      "spread": 0,
+      "trades": 0,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "stress/C_boost": {
+      "accounting_residual": -1.9984014443252818e-15,
+      "average_net_pnl": -0.026399535192701277,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.5047735059839729
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.6898488223999997,
+          "net_pnl": -1.4146976223999728,
+          "trades": 55
+        },
+        "XRPUSDT": {
+          "fees": 0.035987947584,
+          "net_pnl": -0.09007588358400018,
+          "trades": 2
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.7258367699839996,
+      "final_cash": 13.495226494016025,
+      "final_equity": 13.495226494016025,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.100318233732265,
+      "mid_gross_pnl": 0.0034100000000046233,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.5047735059839749,
+      "net_return": -0.100318233732265,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.725836736,
+      "spread": 0.056510000000006666,
+      "trades": 57,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "stress/C_neural": {
+      "accounting_residual": -4.440892098500626e-15,
+      "average_net_pnl": -0.026439984900603036,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.5070791393343734
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.6898488223999998,
+          "net_pnl": -1.4146976223999743,
+          "trades": 55
+        },
+        "DOGEUSDT": {
+          "fees": 0.0360857649344,
+          "net_pnl": -0.0923815169343987,
+          "trades": 2
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.7259345873343995,
+      "final_cash": 13.492920860665622,
+      "final_equity": 13.492920860665622,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.10047194262229187,
+      "mid_gross_pnl": 0.0022200000000043873,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.5070791393343779,
+      "net_return": -0.10047194262229187,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.7259345519999999,
+      "spread": 0.05743000000000864,
+      "trades": 57,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "stress/C_rule": {
+      "accounting_residual": -1.3877787807814457e-15,
+      "average_net_pnl": -0.03602181931804304,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -0.16773645805439544,
+        "2026-10-05": -0.15645991580799196
+      },
+      "by_symbol": {
+        "DOGEUSDT": {
+          "fees": 0.13243778935040001,
+          "net_pnl": -0.2607355813503908,
+          "trades": 7
+        },
+        "XRPUSDT": {
+          "fees": 0.037580392512,
+          "net_pnl": -0.06346079251199659,
+          "trades": 2
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.17001818186239998,
+      "final_cash": 14.675803626137611,
+      "final_equity": 14.675803626137611,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.02269815895082583,
+      "mid_gross_pnl": 0.026069999999998893,
+      "mode": "EXPLORATION",
+      "net_pnl": -0.32419637386238875,
+      "net_return": -0.021613091590825917,
+      "ready": false,
+      "rejections": {},
+      "slippage": 0.170018192,
+      "spread": 0.010229999999998166,
+      "trades": 9,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "stress/Momentum": {
+      "accounting_residual": -2.220446049250313e-15,
+      "average_net_pnl": -0.03478514870341754,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -1.5305465429503715
+      },
+      "by_symbol": {
+        "BNBUSDT": {
+          "fees": 0.15062399744000002,
+          "net_pnl": -0.2972479974399992,
+          "trades": 12
+        },
+        "DOGEUSDT": {
+          "fees": 0.34461445450239997,
+          "net_pnl": -0.7493888705023826,
+          "trades": 19
+        },
+        "XRPUSDT": {
+          "fees": 0.23335484300800002,
+          "net_pnl": -0.48390967500799,
+          "trades": 13
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.7285932949504,
+      "final_cash": 13.469453457049626,
+      "final_equity": 13.469453457049626,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": true,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.10203643619669156,
+      "mid_gross_pnl": -0.028349999999992673,
+      "mode": "EXPLORATION",
+      "net_pnl": -1.5305465429503737,
+      "net_return": -0.10203643619669156,
+      "ready": false,
+      "rejections": {
+        "unknown_funding_boundary": 1
+      },
+      "slippage": 0.7285932479999999,
+      "spread": 0.04501000000000839,
+      "trades": 44,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "stress/fixed_BTC": {
+      "accounting_residual": 0.0,
+      "average_net_pnl": null,
+      "bankrupt": false,
+      "by_day": {},
+      "by_symbol": {},
+      "depth_impact": 0,
+      "evidence_issues": [],
+      "fees": 0.0,
+      "final_cash": 15.0,
+      "final_equity": 15.0,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.0,
+      "mid_gross_pnl": 0,
+      "mode": "EXPLORATION",
+      "net_pnl": 0.0,
+      "net_return": 0.0,
+      "ready": false,
+      "rejections": {
+        "quantity_or_depth": 1147,
+        "unknown_funding_boundary": 33
+      },
+      "slippage": 0,
+      "spread": 0,
+      "trades": 0,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    },
+    "stress/fixed_SOL": {
+      "accounting_residual": 1.6653345369377348e-16,
+      "average_net_pnl": -0.04658880533333178,
+      "bankrupt": false,
+      "by_day": {
+        "2026-10-04": -0.08557760575999869,
+        "2026-10-05": -0.054188810239996645
+      },
+      "by_symbol": {
+        "SOLUSDT": {
+          "fees": 0.057383216,
+          "net_pnl": -0.13976641599999534,
+          "trades": 3
+        }
+      },
+      "depth_impact": 0.0,
+      "evidence_issues": [],
+      "fees": 0.05738321600000001,
+      "final_cash": 14.860233584000005,
+      "final_equity": 14.860233584000005,
+      "funding": 0.0,
+      "halted_at_10pct_drawdown": false,
+      "independent_evidence": false,
+      "independent_paper_evidence": false,
+      "liquidations": 0,
+      "max_drawdown": 0.009651627946666408,
+      "mid_gross_pnl": -0.021999999999998465,
+      "mode": "EXPLORATION",
+      "net_pnl": -0.13976641599999517,
+      "net_return": -0.009317761066666375,
+      "ready": false,
+      "rejections": {
+        "quantity_or_depth": 1144,
+        "unknown_funding_boundary": 43
+      },
+      "slippage": 0.05738320000000001,
+      "spread": 0.0030000000000001137,
+      "trades": 3,
+      "uncertainty": "Only two historical development days; no defensible generalization confidence interval"
+    }
+  },
+  "full_artifacts": "/home/codex/projects/market-brain-storage/three-hypotheses-v3",
+  "verification": {
+    "all_original_trades_unchanged": true,
+    "all_scenarios_nonpositive_net": true,
+    "all_trade_cost_identities_reconcile": true,
+    "candidate": null,
+    "comparison_sha256": "f0844f0ff93dd7f85948b883116499e5b68bb987349915bcf94b8613c08fcf94",
+    "completed_resume_verified": true,
+    "independent_evidence": false,
+    "no_entry_before_latency": true,
+    "no_execution_evidence_issues": true,
+    "recovered_boost_identical": true,
+    "recovered_neural_weights_identical": true,
+    "tests_passed": 12
+  },
+  "model_learning": {
+    "B": {
+      "early_groups": 12252,
+      "history": [
+        {
+          "early_top_choice_mean_net": -0.0016921520000323653,
+          "epoch": 0
+        },
+        {
+          "early_top_choice_mean_net": -0.0016898715402930975,
+          "epoch": 1
+        },
+        {
+          "early_top_choice_mean_net": -0.0016842884942889214,
+          "epoch": 2
+        },
+        {
+          "early_top_choice_mean_net": -0.001681938418187201,
+          "epoch": 3
+        },
+        {
+          "early_top_choice_mean_net": -0.0016808346845209599,
+          "epoch": 4
+        },
+        {
+          "early_top_choice_mean_net": -0.001679846434853971,
+          "epoch": 5
+        },
+        {
+          "early_top_choice_mean_net": -0.0016813221154734492,
+          "epoch": 6
+        },
+        {
+          "early_top_choice_mean_net": -0.0016823881305754185,
+          "epoch": 7
+        }
+      ],
+      "objective": "relative ranking of executable net labels; score is not calibrated expected profit",
+      "ready": false,
+      "train_groups": 11542
+    },
+    "C": {
+      "early_groups": 12252,
+      "history": [
+        {
+          "early_top_choice_mean_net": -0.0016925049712881446,
+          "epoch": 0
+        },
+        {
+          "early_top_choice_mean_net": -0.0016917099710553885,
+          "epoch": 1
+        },
+        {
+          "early_top_choice_mean_net": -0.0016923536313697696,
+          "epoch": 2
+        },
+        {
+          "early_top_choice_mean_net": -0.0016908083343878388,
+          "epoch": 3
+        },
+        {
+          "early_top_choice_mean_net": -0.0016899493057280779,
+          "epoch": 4
+        },
+        {
+          "early_top_choice_mean_net": -0.0016901466296985745,
+          "epoch": 5
+        },
+        {
+          "early_top_choice_mean_net": -0.0016871410189196467,
+          "epoch": 6
+        },
+        {
+          "early_top_choice_mean_net": -0.0016905704978853464,
+          "epoch": 7
+        }
+      ],
+      "objective": "relative ranking of executable net labels; score is not calibrated expected profit",
+      "ready": false,
+      "train_groups": 11542
+    }
+  }
+}
