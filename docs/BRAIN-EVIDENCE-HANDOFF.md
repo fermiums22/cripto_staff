@@ -212,3 +212,97 @@ container HTTPS push has no credentials. Workstation transport-only bare repo:
 D:/HAOS/server-control/brain-development-20261031/sync.git. Bundle transport avoids
 copying any credential onto the server. Existing uncommitted adaptive_live.py,
 telegram_control.py, web/adaptive.js and legacy files remain untouched.
+
+
+## Continuation: durable impulse execution and historical depth access (2026-10-31)
+
+The preceding goal turn made progress (code, GPU evidence and rejected minute
+experiments). This turn also made concrete progress. Goal remains ACTIVE: there
+is NO demonstrated profitable candidate and NO successful independent alpha trial.
+The owner's household financial needs do not relax the PAPER-only restriction or
+statistical/risk gates. Do not promise income or treat deployment as profitability.
+
+Implemented:
+- brain_impulse_execution.py: shared deterministic PAPER engine, causal ranking
+  of net-return estimates, one position, delayed entry AND exit, observed full
+  visible depth consumption, quantity/minimum/maximum rules, actual entry/exit
+  notionals for fees, mark-to-market exit costs/drawdown, fixed risk limits and
+  reduced notional after losses. Pauses cancel entries but continue exits.
+- DurablePaper: SQLite FULL-synchronous transactions store deduplication keys,
+  complete input payloads including instrument rules, account, intent/event and
+  trade journals atomically. Protocol or policy mismatch refuses wallet reuse;
+  there is no reset API. Completed trades are outside the compact account state.
+- brain_impulse_audit.py: consistent database backup followed by independent
+  event replay, exact account/trade comparison and cash/fee accounting identity.
+  It distinguishes operational_pass from financial_qualified (always false).
+- brain_impulse_live.py + brain_impulse_controls.py: public WS books/trades/
+  tickers/liquidations, periodic public instrument snapshots, causal 500ms gather
+  window for cross-symbol ranking, per-position books sampled at >=200ms,
+  read-only global pause (errors fail closed), bounded reconnect/warmup behavior.
+  Control forecasts are FIXED UNTRAINED momentum/leadlag-flow heuristics, NOT
+  established expected returns. No model loader/promotion or real-order client.
+  Candidate remains CASH. Source snapshots/hashes and policy are immutable.
+- brain-impulse-paper.service enabled and running at 70% CPU / 768 MiB maximum.
+  Only its own directory is writable; secrets are inaccessible. Existing cripto,
+  Telegram and household units were not restarted or changed.
+
+Live validation:
+- Finite 180-second audit consumed 27,476 real public messages, terminated cleanly,
+  made six decisions per control and NO trades (no qualifying estimated edge).
+  All three durable journals replayed exactly with zero accounting residual.
+  This proves transport/decision/ledger integrity, NOT real fill profitability.
+- All 158 tests passed, including delayed full-depth fills and fees, open drawdown,
+  no risk escalation, pause semantics, same-quote rejection, reconnects, event
+  identity/tamper detection, policy protection and checkpoint restoration.
+- Initial live audit exposed silent loss of features after book invalidation.
+  Added a continuity watchdog: invalid leader book or 20s feature outage forces
+  a new snapshot/warmup rather than staying falsely healthy. No gate was loosened.
+- Ongoing service restart verified PID 2657 -> 2699 with EXACT account state
+  preservation while flat. Existing six PAPER/dashboard/Telegram units active.
+
+Paths:
+- storage/impulse-paper-audit-20261031: immutable finite audit + source + journals.
+- storage/impulse-paper-control-v1: ongoing control wallets, source/protocol,
+  status.json, connection-error.json, instrument snapshots, restart-audit.json.
+  Do not modify the four frozen source files while this trial is in progress
+  without preserving/invalidation/migration of the trial. Stop/promote nothing
+  merely because a control becomes briefly profitable.
+
+Execution limitations remain explicit:
+- Taker .0006 and slippage .0003 are conservative SCENARIOS, not verified personal
+  fees. Maker queue and partial IOC fills are not implemented.
+- Entries avoid hourly funding boundaries. Unexpected crossings (e.g. outage)
+  add unresolved_funding, halt entries and invalidate evidence; funding settlement
+  and the numeric provisional cash are not an exact funded PnL in that case.
+- 1x insolvency protection is NOT Bybit maintenance-tier liquidation modeling.
+- This is a live CONTROL/execution audit; trained impulse models are not wired in.
+  Research/selection/live-candidate promotion still needs implementation.
+
+Important new data route (do not wait weeks merely to obtain development depth):
+Official Bybit archive pages and direct download hosts were verified. The new
+brain_archive_probe.py downloaded and fingerprinted a closed SOL day, bounded
+storage, resumable HTTP Range partials, no credentials:
+  https://public.bybit.com/trading/SOLUSDT/SOLUSDT2026-10-01.csv.gz
+  https://quote-saver.bycsi.com/orderbook/linear/SOLUSDT/2026-10-01_SOLUSDT_ob200.data.zip
+Archive probe: storage/archive-probe-20261001/probe.json. Trades 16,937,934 bytes;
+200-level book 60,352,468 bytes. ZIP contains a .data JSONL stream with standard
+Bybit snapshot/delta, ts, cts, b/a/u/seq. Trades CSV includes timestamp/side/size/
+price/RPI. Only initial record schemas/timestamps and compressed download hashes
+were checked; full reconstruction/coverage/CRC need validation before training.
+These archives have exchange timestamps, NOT local historical receive times.
+Do NOT label archive replay as independently measured live latency. Apply explicit
+latency scenarios, exclude RPI trades when unavailable to the book, preserve gaps
+and sort/merge by source time without future information. Same calendar history
+previously inspected at 1m/15m remains development, not pristine final evidence.
+Sources: https://www.bybit.com/en/derivative-activity/history-data and
+https://bybit-exchange.github.io/docs/v5/market/recent-trade .
+
+Next high-value work:
+1. Validate/stream-merge historical books and trades for BTC/ETH + four alts on
+   fixed development dates; budget downloads before expanding. OI/funding masks
+   stay unknown unless genuine timestamped observations exist. No invented data.
+2. Connect that data and live-derived samples to the bounded resumable GPU model
+   competition, purged folds and execution engine. Preserve all reservations.
+3. Run model selection once per fixed hypothesis protocol, then frozen independent
+   future PAPER with cost/depth/coverage/coin-diversification confidence gates.
+4. Finish maker/partial/funding/margin accounting before claiming execution-ready.
