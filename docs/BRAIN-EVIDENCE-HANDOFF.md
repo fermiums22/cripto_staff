@@ -765,3 +765,57 @@ or household/PAPER services. Next priority: inspect actual bounded GPU training
 once admission is complete; evaluate all rejections honestly. For future candidate
 PAPER, preserve grouped durable intents and quantify usable-decision coverage,
 not just raw messages or lack of reconnects.
+
+
+## Continuation: full data admitted, real fitting started, AMP correction resumed (2026-10-31)
+
+Previous turn progressed (9d8e43a). Goal remains ACTIVE; no proven positive edge.
+Campaign COMPLETED exit0: all21days admitted,1,255,616 targets, all four altcoins
+24 qualified hours/day. Raw/hash/source/reservation artifacts retained. No final
+P&L was inspected. Strict source freezes verified before fitting.
+Production-service-constrained CUDA preflight passed5tests: four-network backward,
+MLP exact optimizer/RNG resume, XGBoost CUDA/resume and ridge/scaling guards, peak
+1.6GiB under4GiB limit. Evidence v1/service-preflight.json. This preflight alone
+was NOT sufficient to prove long AMP training stability (see actual failure).
+
+Operational fix: service StartLimitIntervalSec3600/Burst3 inadvertently counted
+successful15-minute waiting runs and blocked training. Changed interval to900s,
+retained burst3/resource/security limits, reset only this unit's failed status.
+Actual v1 then trained ridge/XGBoost and MLP epochs0-5, failed during epoch6 with
+Nonfinite impulse gradient. GPU34C and peak2GiB: not thermal/OOM. Timer was stopped
+only while repairing this isolated research workflow, not household/PAPER units.
+
+Corrected brain_impulse_models.optimizer_step: finite-loss FP16 gradient overflow
+reduces GradScaler scale and retries SAME batch, at most8 reductions. No invalid
+optimizer update, no skipped training example, no accepted nonfinite loss/FP32
+norm. AMP scale/retry counts included in progress. Full suite206 tests PASS;
+forced-overflow CUDA test confirms scale reduction and exactly ONE optimizer step;
+previous exact checkpoint-resume test still passes.
+
+Failed v1 is preserved verbatim, including runtime-failure.json and copies of its
+frozen training/execution sources under runtime-failed-source. No old frozen hash
+was overwritten to pretend the new code was used in the old run.
+Added brain_impulse_precision_resume.py: explicit COPY-only lineage to NEW
+storage/impulse-competition-v2. It requires unchanged splits/selection and only
+brain_impulse_models.py training-source change; preserves ready ridge/XGBoost
+artifacts and MLP checkpoint epoch5. Only experiment/source identity metadata is
+updated in the new copy; every model/optimizer/RNG/AMP/best-weight tensor/value was
+compared exactly after serialization. New source/policy/plan hashes frozen in v2.
+Old plan f2fa468a208ca2c91dcaded5b81c87dac0287c999be437402a9afc9c8d5275bf;
+new plan d986dbc350e2bffa7d87a5553f1dd8960f70b64b4387aaa37955f0a4d7a06682.
+Full lineage: v2/precision-resume-lineage.json. This is a documented runtime fix,
+not outcome-driven retuning or a new hypothesis search. Neither baseline refitted.
+
+Service output/writable path now v2. Timer re-enabled/running; actual workflow
+MainPID5443, ActiveState activating (normal long oneshot), memory~1.98GB. At last
+check3/12 fits completed, training fold0 TCN. Resumed MLP passed failing epoch,
+finished early-stop at epoch15/stall5, GPU35C. Its MSE is NOT financial evidence.
+The workflow will proceed to event-depth base/stress validation and ONLY selected
+candidate's diagnostic block. No real orders or autonomous live promotion.
+
+Next: inspect actual GPU fit outcomes/execution validation, preserve failures and
+rejections. Do not modify v2 frozen sources while running. Before future trained
+live wiring, audit archive-vs-live feature contract: archive OI/funding/liquidation
+channels are missing and receipt delay is simulated/near-constant. Unlearned live
+variation must not silently enter neural feature dimensions. This remains a
+prospective adapter concern; no trained live model is running now.

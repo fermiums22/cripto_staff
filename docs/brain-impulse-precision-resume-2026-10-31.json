@@ -1,0 +1,42 @@
+{
+  "changed_sources": [
+    "brain_impulse_models.py"
+  ],
+  "new_plan_sha256": "d986dbc350e2bffa7d87a5553f1dd8960f70b64b4387aaa37955f0a4d7a06682",
+  "old_directory": "/home/codex/projects/market-brain-storage/impulse-competition-v1",
+  "old_plan_sha256": "f2fa468a208ca2c91dcaded5b81c87dac0287c999be437402a9afc9c8d5275bf",
+  "preserved_training_state": true,
+  "ready": false,
+  "reason": "Bounded AMP loss-scale backoff; no invalid optimizer steps, no changed hypothesis",
+  "records": [
+    {
+      "checkpoint": {
+        "epoch": 5,
+        "new_sha256": "97a8e22442824e9f6cb1d2d71e6607a0c5c37cbe9fa2a5334980aed0f85a3a15",
+        "old_sha256": "35f862c4105347424b89f227042cee548252fecde705efd3f8f02e98e0328eca"
+      },
+      "completed": false,
+      "fold": 0,
+      "kind": "mlp",
+      "new_identity_sha256": "6b72a412ed8cbb88a83fb33e6ea4248c549b1e0a0104c2c80c6219788d530226",
+      "old_identity_sha256": "73b00dcfdc0acef6b73757faad5489286bcab7a536194d4e6c1c739b0e2bce17"
+    },
+    {
+      "checkpoint": null,
+      "completed": true,
+      "fold": 0,
+      "kind": "ridge",
+      "new_identity_sha256": "6cca55f63c475e28bc0465f306c75e3e469c327291b2714e0f4ee0984855dcfd",
+      "old_identity_sha256": "4f0370fb0448659077f04c1903860ae4a34fb7d7c1c19b737f5d3c623d68669b"
+    },
+    {
+      "checkpoint": null,
+      "completed": true,
+      "fold": 0,
+      "kind": "xgboost",
+      "new_identity_sha256": "f908fd48d3895896dce4dcca6c06454ff72f5669934824fa78a7aee466021677",
+      "old_identity_sha256": "84574471a4d886027a6543406e58cf7e174c1ca893d93c47ab80607acd77de27"
+    }
+  ],
+  "source_sha256": "64fc83be31f91246c59cacc57aab203dd4c007ffb4ff68902cb96c7aa1ec61a4"
+}

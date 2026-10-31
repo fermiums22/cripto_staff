@@ -3,7 +3,7 @@ import tempfile
 import unittest
 import numpy as np
 import torch
-from brain_impulse_models import ImpulseNet,fit,scale_train,validate_split
+from brain_impulse_models import ImpulseNet,fit,scale_train,validate_split,optimizer_step
 
 
 class Synthetic:
@@ -15,6 +15,17 @@ class Synthetic:
 
 
 class ModelTests(unittest.TestCase):
+    @unittest.skipUnless(torch.cuda.is_available(),'CUDA runtime required')
+    def test_amp_overflow_reduces_scale_before_single_optimizer_update(self):
+        net=torch.nn.Linear(30,8).cuda();opt=torch.optim.AdamW(net.parameters(),lr=.001)
+        amp=torch.amp.GradScaler('cuda',init_scale=2.**20)
+        before={k:v.clone() for k,v in net.state_dict().items()}
+        retries=optimizer_step(net,opt,amp,torch.full((4,30),10.,device='cuda'),torch.full((4,8),100.,device='cuda'))
+        self.assertGreater(retries,0);self.assertLess(amp.get_scale(),2.**20)
+        self.assertTrue(all(torch.isfinite(v).all() for v in net.state_dict().values()))
+        self.assertTrue(any(not torch.equal(v,before[k]) for k,v in net.state_dict().items()))
+        self.assertTrue(all(int(v['step'])==1 for v in opt.state.values()))
+
     def test_scaler_never_reads_validation(self):
         data=Synthetic();train=np.arange(16);before=scale_train(data,train)
         data.x[40:]*=100000

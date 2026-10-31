@@ -93,6 +93,28 @@ def predict(net,data,ids,mean,std):
     return np.concatenate(parts) if parts else np.empty((0,8),dtype='float32')
 
 
+def optimizer_step(net,opt,amp,tx,ty):
+    """Retry finite-loss FP16 overflow at lower scale, without updating weights.
+
+    Nonfinite loss or FP32 norm remains a hard failure. Retries are bounded and
+    never skip a training example or silently accept invalid optimizer state.
+    """
+    for retry in range(8):
+        opt.zero_grad(set_to_none=True)
+        with torch.autocast('cuda',dtype=torch.float16):
+            loss=nn.functional.smooth_l1_loss(net(tx),ty,beta=.2)
+        if not torch.isfinite(loss):raise ValueError('Nonfinite impulse loss')
+        amp.scale(loss).backward();amp.unscale_(opt)
+        if any(p.grad is not None and not torch.isfinite(p.grad).all() for p in net.parameters()):
+            # update resets unscale bookkeeping; optimizer.step is NOT called.
+            amp.update(new_scale=amp.get_scale()/2)
+            continue
+        norm=nn.utils.clip_grad_norm_(net.parameters(),1.)
+        if not torch.isfinite(norm):raise ValueError('Nonfinite FP32 impulse gradient norm')
+        amp.step(opt);amp.update();return retry
+    raise ValueError('FP16 gradient overflow unresolved after eight scale reductions')
+
+
 def fit(kind,data,train,validation,directory,experiment_id,max_epochs=25):
     validate_split(data,train,validation)
     directory=Path(directory);directory.mkdir(parents=True,exist_ok=True)
@@ -119,19 +141,13 @@ def fit(kind,data,train,validation,directory,experiment_id,max_epochs=25):
         best,stall,start_epoch,best_weights=saved['best'],saved['stall'],saved['epoch']+1,saved['best_weights']
     for epoch in range(start_epoch,max_epochs):
         if stall>=5:break
-        temperature=thermal();net.train();order=np.asarray(train)[torch.randperm(len(train)).numpy()]
+        temperature=thermal();net.train();order=np.asarray(train)[torch.randperm(len(train)).numpy()];overflows=0
         for offset in range(0,len(order),256):
             if offset%4096==0:thermal()
             x,y=data.batch(order[offset:offset+256]);z=np.clip((x-mean)/std,-10,10)
             if not np.isfinite(y).all():raise ValueError('Invalid net-return target')
             tx=torch.from_numpy(z).cuda();ty=torch.from_numpy(y*100).cuda()
-            opt.zero_grad(set_to_none=True)
-            with torch.autocast('cuda',dtype=torch.float16):loss=nn.functional.smooth_l1_loss(net(tx),ty,beta=.2)
-            if not torch.isfinite(loss):raise ValueError('Nonfinite impulse loss')
-            amp.scale(loss).backward();amp.unscale_(opt)
-            norm=nn.utils.clip_grad_norm_(net.parameters(),1.)
-            if not torch.isfinite(norm):raise ValueError('Nonfinite impulse gradient')
-            amp.step(opt);amp.update()
+            overflows+=optimizer_step(net,opt,amp,tx,ty)
         pred=predict(net,data,validation,mean,std)
         total=0.;count=0
         for offset in range(0,len(validation),1024):
@@ -146,7 +162,7 @@ def fit(kind,data,train,validation,directory,experiment_id,max_epochs=25):
             model=net.state_dict(),optimizer=opt.state_dict(),amp=amp.state_dict(),best_weights=best_weights,
             rng=torch.get_rng_state(),cuda_rng=torch.cuda.get_rng_state_all()))
         atomic_json(directory/'progress.json',dict(epoch=epoch,validation_mse=mse,best_mse=best,
-            stall=stall,temperature=temperature,ready=False,financial_evidence=False))
+            stall=stall,temperature=temperature,amp_scale=amp.get_scale(),overflow_retries=overflows,ready=False,financial_evidence=False))
     if best_weights is None:raise ValueError('No finite neural checkpoint')
     net.load_state_dict(best_weights);save_checkpoint(directory/'model.pt',best_weights)
     return net,mean,std
