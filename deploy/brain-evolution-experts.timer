@@ -1,0 +1,10 @@
+[Unit]
+Description=Resume bounded expert comparison after tapes or reboot
+
+[Timer]
+OnBootSec=5min
+OnUnitInactiveSec=5min
+Unit=brain-evolution-experts.service
+
+[Install]
+WantedBy=timers.target

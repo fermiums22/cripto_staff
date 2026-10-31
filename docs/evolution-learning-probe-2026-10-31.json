@@ -1,0 +1,510 @@
+{
+  "results": [
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 0.999969482421875,
+        "costs": 0.0,
+        "gross": 0.28615736961364746,
+        "net": 0.28615736961364746,
+        "turnover": 101.45795440673828
+      },
+      "holdout_improvement": 0.28459763526916504,
+      "holdout_improvement_95ci": [
+        0.2836333999982051,
+        0.285561870540125
+      ],
+      "initial": {
+        "active_fraction": 0.999969482421875,
+        "costs": 0.0,
+        "gross": 0.0015597061719745398,
+        "net": 0.0015597061719745398,
+        "turnover": 15.252243041992188
+      },
+      "kind": "direct",
+      "ready": false,
+      "scenario": "clean",
+      "seed": 17,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 0.999969482421875,
+        "costs": 0.0,
+        "gross": 0.28682053089141846,
+        "net": 0.28682053089141846,
+        "turnover": 101.82676696777344
+      },
+      "holdout_improvement": 0.2752857208251953,
+      "holdout_improvement_95ci": [
+        0.2743673918687062,
+        0.27620404978168445
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.0,
+        "gross": 0.011534800752997398,
+        "net": 0.011534800752997398,
+        "turnover": 14.65264892578125
+      },
+      "kind": "direct",
+      "ready": false,
+      "scenario": "clean",
+      "seed": 29,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 0.999969482421875,
+        "costs": 0.0,
+        "gross": 0.2866279184818268,
+        "net": 0.2866279184818268,
+        "turnover": 101.71469116210938
+      },
+      "holdout_improvement": 0.28576231002807617,
+      "holdout_improvement_95ci": [
+        0.28481112999039665,
+        0.2867134900657557
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.0,
+        "gross": 0.000865614740177989,
+        "net": 0.000865614740177989,
+        "turnover": 14.09324836730957
+      },
+      "kind": "direct",
+      "ready": false,
+      "scenario": "clean",
+      "seed": 43,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 1.0,
+        "costs": 0.0,
+        "gross": 0.28383100032806396,
+        "net": 0.28383100032806396,
+        "turnover": 100.51786041259766
+      },
+      "holdout_improvement": 0.28322499990463257,
+      "holdout_improvement_95ci": [
+        0.28236078033995987,
+        0.28408921946930527
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.0,
+        "gross": 0.0006059587467461824,
+        "net": 0.0006059587467461824,
+        "turnover": 4.362032413482666
+      },
+      "kind": "experts",
+      "ready": false,
+      "scenario": "clean",
+      "seed": 17,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 0.999969482421875,
+        "costs": 0.0,
+        "gross": 0.2843339443206787,
+        "net": 0.2843339443206787,
+        "turnover": 100.4291763305664
+      },
+      "holdout_improvement": 0.2842225432395935,
+      "holdout_improvement_95ci": [
+        0.2833300832284669,
+        0.2851150032507201
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.0,
+        "gross": 0.00011141638970002532,
+        "net": 0.00011141638970002532,
+        "turnover": 4.141807556152344
+      },
+      "kind": "experts",
+      "ready": false,
+      "scenario": "clean",
+      "seed": 29,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 0.99993896484375,
+        "costs": 0.0,
+        "gross": 0.2843947112560272,
+        "net": 0.2843947112560272,
+        "turnover": 100.96883392333984
+      },
+      "holdout_improvement": 0.2848230004310608,
+      "holdout_improvement_95ci": [
+        0.28394197036536895,
+        0.28570403049675264
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.0,
+        "gross": -0.0004283167945686728,
+        "net": -0.0004283167945686728,
+        "turnover": 1.9977214336395264
+      },
+      "kind": "experts",
+      "ready": false,
+      "scenario": "clean",
+      "seed": 43,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 0.999847412109375,
+        "costs": 0.09942494332790375,
+        "gross": 0.27516067028045654,
+        "net": 0.1757357269525528,
+        "turnover": 99.42493438720703
+      },
+      "holdout_improvement": 0.18960493803024292,
+      "holdout_improvement_95ci": [
+        0.18693083804242136,
+        0.19227903801806448
+      ],
+      "initial": {
+        "active_fraction": 0.999969482421875,
+        "costs": 0.015252243727445602,
+        "gross": 0.0013830414973199368,
+        "net": -0.013869201764464378,
+        "turnover": 15.252243041992188
+      },
+      "kind": "direct",
+      "ready": false,
+      "scenario": "noisy_costs",
+      "seed": 17,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 0.99993896484375,
+        "costs": 0.09951451420783997,
+        "gross": 0.2801969051361084,
+        "net": 0.18068242073059082,
+        "turnover": 99.5145034790039
+      },
+      "holdout_improvement": 0.18380635976791382,
+      "holdout_improvement_95ci": [
+        0.18116755727181175,
+        0.1864451622640159
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.014652648940682411,
+        "gross": 0.01152870524674654,
+        "net": -0.003123943693935871,
+        "turnover": 14.65264892578125
+      },
+      "kind": "direct",
+      "ready": false,
+      "scenario": "noisy_costs",
+      "seed": 29,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 0.99993896484375,
+        "costs": 0.09942236542701721,
+        "gross": 0.27941006422042847,
+        "net": 0.17998768389225006,
+        "turnover": 99.42236328125
+      },
+      "holdout_improvement": 0.19288164377212524,
+      "holdout_improvement_95ci": [
+        0.19003291786639417,
+        0.19573036967785631
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.014093248173594475,
+        "gross": 0.0011992936488240957,
+        "net": -0.012893956154584885,
+        "turnover": 14.09324836730957
+      },
+      "kind": "direct",
+      "ready": false,
+      "scenario": "noisy_costs",
+      "seed": 43,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 1.0,
+        "costs": 0.09787450730800629,
+        "gross": 0.2783913314342499,
+        "net": 0.18051683902740479,
+        "turnover": 97.87450408935547
+      },
+      "holdout_improvement": 0.18446743488311768,
+      "holdout_improvement_95ci": [
+        0.18192312183474613,
+        0.18701174793148923
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.004362032283097506,
+        "gross": 0.0004114374169148505,
+        "net": -0.003950594924390316,
+        "turnover": 4.362032413482666
+      },
+      "kind": "experts",
+      "ready": false,
+      "scenario": "noisy_costs",
+      "seed": 17,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 1.0,
+        "costs": 0.09703781455755234,
+        "gross": 0.2802734971046448,
+        "net": 0.18323567509651184,
+        "turnover": 97.0378189086914
+      },
+      "holdout_improvement": 0.1871984302997589,
+      "holdout_improvement_95ci": [
+        0.18453787015165762,
+        0.1898589904478602
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.004141807556152344,
+        "gross": 0.0001790455571608618,
+        "net": -0.003962761722505093,
+        "turnover": 4.141807556152344
+      },
+      "kind": "experts",
+      "ready": false,
+      "scenario": "noisy_costs",
+      "seed": 29,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 0.999969482421875,
+        "costs": 0.09918517619371414,
+        "gross": 0.2815858721733093,
+        "net": 0.18240071833133698,
+        "turnover": 99.18516540527344
+      },
+      "holdout_improvement": 0.18479207158088684,
+      "holdout_improvement_95ci": [
+        0.1822143973262854,
+        0.1873697458354883
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.001997721614316106,
+        "gross": -0.00039363137329928577,
+        "net": -0.002391353016719222,
+        "turnover": 1.9977214336395264
+      },
+      "kind": "experts",
+      "ready": false,
+      "scenario": "noisy_costs",
+      "seed": 43,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 0.0,
+        "costs": 1.1173727221258645e-10,
+        "gross": -4.156482016209884e-12,
+        "net": -1.1589375292775372e-10,
+        "turnover": 1.1173727187951954e-07
+      },
+      "holdout_improvement": 0.015428907237946987,
+      "holdout_improvement_95ci": [
+        0.015110741151867113,
+        0.01574707332402686
+      ],
+      "initial": {
+        "active_fraction": 0.999969482421875,
+        "costs": 0.015252243727445602,
+        "gross": -0.00017666466010268778,
+        "net": -0.015428908169269562,
+        "turnover": 15.252243041992188
+      },
+      "kind": "direct",
+      "ready": false,
+      "scenario": "noise",
+      "seed": 17,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 0.0,
+        "costs": 7.65917190781451e-11,
+        "gross": -1.7079175530440582e-12,
+        "net": -7.829964454586502e-11,
+        "turnover": 7.659171785689978e-08
+      },
+      "holdout_improvement": 0.014658745378255844,
+      "holdout_improvement_95ci": [
+        0.01428524539858546,
+        0.015032245357926228
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.014652648940682411,
+        "gross": -6.095811841078103e-06,
+        "net": -0.014658745378255844,
+        "turnover": 14.65264892578125
+      },
+      "kind": "direct",
+      "ready": false,
+      "scenario": "noise",
+      "seed": 29,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 0.0,
+        "costs": 2.0665356925686496e-10,
+        "gross": -4.951071237019322e-12,
+        "net": -2.1160465046854426e-10,
+        "turnover": 2.066535529365865e-07
+      },
+      "holdout_improvement": 0.013759570196270943,
+      "holdout_improvement_95ci": [
+        0.013436317924001727,
+        0.014082822468540158
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.014093248173594475,
+        "gross": 0.0003336789086461067,
+        "net": -0.013759570196270943,
+        "turnover": 14.09324836730957
+      },
+      "kind": "direct",
+      "ready": false,
+      "scenario": "noise",
+      "seed": 43,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 1.0,
+        "costs": 0.0002188933576690033,
+        "gross": -0.00022863803314976394,
+        "net": -0.0004475314053706825,
+        "turnover": 0.21889334917068481
+      },
+      "holdout_improvement": 0.004109022207558155,
+      "holdout_improvement_95ci": [
+        0.003765646132214004,
+        0.0044523982829023055
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.004362032748758793,
+        "gross": -0.00019452132983133197,
+        "net": -0.004556553903967142,
+        "turnover": 4.362032413482666
+      },
+      "kind": "experts",
+      "ready": false,
+      "scenario": "noise",
+      "seed": 17,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 1.0,
+        "costs": 0.0005332955624908209,
+        "gross": 0.00011377235205145553,
+        "net": -0.00041952321771532297,
+        "turnover": 0.5332955718040466
+      },
+      "holdout_improvement": 0.0036546550691127777,
+      "holdout_improvement_95ci": [
+        0.003057011234344126,
+        0.00425229890388143
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.004141807556152344,
+        "gross": 6.762917473679408e-05,
+        "net": -0.004074178636074066,
+        "turnover": 4.141807556152344
+      },
+      "kind": "experts",
+      "ready": false,
+      "scenario": "noise",
+      "seed": 29,
+      "synthetic_only": true
+    },
+    {
+      "bybit_evidence": false,
+      "cash_net": 0.0,
+      "final": {
+        "active_fraction": 1.0,
+        "costs": 0.0007240051636472344,
+        "gross": 0.0004453415749594569,
+        "net": -0.0002786635304801166,
+        "turnover": 0.7240051031112671
+      },
+      "holdout_improvement": 0.0016843725461512804,
+      "holdout_improvement_95ci": [
+        0.0010868287278297782,
+        0.002281916364472783
+      ],
+      "initial": {
+        "active_fraction": 1.0,
+        "costs": 0.001997721614316106,
+        "gross": 3.4685424907365814e-05,
+        "net": -0.001963036134839058,
+        "turnover": 1.9977214336395264
+      },
+      "kind": "experts",
+      "ready": false,
+      "scenario": "noise",
+      "seed": 43,
+      "synthetic_only": true
+    }
+  ],
+  "synthetic_only": true,
+  "ready": false
+}

@@ -1,0 +1,134 @@
+{
+  "artifacts": {
+    "2026-10-08.json.gz": "58276483b6026425000b6c5373d679be1fb48b72045da2a776a31438c7ff5f3b",
+    "2026-10-09.json.gz": "a0cb52f9f70f007cb1988e34fda7c890a36c055760d464084a58324387440167",
+    "direct.pt": "5e45adb71a87e42900698dbe2597e3399c5887774127093449778f9a0cabc569",
+    "experts.pt": "f450c2bb93521a41e23851458b013d5e8a2ff70a058dc937a59decc25bd7ec4b"
+  },
+  "independent_evidence": false,
+  "limitations": [
+    "training is a differentiable turnover-cost approximation",
+    "validation uses recorded one-second depth; not tick execution",
+    "four virtual subaccounts of25, different capital from earlier15 trials",
+    "development history previously examined; no independent proof"
+  ],
+  "ready": false,
+  "validation": {
+    "2026-10-08": {
+      "cash": {
+        "behavior": "cash_like",
+        "entry_attempts": 0,
+        "evidence_issues": [],
+        "fees": 0.0,
+        "independent_evidence": false,
+        "infeasible_rejections": 0,
+        "initial_virtual_capital": 100.0,
+        "max_drawdown": 0.0,
+        "net_pnl": 0.0,
+        "net_return": 0.0,
+        "ready": false,
+        "trades": 0
+      },
+      "direct": {
+        "behavior": "active_losing",
+        "entry_attempts": 9,
+        "evidence_issues": [],
+        "fees": 0.0338084218068,
+        "independent_evidence": false,
+        "infeasible_rejections": 4,
+        "initial_virtual_capital": 100.0,
+        "max_drawdown": 0.0008297262980679898,
+        "net_pnl": -0.08297262980680031,
+        "net_return": -0.0008297262980680031,
+        "ready": false,
+        "trades": 5
+      },
+      "experts": {
+        "behavior": "cash_like",
+        "entry_attempts": 0,
+        "evidence_issues": [],
+        "fees": 0.0,
+        "independent_evidence": false,
+        "infeasible_rejections": 0,
+        "initial_virtual_capital": 100.0,
+        "max_drawdown": 0.0,
+        "net_pnl": 0.0,
+        "net_return": 0.0,
+        "ready": false,
+        "trades": 0
+      },
+      "momentum": {
+        "behavior": "active_losing",
+        "entry_attempts": 18169,
+        "evidence_issues": [],
+        "fees": 46.08104296121035,
+        "independent_evidence": false,
+        "infeasible_rejections": 13536,
+        "initial_virtual_capital": 100.0,
+        "max_drawdown": 0.7228384415720792,
+        "net_pnl": -72.28384415720792,
+        "net_return": -0.7228384415720792,
+        "ready": false,
+        "trades": 3228
+      }
+    },
+    "2026-10-09": {
+      "cash": {
+        "behavior": "cash_like",
+        "entry_attempts": 0,
+        "evidence_issues": [],
+        "fees": 0.0,
+        "independent_evidence": false,
+        "infeasible_rejections": 0,
+        "initial_virtual_capital": 100.0,
+        "max_drawdown": 0.0,
+        "net_pnl": 0.0,
+        "net_return": 0.0,
+        "ready": false,
+        "trades": 0
+      },
+      "direct": {
+        "behavior": "active_losing",
+        "entry_attempts": 1,
+        "evidence_issues": [],
+        "fees": 0.009334416327599999,
+        "independent_evidence": false,
+        "infeasible_rejections": 0,
+        "initial_virtual_capital": 100.0,
+        "max_drawdown": 0.00015821624327605477,
+        "net_pnl": -0.015821624327600148,
+        "net_return": -0.00015821624327600148,
+        "ready": false,
+        "trades": 1
+      },
+      "experts": {
+        "behavior": "cash_like",
+        "entry_attempts": 0,
+        "evidence_issues": [],
+        "fees": 0.0,
+        "independent_evidence": false,
+        "infeasible_rejections": 0,
+        "initial_virtual_capital": 100.0,
+        "max_drawdown": 0.0,
+        "net_pnl": 0.0,
+        "net_return": 0.0,
+        "ready": false,
+        "trades": 0
+      },
+      "momentum": {
+        "behavior": "active_losing",
+        "entry_attempts": 10979,
+        "evidence_issues": [],
+        "fees": 45.15243899368617,
+        "independent_evidence": false,
+        "infeasible_rejections": 7162,
+        "initial_virtual_capital": 100.0,
+        "max_drawdown": 0.7086024820868364,
+        "net_pnl": -70.86024820868363,
+        "net_return": -0.7086024820868363,
+        "ready": false,
+        "trades": 3125
+      }
+    }
+  }
+}

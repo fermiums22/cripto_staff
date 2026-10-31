@@ -1,0 +1,51 @@
+{
+  "history": [
+    {
+      "active": 16,
+      "behaviors": 7,
+      "best": -0.5237939614330558,
+      "cash": 0.0,
+      "days": [
+        "2026-10-02",
+        "2026-10-03"
+      ],
+      "families": 9,
+      "generation": 0,
+      "inactive": 2,
+      "median": -0.9130440689869399,
+      "trades": 13759
+    },
+    {
+      "active": 15,
+      "behaviors": 9,
+      "best": -0.5236852560666285,
+      "cash": 0.0,
+      "days": [
+        "2026-10-04",
+        "2026-10-05"
+      ],
+      "families": 9,
+      "generation": 1,
+      "inactive": 3,
+      "median": -0.8332313714159376,
+      "trades": 15358
+    },
+    {
+      "active": 14,
+      "behaviors": 9,
+      "best": -0.41808387404336494,
+      "cash": 0.0,
+      "days": [
+        "2026-10-06",
+        "2026-10-07"
+      ],
+      "families": 9,
+      "generation": 2,
+      "inactive": 4,
+      "median": -0.6787806399744457,
+      "trades": 13704
+    }
+  ],
+  "independent_evidence": false,
+  "ready": false
+}

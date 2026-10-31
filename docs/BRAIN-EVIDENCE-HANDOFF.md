@@ -954,3 +954,80 @@ executes none. Final validation population IDs and EVERY neural weight exactly
 match final training population. Six tests PASS (0.437s). This is exception-based
 workflow recovery, not physical power-loss testing. Runtime sources still match
 v2 frozen hashes. Existing six trading services remain active.
+
+
+## Loss attribution, learnability probes, architecture comparison (2026-10-31)
+
+User requests causes, provable learning, specialist structure, meaningful new-period
+comparisons and charts, not more agents for their own sake. Goal remains ACTIVE.
+New brain_evolution_attribution.py reconstructs EXACT entry/exit recorded tape:
+mid-to-mid gross minus spread, depth impact, explicit slip and fees = net; old
+trade gross_pnl already included execution costs. Reconciliation errors~1e-14.
+Funding zero ONLY for trades avoiding hourly boundaries, otherwise unknown.
+MAE/MFE uses recorded1s path, not true tick extremes; entry10/30/60s markout,
+post-exit30s markout and grouping per coin/regime/horizon/day. No synthetic books.
+Outputs storage/evolution-attribution-v1 (old source saved source.py) and-v2
+(all six completed training days, richer summary). Actual flow has multiple
+volatility/trend regimes. No attribution changes frozen lab execution.
+Example gen0 MoE1 across TWO separate15-capital days: mid gross+.35922,
+fees17.67086,slip8.83543,spread1.24559,depth.01006 ->net-27.40272.
+Median netMFE negative: many moves could not cover costs even at favorable exit.
+
+Old evolution-lab-v2 COMPLETED3 generations plus Oct8-9 development validation.
+brain_evolution_parent_audit.py finds exact retained parent weights/genome on SAME
+new training episodes;14 matched mutations,4 lack parent control (not credited).
+Only one ACTIVE child improved both episodes: breakout-g2-1 changes allocation
+.7->.6,holding60s->180s,gain1->1.0637,net delta+.07959,still net-.44428.
+Orderflow-g1-1 apparent+.52412 improvement is ZERO trades due order feasibility,
+not learned profitable waiting. active_improvement excludes this case.
+Curves: storage/evolution-curves-v1 and docs/evolution-learning-curves.png.
+Active median per-gen -91.30%,-83.32%,-67.88%; different dates, NOT causal gain.
+
+brain_evolution_learning_probe.py: direct policy versus separately supervised
+forecast experts+allocator; financial gradient-assisted mutations compete with
+random mutations on fresh TRAINING episodes, no count reward.3seeds x3synthetic
+regimes x2architectures=18 completed CUDA experiments, max12 generations,
+early stop4stalls, saved weights/RNG/history, resume completed generations.
+Known cue+noise+cost improves on untouched synthetic holdout every seed; pure
+noise approaches CASH. Synthetic clean/noisy gains deliberately NOT Bybit proof.
+Source-frozen results storage/evolution-learning-probe-v1; compact report in docs.
+
+Implemented actual brain_evolution_experts.py architecture comparison, not just
+probe: direct financial policy versus impulse/leadlag/flow forecasters with
+separate learned allocation. Four train days Oct2-5, early-selection training
+Oct6-7, development execution Oct8-9. Train causal5s grids with1s delayed price
+labels; mask label availability ONLY for training, never as an execution signal.
+Training loss includes fees/halfspread/slip, turnover, initial/final closes and
+mandatory5min close/re-entry. This is a differentiable proxy, not exact fills.
+Recorded1s depth evaluation with actual quantity rules/delay/stops/funding-gap
+checks; four separate25 virtual subaccounts (100 total), allocation<=25%/coin,
+1x. Capital differs from earlier15 trial; ONLY matched new baselines comparable.
+Forecasts additionally learn signed60s return and large-event occurrence.
+New independent final-test/PAPER adapter remains outstanding. No promotion.
+
+Both CUDA models trained20epochs, early metrics improved by reducing turnover.
+Actual development Oct8/9: direct5+1trades, net-.08297263/-.01582162 on100/day;
+expert0trades/CASH-like, not a qualified learned trading strategy. Momentum
+3228/3125trades, net-72.28384/-70.86025, same100/day. Evidence issues empty.
+No positive candidate. New result labels execution_infeasible/cash_like/active.
+Storage/evolution-experts-v1 completed, immutable plan/source/weights/results;
+service+timer enabled, completed check verifies artifacts and avoids retraining.
+CPU100%MemoryMax4G, secrets inaccessible, writes own directory only.
+
+New4 focused tests PASS: long/short cost attribution, entry/final+5min turnover
+costs, no future-quote availability in observation masks, finite actual CUDA
+financial gradients improving known objective. Previous6 lab tests unchanged.
+No whole-suite rerun claimed. Existing household and PAPER services untouched.
+Next: evidence says primary failure is absent conditional edge versus costs,
+not accounting arithmetic. Study TRAIN-only rare executable impulse opportunity
+density/calibration before increasing search; changing risk/turnover alone has
+not learned alpha. Any next hypothesis needs new bounded protocol and unused
+for-that-hypothesis development periods; historical data are already examined,
+so independent success STILL requires prospective frozen PAPER evidence.
+
+Coverage caveat for expert comparison: contiguous all-coin training chunks total
+192x120 five-second steps (~32h over4 calendar days); early selection112 chunks
+(~18.67h over2days). Requiring all books/features and avoiding funding boundaries
+excludes substantial history. Do not claim complete96/48h training coverage;
+next event-specific study should quantify this selection bias and use per-coin
+valid sequences instead of implicitly treating excluded intervals as quiet market.

@@ -1,0 +1,23 @@
+[Unit]
+Description=Bounded direct-policy versus forecasting-expert research (PAPER only)
+After=network-online.target remote-fs.target
+StartLimitIntervalSec=900
+StartLimitBurst=4
+
+[Service]
+Type=oneshot
+User=codex
+Group=codex
+WorkingDirectory=/home/codex/workspace/cripto_staff
+ExecStart=/bin/sh /home/codex/workspace/cripto_staff/deploy/brain-supervisor.sh brain_evolution_experts.py --lab /home/codex/projects/market-brain-storage/evolution-lab-v2 --campaign /home/codex/projects/market-brain-storage/archive-campaign-v1 --output /home/codex/projects/market-brain-storage/evolution-experts-v1
+TimeoutStartSec=infinity
+CPUQuota=100%
+MemoryMax=4G
+MemorySwapMax=0
+Nice=15
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/home/codex/projects/market-brain-storage/evolution-experts-v1
+InaccessiblePaths=/home/codex/workspace/cripto_staff/secrets

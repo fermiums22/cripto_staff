@@ -1,0 +1,541 @@
+{
+  "caution": "Two fresh training episodes per comparison; multiple mutations and comparisons, not statistical proof of alpha",
+  "comparisons": [
+    {
+      "active_improvement": false,
+      "changes": {
+        "fraction": {
+          "child": 0.3,
+          "parent": 0.7
+        },
+        "gain": {
+          "child": 0.7809633436308945,
+          "parent": 1.0
+        },
+        "hold_ms": {
+          "child": 180000,
+          "parent": 60000
+        },
+        "leverage": {
+          "child": 10.0,
+          "parent": 1.0
+        },
+        "stop": {
+          "child": 0.03,
+          "parent": 0.01
+        }
+      },
+      "child": "momentum-g1-1",
+      "child_net_return": -0.8884684995870951,
+      "child_trades": 814,
+      "control": "momentum-g1-0",
+      "drawdown_delta": 0.3649516351556795,
+      "evidence_issues": [],
+      "fees_delta": 6.948944901614418,
+      "generation": 1,
+      "improved_both_episodes": false,
+      "net_return_delta": -0.36478324352046654,
+      "no_trade_child": false,
+      "per_episode_delta": [
+        -0.36469175061809345,
+        -0.3648747364228395
+      ],
+      "trades_delta": -335
+    },
+    {
+      "active_improvement": false,
+      "changes": {
+        "fraction": {
+          "child": 1.0,
+          "parent": 0.7
+        },
+        "gain": {
+          "child": 1.3406250117505774,
+          "parent": 1.0
+        },
+        "hold_ms": {
+          "child": 10000,
+          "parent": 60000
+        },
+        "leverage": {
+          "child": 2.0,
+          "parent": 1.0
+        },
+        "stop": {
+          "child": 0.003,
+          "parent": 0.01
+        }
+      },
+      "child": "breakout-g1-1",
+      "child_net_return": -0.8332313714159376,
+      "child_trades": 1031,
+      "control": "breakout-g1-0",
+      "drawdown_delta": 0.3089875112007595,
+      "evidence_issues": [],
+      "fees_delta": 5.866186405550389,
+      "generation": 1,
+      "improved_both_episodes": false,
+      "net_return_delta": -0.30915198551833645,
+      "no_trade_child": false,
+      "per_episode_delta": [
+        -0.308895934322137,
+        -0.309408036714536
+      ],
+      "trades_delta": -123
+    },
+    {
+      "active_improvement": false,
+      "changes": {
+        "fraction": {
+          "child": 1.0,
+          "parent": 0.7
+        },
+        "gain": {
+          "child": 0.8366438962410497,
+          "parent": 1.0
+        },
+        "hold_ms": {
+          "child": 10000,
+          "parent": 60000
+        },
+        "leverage": {
+          "child": 2.0,
+          "parent": 1.0
+        },
+        "stop": {
+          "child": 0.003,
+          "parent": 0.01
+        }
+      },
+      "child": "leadlag-g1-1",
+      "child_net_return": -0.833524773747637,
+      "child_trades": 1046,
+      "control": "leadlag-g1-0",
+      "drawdown_delta": 0.309700173106767,
+      "evidence_issues": [],
+      "fees_delta": 5.887347065050198,
+      "generation": 1,
+      "improved_both_episodes": false,
+      "net_return_delta": -0.30974701853499753,
+      "no_trade_child": false,
+      "per_episode_delta": [
+        -0.3102967303195546,
+        -0.30919730675044044
+      ],
+      "trades_delta": -117
+    },
+    {
+      "active_improvement": false,
+      "changes": {
+        "fraction": {
+          "child": 0.3,
+          "parent": 0.7
+        },
+        "gain": {
+          "child": 1.4466130560356887,
+          "parent": 1.0
+        },
+        "hold_ms": {
+          "child": 10000,
+          "parent": 60000
+        },
+        "stop": {
+          "child": 0.08,
+          "parent": 0.01
+        }
+      },
+      "child": "orderflow-g1-1",
+      "child_net_return": 0.0,
+      "child_trades": 0,
+      "control": "orderflow-g1-0",
+      "drawdown_delta": -0.5244266687385168,
+      "evidence_issues": [],
+      "fees_delta": -9.949374095928006,
+      "generation": 1,
+      "improved_both_episodes": true,
+      "net_return_delta": 0.5241220357309161,
+      "no_trade_child": true,
+      "per_episode_delta": [
+        0.5238174027233153,
+        0.5244266687385168
+      ],
+      "trades_delta": -1149
+    },
+    {
+      "active_improvement": false,
+      "changes": {
+        "fraction": {
+          "child": 1.0,
+          "parent": 0.7
+        },
+        "gain": {
+          "child": 1.564147844264102,
+          "parent": 1.0
+        },
+        "hold_ms": {
+          "child": 30000,
+          "parent": 60000
+        },
+        "leverage": {
+          "child": 2.0,
+          "parent": 1.0
+        },
+        "stop": {
+          "child": 0.003,
+          "parent": 0.01
+        }
+      },
+      "child": "impulse-g1-1",
+      "child_net_return": -0.8332699624719258,
+      "child_trades": 1045,
+      "control": "impulse-g1-0",
+      "drawdown_delta": 0.3094802124118424,
+      "evidence_issues": [],
+      "fees_delta": 6.1412517909078,
+      "generation": 1,
+      "improved_both_episodes": false,
+      "net_return_delta": -0.30945292266358293,
+      "no_trade_child": false,
+      "per_episode_delta": [
+        -0.3094445928721492,
+        -0.30946125245501677
+      ],
+      "trades_delta": -103
+    },
+    {
+      "active_improvement": false,
+      "changes": {
+        "fraction": {
+          "child": 0.3,
+          "parent": 0.7
+        },
+        "gain": {
+          "child": 1.6241113911167582,
+          "parent": 1.0
+        },
+        "hold_ms": {
+          "child": 120000,
+          "parent": 60000
+        },
+        "leverage": {
+          "child": 5.0,
+          "parent": 1.0
+        },
+        "symbol": {
+          "child": 3,
+          "parent": 0
+        }
+      },
+      "child": "specialist-g1-1",
+      "child_net_return": -0.6269173793606435,
+      "child_trades": 984,
+      "control": "specialist-g1-0",
+      "drawdown_delta": 0.6502501159133065,
+      "evidence_issues": [],
+      "fees_delta": 12.239014280819994,
+      "generation": 1,
+      "improved_both_episodes": false,
+      "net_return_delta": -0.6269173793606435,
+      "no_trade_child": false,
+      "per_episode_delta": [
+        -0.6035846428079805,
+        -0.6502501159133065
+      ],
+      "trades_delta": 984
+    },
+    {
+      "active_improvement": false,
+      "changes": {
+        "weights": "mutated"
+      },
+      "child": "neural-g1-2",
+      "child_net_return": -0.91663367742338,
+      "child_trades": 937,
+      "control": "neural-g1-0",
+      "drawdown_delta": 0.005546778577743439,
+      "evidence_issues": [],
+      "fees_delta": 0.5189251318133827,
+      "generation": 1,
+      "improved_both_episodes": false,
+      "net_return_delta": -0.004800591827108458,
+      "no_trade_child": false,
+      "per_episode_delta": [
+        -0.005476175498356772,
+        -0.004125008155860144
+      ],
+      "trades_delta": 33
+    },
+    {
+      "active_improvement": false,
+      "changes": {
+        "fraction": {
+          "child": 1.0,
+          "parent": 0.7
+        },
+        "gain": {
+          "child": 1.024866439688256,
+          "parent": 1.0
+        },
+        "hold_ms": {
+          "child": 120000,
+          "parent": 60000
+        },
+        "leverage": {
+          "child": 2.0,
+          "parent": 1.0
+        }
+      },
+      "child": "momentum-g2-1",
+      "child_net_return": -0.8334643558780446,
+      "child_trades": 1017,
+      "control": "momentum-g2-0",
+      "drawdown_delta": 0.3097421558003888,
+      "evidence_issues": [],
+      "fees_delta": 6.202646949713984,
+      "generation": 2,
+      "improved_both_episodes": false,
+      "net_return_delta": -0.30970901419045616,
+      "no_trade_child": false,
+      "per_episode_delta": [
+        -0.3096280970759627,
+        -0.3097899313049497
+      ],
+      "trades_delta": -136
+    },
+    {
+      "active_improvement": true,
+      "changes": {
+        "fraction": {
+          "child": 0.6,
+          "parent": 0.7
+        },
+        "gain": {
+          "child": 1.0637348289615203,
+          "parent": 1.0
+        },
+        "hold_ms": {
+          "child": 180000,
+          "parent": 60000
+        }
+      },
+      "child": "breakout-g2-1",
+      "child_net_return": -0.4442849362253776,
+      "child_trades": 1084,
+      "control": "breakout-g2-0",
+      "drawdown_delta": -0.07978157074300563,
+      "evidence_issues": [],
+      "fees_delta": -1.4574825302574155,
+      "generation": 2,
+      "improved_both_episodes": true,
+      "net_return_delta": 0.079588459241908,
+      "no_trade_child": false,
+      "per_episode_delta": [
+        0.07980826141447261,
+        0.07936865706934337
+      ],
+      "trades_delta": -88
+    },
+    {
+      "active_improvement": false,
+      "changes": {
+        "fraction": {
+          "child": 0.3,
+          "parent": 0.7
+        },
+        "gain": {
+          "child": 0.7684412169470737,
+          "parent": 1.0
+        },
+        "hold_ms": {
+          "child": 10000,
+          "parent": 60000
+        },
+        "leverage": {
+          "child": 10.0,
+          "parent": 1.0
+        },
+        "stop": {
+          "child": 0.03,
+          "parent": 0.01
+        }
+      },
+      "child": "leadlag-g2-1",
+      "child_net_return": -0.8883189070387701,
+      "child_trades": 837,
+      "control": "leadlag-g2-0",
+      "drawdown_delta": 0.3643257013801644,
+      "evidence_issues": [],
+      "fees_delta": 7.058373013038011,
+      "generation": 2,
+      "improved_both_episodes": false,
+      "net_return_delta": -0.3642219829679233,
+      "no_trade_child": false,
+      "per_episode_delta": [
+        -0.3640427802626177,
+        -0.3644011856732289
+      ],
+      "trades_delta": -304
+    },
+    {
+      "active_improvement": false,
+      "changes": {
+        "gain": {
+          "child": 1.2425225526354182,
+          "parent": 1.4466130560356887
+        },
+        "hold_ms": {
+          "child": 60000,
+          "parent": 10000
+        },
+        "stop": {
+          "child": 0.01,
+          "parent": 0.08
+        }
+      },
+      "child": "orderflow-g2-1",
+      "child_net_return": 0.0,
+      "child_trades": 0,
+      "control": "orderflow-g2-0",
+      "drawdown_delta": 0.0,
+      "evidence_issues": [],
+      "fees_delta": 0.0,
+      "generation": 2,
+      "improved_both_episodes": false,
+      "net_return_delta": 0.0,
+      "no_trade_child": true,
+      "per_episode_delta": [
+        0.0,
+        0.0
+      ],
+      "trades_delta": 0
+    },
+    {
+      "active_improvement": false,
+      "changes": {
+        "fraction": {
+          "child": 1.0,
+          "parent": 0.7
+        },
+        "gain": {
+          "child": 1.1007550059248987,
+          "parent": 1.0
+        },
+        "leverage": {
+          "child": 10.0,
+          "parent": 1.0
+        },
+        "stop": {
+          "child": 0.08,
+          "parent": 0.01
+        }
+      },
+      "child": "impulse-g2-1",
+      "child_net_return": -0.967042003642187,
+      "child_trades": 380,
+      "control": "impulse-g2-0",
+      "drawdown_delta": 0.44323903456734326,
+      "evidence_issues": [],
+      "fees_delta": 8.263679160732597,
+      "generation": 2,
+      "improved_both_episodes": false,
+      "net_return_delta": -0.44331962199107344,
+      "no_trade_child": false,
+      "per_episode_delta": [
+        -0.4433716568107561,
+        -0.4432675871713909
+      ],
+      "trades_delta": -777
+    },
+    {
+      "active_improvement": false,
+      "changes": {
+        "fraction": {
+          "child": 0.3,
+          "parent": 0.7
+        },
+        "gain": {
+          "child": 1.1089540360082006,
+          "parent": 1.0
+        },
+        "hold_ms": {
+          "child": 180000,
+          "parent": 60000
+        },
+        "leverage": {
+          "child": 2.0,
+          "parent": 1.0
+        },
+        "stop": {
+          "child": 0.03,
+          "parent": 0.01
+        },
+        "symbol": {
+          "child": 2,
+          "parent": 0
+        }
+      },
+      "child": "specialist-g2-1",
+      "child_net_return": -0.41808387404336494,
+      "child_trades": 972,
+      "control": "specialist-g2-0",
+      "drawdown_delta": 0.4361641672269194,
+      "evidence_issues": [],
+      "fees_delta": 8.056857508301388,
+      "generation": 2,
+      "improved_both_episodes": false,
+      "net_return_delta": -0.41808387404336494,
+      "no_trade_child": false,
+      "per_episode_delta": [
+        -0.4001717320900505,
+        -0.43599601599667936
+      ],
+      "trades_delta": 972
+    },
+    {
+      "active_improvement": false,
+      "changes": {
+        "weights": "mutated"
+      },
+      "child": "neural-g2-2",
+      "child_net_return": -0.9154832298523722,
+      "child_trades": 899,
+      "control": "neural-g2-0",
+      "drawdown_delta": 0.002900145058793213,
+      "evidence_issues": [],
+      "fees_delta": 0.10666208618999917,
+      "generation": 2,
+      "improved_both_episodes": false,
+      "net_return_delta": -0.0035164378063403667,
+      "no_trade_child": false,
+      "per_episode_delta": [
+        -0.0034316663545530535,
+        -0.00360120925812768
+      ],
+      "trades_delta": -6
+    }
+  ],
+  "independent_evidence": false,
+  "ready": false,
+  "unmatched": [
+    {
+      "child": "neural-g1-1",
+      "generation": 1,
+      "reason": "parent not replayed unchanged on this period"
+    },
+    {
+      "child": "neural-g1-3",
+      "generation": 1,
+      "reason": "parent not replayed unchanged on this period"
+    },
+    {
+      "child": "neural-g2-1",
+      "generation": 2,
+      "reason": "parent not replayed unchanged on this period"
+    },
+    {
+      "child": "neural-g2-3",
+      "generation": 2,
+      "reason": "parent not replayed unchanged on this period"
+    }
+  ]
+}
