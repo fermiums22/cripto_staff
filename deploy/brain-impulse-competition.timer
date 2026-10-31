@@ -1,0 +1,10 @@
+[Unit]
+Description=Resume bounded impulse research after data readiness or reboot
+
+[Timer]
+OnBootSec=5min
+OnUnitInactiveSec=15min
+Unit=brain-impulse-competition.service
+
+[Install]
+WantedBy=timers.target

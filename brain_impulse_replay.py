@@ -52,7 +52,10 @@ def replay(events,predictors,instruments,start_ms,end_ms,policy=ExecutionPolicy(
         if quote:
             if quote['ts']!=now:raise ValueError('Book time differs from event')
             quotes+=1
-            for state in accounts.values():on_book(state,quote,instruments,policy,paused=closing)
+            for state in accounts.values():
+                # Match live routing: flat accounts need no per-quote mutation.
+                if state['pending'] or (state['position'] and state['position']['symbol']==quote['symbol']):
+                    on_book(state,quote,instruments,policy,paused=closing)
         if sample:
             if sample['ts']!=now:raise ValueError('Feature time differs from event')
             samples+=1

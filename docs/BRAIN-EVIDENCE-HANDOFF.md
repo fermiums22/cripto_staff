@@ -529,3 +529,51 @@ live_promotion_allowed remains false. Campaign PID 3313 active, NRestarts=0,
 eight completed days, downloading Oct 9. Existing live source/wallets untouched.
 Next: implement validation model loading/artifact checks and actual frozen
 multi-day execution/stress orchestration; complete admitted 21-day data and fits.
+
+
+## Continuation: frozen execution validation and automatic workflow (2026-10-31)
+
+Previous turn progressed (f5c2725). Goal remains ACTIVE; no positive edge proven.
+Added brain_impulse_evaluate.py: checks training/source/split/selection identities,
+all 12 model result records against summary, every model artifact hash, raw plan
+campaign identity and frozen instrument scenario. Loads CPU inference weights and
+scalers for four neural plus ridge/XGBoost, wraps causal SequenceSignals and adds
+three fixed controls. Replays calendar score intervals days 9-11 and 11-14 only;
+rejects attempts to access diagnostic days 14-21. Base policy unchanged; stress
+fee .0008/side, slip .0008/side, 2000ms execution delay. These are SCENARIOS, not
+verified personal fees. Archive receipt delays stay explicit simulations.
+Each full fold/scenario result is atomic with payload checksum and plan hash;
+completed runs are resumed without replay, while artifact checks still run.
+Shared selector writes validation-selection.json, diagnostic eligibility only.
+No final diagnostic or independent model PAPER deployment is implemented yet.
+
+Optimized replay quote routing to match live: only pending/position accounts see
+book updates; flat accounts avoid millions of unnecessary mutations. Original
+completed negative control audit and its identity remain preserved; source version
+for that audit is in Git before this change. No active trial sources were changed.
+
+Checks: full suite 192 passed before final loader/checksum additions; final focused
+4-test evaluator suite passed, bringing test inventory to 193. Actual saved random
+MLP/TCN/GRU/MoE weights/scalers loaded and emitted eight predictions; damaged model
+file rejected. This is engineering verification, not trained-market performance.
+Mock orchestration validates four fold/scenario passes, replay reuse and protected
+final dates. Real neural/baseline GPU checks remain previous verified tests.
+
+Execution policy/source freeze created BEFORE market fitting at
+storage/impulse-competition-v1/execution-policy.json, SHA256
+1e3a41a102a96276e05bf90c9f3688f99b40b979eb6da204b375ec414d644d90.
+Do not modify its CODE sources silently; preserve/invalidate/version trials for
+necessary corrections. Selection freeze remains unchanged.
+
+Added brain_impulse_workflow.py and enabled brain-impulse-competition.timer.
+Every 15 minutes after the previous run, and after boot, isolated oneshot checks
+complete admitted campaign then invokes training and validation sequentially.
+CPU quota200%, memory4GiB, swap0, nice15, private tmp, read-only filesystem except
+its own output, secrets inaccessible. No real-order/promotion code exists.
+Source units verified; first real service run exited0 with
+workflow-status.json stage waiting_for_complete_campaign. This is correct, not a
+training result. Timer is enabled and will start bounded work when all21days pass.
+Interruption resumes completed model checkpoints/fold-scenarios; an unfinished
+replay scenario restarts from its beginning, not an invented midstream account.
+Unrelated systemd verify warning references existing codex-home-ca-http service;
+that service was not modified. Household/old PAPER wallets remain untouched.
