@@ -16,6 +16,11 @@ class BatchPaper:
         self.names=names;self.policy=policy;self.protocol_id=protocol_id
         self.db=sqlite3.connect(path,timeout=30)
         try:
+            # Reject unrelated/partial wallets before changing persistent journal mode.
+            existing={r[0] for r in self.db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+            if existing and existing-{'accounts','batches','trades','events','sqlite_sequence'}:
+                raise ValueError('Not a batch journal; existing wallets cannot be migrated implicitly')
+            if existing and not {'accounts','batches','trades','events'}.issubset(existing):raise ValueError('Incomplete batch schema')
             self.db.execute('PRAGMA journal_mode=DELETE');self.db.execute('PRAGMA synchronous=FULL')
             # Explicit BEGIN makes schema and initial balances one crash-atomic unit.
             self.db.execute('BEGIN IMMEDIATE')

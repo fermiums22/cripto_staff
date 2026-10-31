@@ -81,10 +81,13 @@ with patch('brain_impulse_ledger.sqlite3.connect',lambda *a,**kw:real_connect(*a
     def test_preexisting_partial_schema_is_rejected_without_repair(self):
         with tempfile.TemporaryDirectory() as tmp:
             path=Path(tmp)/'partial.db'
-            with closing(sqlite3.connect(path)) as db:db.execute('CREATE TABLE accounts(name TEXT)')
+            with closing(sqlite3.connect(path)) as db:
+                db.execute('PRAGMA journal_mode=WAL')
+                db.execute('CREATE TABLE accounts(name TEXT)')
             with self.assertRaisesRegex(ValueError,'Incomplete batch schema'):BatchPaper(path,('a',),'test')
             with closing(sqlite3.connect(path)) as db:
                 self.assertEqual(db.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall(),[('accounts',)])
+                self.assertEqual(db.execute('PRAGMA journal_mode').fetchone()[0],'wal')
 
     def test_existing_wallet_and_protocol_cannot_be_reset(self):
         with tempfile.TemporaryDirectory() as tmp:
